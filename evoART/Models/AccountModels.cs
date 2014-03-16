@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.DynamicData;
 
 namespace evoART.Models
 {
     public class AccountModels
     {
-        [TableName("UserAccounts")]
-        public class UserAccounts
+        [TableName("UserAccount")]
+        public class UserAccount
         {
             [Key]
             [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -61,8 +57,8 @@ namespace evoART.Models
             public int LoginFails { get; set; }
         }
 
-        [TableName("Roles")]
-        public class Roles
+        [TableName("Role")]
+        public class Role
         {
             [Key]
             public int RoleId { get; set; }
