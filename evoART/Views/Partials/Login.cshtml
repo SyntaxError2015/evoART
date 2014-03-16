@@ -1,0 +1,25 @@
+﻿@model evoART.Models.LoginModel.Login
+@{
+    Layout = null;
+}
+
+@using (Ajax.BeginForm("Login", "Account", new AjaxOptions { UpdateTargetId = "test", HttpMethod = "POST" }))
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.UserName)</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Password)</td>
+            <td>@Html.PasswordFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input class="btn" type="submit" value="Log in" />
+            </td>
+        </tr>
+    </table>
+}
+<div id="test"></div>

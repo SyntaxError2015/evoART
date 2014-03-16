@@ -9,6 +9,70 @@
     padding-right: 15px;
 }
 
+.topbar {
+    height:50px;
+    width:100%;
+    position:fixed;
+    left:0px;
+    top:0px;
+    border-width: 0 0 1px;
+    background-color: #222222;
+    border-color: #080808;
+    float:right;
+    padding:5px;
+    padding-right:10px;
+    text-align:right;
+    color:white;
+    font-family:'Segoe UI';
+    font-size:20px;
+}
+
+.topitem{
+    float:right;
+    margin-left:5px;
+    cursor:pointer;
+    height:50px;
+    padding:5px;
+}
+
+.userbox{
+    display:block;
+    right:0px;
+    top:50px;
+    width:350px;
+    height:0px;
+    background-color: #222222;
+    cursor:default;
+    position:fixed;
+    z-index:10;
+    -webkit-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+    -moz-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+    -o-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+    transition:width 300ms ease-in-out, height 300ms ease-in-out;
+    overflow:hidden;
+}
+
+.userbox input, submit{
+    max-width:200px;
+    color:black;
+}
+
+.userbox table,td{
+    text-align:right;
+    padding:5px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.userlink {
+    margin-right:10px;
+}
+
+.userlink:hover .userbox{
+    /*display:block;*/
+    height:150px;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
