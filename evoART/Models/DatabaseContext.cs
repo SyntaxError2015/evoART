@@ -27,8 +27,8 @@ namespace evoART.Models
         protected virtual void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.UserAccount>()
-                .HasKey(t => t.Id)
-                .Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(t => t.UserId)
+                .Property(t => t.UserId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasRequired(t => t.Role)
@@ -55,14 +55,14 @@ namespace evoART.Models
         private void InitializeAccountValidationsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.AccountValidation>()
-                .HasKey(t => t.Id);
+                .HasKey(t => t.AccountValidationId);
         }
 
         private void InitializeRolesTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.Role>()
-                .HasKey(t => t.Id)
-                .Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(t => t.RoleId)
+                .Property(t => t.RoleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }

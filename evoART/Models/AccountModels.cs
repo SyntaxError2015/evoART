@@ -11,7 +11,7 @@ namespace evoART.Models
         [TableName("UserAccount")]
         public class UserAccount
         {
-            public int Id { get; set; }
+            public int UserId { get; set; }
 
             public string UserName { get; set; }
 
@@ -35,7 +35,7 @@ namespace evoART.Models
         [TableName("AccountValidation")]
         public class AccountValidation
         {
-            public int Id { get; set; }
+            public int AccountValidationId { get; set; }
 
             public bool IsVerified { get; set; }
 
@@ -53,7 +53,7 @@ namespace evoART.Models
         [TableName("Role")]
         public class Role
         {
-            public int Id { get; set; }
+            public int RoleId { get; set; }
 
             public string RoleName { get; set; }
 
