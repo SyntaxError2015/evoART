@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.DynamicData;
@@ -10,41 +11,31 @@ namespace evoART.Models
         [TableName("UserAccount")]
         public class UserAccount
         {
-            [Key]
-            [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-            public int UserId { get; set; }
+            public int Id { get; set; }
 
-            [Required]
-            [DataType(DataType.Text)]
             public string UserName { get; set; }
 
-            [Required]
-            [DataType(DataType.Password)]
             public string Password { get; set; }
             
-            [Required]
-            [DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
-            [DataType(DataType.Text)]
             public string FistName { get; set; }
 
-            [DataType(DataType.Text)]
             public string LastName { get; set; }
 
-            [DataType(DataType.PhoneNumber)]
             public string PhoneNumber { get; set; }
 
-            [DataType(DataType.DateTime)]
-            public DateTime BirthDate { get; set; }
+            public DateTime? BirthDate { get; set; }
 
-            public int RoleId { get; set; }
+            public virtual Role Role { get; set; }
+
+            public virtual AccountValidation AccountValidation { get; set; }
         }
 
         [TableName("AccountValidation")]
         public class AccountValidation
         {
-            public int UserId { get; set; }
+            public int Id { get; set; }
 
             public bool IsVerified { get; set; }
 
@@ -55,16 +46,18 @@ namespace evoART.Models
             public DateTime ValidationTokenExpireDate { get; set; }
 
             public int LoginFails { get; set; }
+
+            public virtual UserAccount UserAccount { get; set; }
         }
 
         [TableName("Role")]
         public class Role
         {
-            [Key]
-            public int RoleId { get; set; }
+            public int Id { get; set; }
 
-            [DataType(DataType.Text)]
             public string RoleName { get; set; }
+
+            public virtual ICollection<UserAccount> UserAccounts { get; set; }
         }
     }
 }
