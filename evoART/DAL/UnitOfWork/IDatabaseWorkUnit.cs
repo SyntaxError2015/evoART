@@ -8,6 +8,6 @@ namespace evoART.DAL.UnitOfWork
 {
     interface IDatabaseWorkUnit
     {
-        bool Register();
+        //bool Register();
     }
 }

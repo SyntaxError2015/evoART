@@ -5,16 +5,19 @@ using evoART.Models;
 
 namespace evoART.DAL.UnitOfWork
 {
-    public class DatabaseWorkUnit
+    /// <summary>
+    /// The entire Unit Of Work for the database.
+    /// 
+    /// Thsi class is a singleton
+    /// </summary>
+    public class DatabaseWorkUnit : IDatabaseWorkUnit
     {
         private DatabaseWorkUnit()
         {
 
         }
 
-        /// <summary>
-        /// All the fields here are singletons and their values are instantiated in the representing properties
-        /// </summary>
+        // All the fields here are singletons and their values are instantiated in the representing properties
         #region fields
         private static DatabaseWorkUnit _instance = null;
 
@@ -25,11 +28,12 @@ namespace evoART.DAL.UnitOfWork
 
         #endregion
 
-        /// <summary>
-        /// Singleton initializations
-        /// </summary>
-        #region properties
+        // Singleton initializations
+        #region Properties
 
+        /// <summary>
+        /// Get the available instance for this class
+        /// </summary>
         public static DatabaseWorkUnit Instance
         {
             get
@@ -38,6 +42,9 @@ namespace evoART.DAL.UnitOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the UserAccount model
+        /// </summary>
         public UserAccountRepository UserAccountRepository
         {
             get
@@ -46,6 +53,9 @@ namespace evoART.DAL.UnitOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the AccountValidation model
+        /// </summary>
         public AccountValidationRepository AccountValidationRepository
         {
             get
@@ -54,6 +64,9 @@ namespace evoART.DAL.UnitOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the Session model
+        /// </summary>
         public SessionRepository SessionRepository
         {
             get
@@ -62,6 +75,9 @@ namespace evoART.DAL.UnitOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the Role model
+        /// </summary>
         public RoleRepository RoleRepository
         {
             get

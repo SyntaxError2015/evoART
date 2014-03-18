@@ -48,7 +48,7 @@ namespace evoART.DAL.Repositories
             {
                 _dbSet.Add(role);
 
-                return true;
+                return Save();
             }
 
             catch
@@ -67,7 +67,7 @@ namespace evoART.DAL.Repositories
             {
                 _dbSet.Remove(_dbSet.Find(roleId));
 
-                return true;
+                return Save();
             }
             
             catch
@@ -87,7 +87,7 @@ namespace evoART.DAL.Repositories
             {
                 _dbSet.AddOrUpdate(role);
 
-                return true;
+                return Save();
             }
 
             catch

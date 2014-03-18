@@ -8,8 +8,8 @@ namespace evoART.DAL.Interfaces
 {
     interface IStandardInterface
     {
-        void Save();
+        bool Save();
 
-        void SaveAsync();
+        bool SaveAsync();
     }
 }
