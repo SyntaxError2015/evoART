@@ -18,5 +18,35 @@ namespace evoART.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VerifyExists(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VerifyPassword(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(AccountModels.UserAccount userAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(AccountModels.UserAccount userAccount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

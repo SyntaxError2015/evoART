@@ -18,5 +18,45 @@ namespace evoART.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public string GetValidationToken(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetValidationTokenExpireDate(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetFailedLoginAttempts(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetLoginFailAttempts(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GenerateNewValidationToken(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(AccountModels.AccountValidation validation, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(AccountModels.UserAccount validation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

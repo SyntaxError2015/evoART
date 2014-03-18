@@ -18,5 +18,25 @@ namespace evoART.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public string[] GetRoleNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(AccountModels.Role role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(AccountModels.Role role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
