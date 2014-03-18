@@ -15,6 +15,8 @@ namespace evoART.DAL.Interfaces
 
         void GenerateNewValidationToken(int userId);
 
+        void SetVerified(int userId, bool verified);
+
         void Insert(AccountModels.AccountValidation validation, int userId);
 
         void Delete(int userId);

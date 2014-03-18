@@ -44,6 +44,11 @@ namespace evoART.DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public void SetVerified(int userId, bool verified)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Insert(AccountModels.AccountValidation validation, int userId)
         {
             throw new NotImplementedException();
