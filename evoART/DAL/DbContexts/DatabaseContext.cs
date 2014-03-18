@@ -4,9 +4,25 @@ using evoART.Models;
 
 namespace evoART.DAL.DbContexts
 {
+    /// <summary>
+    /// This class is a singleton
+    /// </summary>
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext()
+        private static DatabaseContext _dbContext = null;
+
+        /// <summary>
+        /// Get an instance of the DatabaseContext class
+        /// </summary>
+        public static DatabaseContext DatabaseContextInstance
+        {
+            get
+            {
+                return _dbContext ?? (_dbContext = new DatabaseContext());
+            }
+        }
+
+        private DatabaseContext()
             : base("evoARTConnection")
         {
             Database.SetInitializer(new DatabaseContextInitializer());
