@@ -1,5 +1,6 @@
 ﻿using System;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
@@ -17,10 +18,10 @@ namespace evoART.DAL.Interfaces
 
         void SetVerified(int userId, bool verified);
 
-        void Insert(AccountModels.AccountValidation validation, int userId);
+        bool Insert(AccountModels.AccountValidation validation, int userId);
 
-        void Delete(int userId);
+        bool Delete(int userId);
 
-        void Update(AccountModels.UserAccount validation);
+        bool Update(AccountModels.UserAccount validation);
     }
 }

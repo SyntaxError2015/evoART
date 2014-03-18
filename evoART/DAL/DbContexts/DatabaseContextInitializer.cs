@@ -2,6 +2,7 @@
 using System.Linq;
 using evoART.DAL.UnitOfWork;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {

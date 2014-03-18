@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
@@ -8,10 +9,10 @@ namespace evoART.DAL.Interfaces
     {
         string[] GetRoleNames();
 
-        void Insert(AccountModels.Role role);
+        bool Insert(AccountModels.Role role);
 
-        void Delete(int roleId);
+        bool Delete(int roleId);
 
-        void Update(AccountModels.Role role);
+        bool Update(AccountModels.Role role);
     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
@@ -18,19 +19,30 @@ namespace evoART.DAL.Repositories
             _dbSet = context.Sessions;
         }
 
-        public void Dispose()
+        public bool OpenSession(int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void OpenSession(int userId)
+        public bool CloseSession(int userId)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                return true;
+            }
 
-        public void CloseSession(int userId)
-        {
-            throw new NotImplementedException();
+            catch
+            {
+                return false;
+            }
         }
     }
 }

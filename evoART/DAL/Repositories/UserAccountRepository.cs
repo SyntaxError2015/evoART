@@ -6,6 +6,7 @@ using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
@@ -18,11 +19,6 @@ namespace evoART.DAL.Repositories
             _dbSet = context.UserAccounts;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VerifyExists(string userName)
         {
             throw new NotImplementedException();
@@ -33,19 +29,43 @@ namespace evoART.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public void Insert(AccountModels.UserAccount userAccount)
+        public bool Insert(AccountModels.UserAccount userAccount)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Delete(int userId)
+        public bool Delete(int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Update(AccountModels.UserAccount userAccount)
+        public bool Update(AccountModels.UserAccount userAccount)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
     }
 }

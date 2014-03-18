@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models;
+using evoART.Models.DbModels;
 using Microsoft.Ajax.Utilities;
+using WebGrease.Css.Extensions;
 
 namespace evoART.DAL.Repositories
 {
@@ -19,29 +22,78 @@ namespace evoART.DAL.Repositories
             _dbSet = context.Roles;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Get a string array with the names of all the roles
+        /// </summary>
         public string[] GetRoleNames()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return  _dbSet.Select(s => s.RoleName).ToArray();
+            }
+
+            catch
+            {
+                return null;
+            }
         }
 
-        public void Insert(AccountModels.Role role)
+        /// <summary>
+        /// Insert a new role in the database
+        /// </summary>
+        /// <returns>A bool value indicating the success of the operation</returns>
+        public bool Insert(AccountModels.Role role)
         {
-            _dbSet.Add(role);
+            try
+            {
+                _dbSet.Add(role);
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Delete(int roleId)
+        /// <summary>
+        /// Delete a role from the database
+        /// </summary>
+        /// <returns>A bool value indicating the success of the operation</returns>
+        public bool Delete(int roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.Remove(_dbSet.Find(roleId));
+
+                return true;
+            }
+            
+            catch
+            {
+                return false;
+            }
+
         }
 
-        public void Update(AccountModels.Role role)
+        /// <summary>
+        /// Update role from the database
+        /// </summary>
+        /// <returns>A bool value indicating the success of the operation</returns>
+        public bool Update(AccountModels.Role role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.AddOrUpdate(role);
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
     }
 }

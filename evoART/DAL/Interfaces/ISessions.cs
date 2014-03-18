@@ -8,8 +8,8 @@ namespace evoART.DAL.Interfaces
 {
     interface ISessions : IDisposable
     {
-        void OpenSession(int userId);
+        bool OpenSession(int userId);
 
-        void CloseSession(int userId);
+        bool CloseSession(int userId);
     }
 }

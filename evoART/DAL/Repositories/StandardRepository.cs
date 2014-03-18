@@ -12,22 +12,41 @@ namespace evoART.DAL.Repositories
 {
     public abstract class StandardRepository : IStandardInterface
     {
-        // ReSharper disable once InconsistentNaming
-        protected internal DatabaseContext _context;
+        private readonly DatabaseContext _dbContext;
 
         internal StandardRepository(DatabaseContext context)
         {
-            this._context = context;
+            this._dbContext = context;
         }
 
         public void Save()
         {
-            _context.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         public void SaveAsync()
         {
-            _context.SaveChangesAsync();
+            _dbContext.SaveChangesAsync();
         }
+
+        #region Disposing logic
+
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed || !disposing) return;
+            
+            _dbContext.Dispose();
+            _disposed = true;
+        }
+
+        #endregion Disposing logic
     }
 }

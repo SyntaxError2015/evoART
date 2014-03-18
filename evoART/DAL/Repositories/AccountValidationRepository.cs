@@ -6,6 +6,7 @@ using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
@@ -16,11 +17,6 @@ namespace evoART.DAL.Repositories
         public AccountValidationRepository(DatabaseContext context) : base(context)
         {
             _dbSet = context.AccountValidations;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
 
         public string GetValidationToken(int userId)
@@ -53,19 +49,43 @@ namespace evoART.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public void Insert(AccountModels.AccountValidation validation, int userId)
+        public bool Insert(AccountModels.AccountValidation validation, int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Delete(int userId)
+        public bool Delete(int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Update(AccountModels.UserAccount validation)
+        public bool Update(AccountModels.UserAccount validation)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
     }
 }

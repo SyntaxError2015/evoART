@@ -1,5 +1,6 @@
 ﻿using System;
 using evoART.Models;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
@@ -9,10 +10,10 @@ namespace evoART.DAL.Interfaces
 
         bool VerifyPassword(string userName, string passWord);
 
-        void Insert(AccountModels.UserAccount userAccount);
-        
-        void Delete(int userId);
+        bool Insert(AccountModels.UserAccount userAccount);
 
-        void Update(AccountModels.UserAccount userAccount);
+        bool Delete(int userId);
+
+        bool Update(AccountModels.UserAccount userAccount);
     }
 }
