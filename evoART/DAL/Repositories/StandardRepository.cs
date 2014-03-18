@@ -53,25 +53,5 @@ namespace evoART.DAL.Repositories
         }
 
         #endregion
-
-        #region Disposing logic
-
-        private bool _disposed;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed || !disposing) return;
-
-            _dbContext.Dispose();
-            _disposed = true;
-        }
-
-        #endregion Disposing logic
     }
 }

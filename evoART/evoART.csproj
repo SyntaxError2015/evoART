@@ -137,7 +137,6 @@
     <Compile Include="DAL\Repositories\SessionRepository.cs" />
     <Compile Include="DAL\Repositories\StandardRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccountRepository.cs" />
-    <Compile Include="DAL\UnitOfWork\IDatabaseWorkUnit.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace evoART.DAL.Interfaces
 {
-    interface ISessions : IDisposable
+    interface ISessions
     {
-        bool OpenSession(int userId);
+        bool Login(int userId);
 
-        bool CloseSession(int userId);
+        bool Logout(int userId);
     }
 }

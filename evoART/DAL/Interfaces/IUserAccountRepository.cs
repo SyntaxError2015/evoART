@@ -4,11 +4,11 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IUserAccountRepository : IDisposable
+    interface IUserAccountRepository
     {
         bool VerifyExists(string userName);
 
-        bool VerifyPassword(string userName, string passWord);
+        bool VerifyPassword(string userName, string password);
 
         bool Insert(AccountModels.UserAccount userAccount);
 

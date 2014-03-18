@@ -25,7 +25,7 @@ namespace evoART.DAL.Repositories
         /// </summary>
         /// <param name="userId">The Id of the user who wants to log in</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool OpenSession(int userId)
+        public bool Login(int userId)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace evoART.DAL.Repositories
         /// </summary>
         /// <param name="userId">The Id of the user who wants to log out</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool CloseSession(int userId)
+        public bool Logout(int userId)
         {
             try
             {

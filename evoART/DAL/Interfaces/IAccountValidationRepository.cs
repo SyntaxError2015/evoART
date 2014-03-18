@@ -4,7 +4,7 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IAccountValidationRepository : IDisposable
+    interface IAccountValidationRepository
     {
         string GetValidationToken(int userId);
 

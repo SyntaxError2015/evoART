@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Repositories;
 using evoART.Models;
@@ -10,16 +11,18 @@ namespace evoART.DAL.UnitOfWork
     /// 
     /// Thsi class is a singleton
     /// </summary>
-    public class DatabaseWorkUnit : IDatabaseWorkUnit
+    public class DatabaseWorkUnit : IDisposable
     {
         private DatabaseWorkUnit()
         {
-
+            _dbContext = new DatabaseContext();
         }
 
         // All the fields here are singletons and their values are instantiated in the representing properties
         #region fields
         private static DatabaseWorkUnit _instance = null;
+
+        private readonly DatabaseContext _dbContext;
 
         private UserAccountRepository _userAccountRepository = null;
         private AccountValidationRepository _accountValidationRepository = null;
@@ -49,7 +52,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _userAccountRepository ?? (_userAccountRepository = new UserAccountRepository(new DatabaseContext()));
+                return _userAccountRepository ?? (_userAccountRepository = new UserAccountRepository(_dbContext));
             }
         }
 
@@ -60,7 +63,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _accountValidationRepository ?? (_accountValidationRepository = new AccountValidationRepository(new DatabaseContext()));
+                return _accountValidationRepository ?? (_accountValidationRepository = new AccountValidationRepository(_dbContext));
             }
         }
 
@@ -71,7 +74,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _sessionRepository ?? (_sessionRepository = new SessionRepository(new DatabaseContext()));
+                return _sessionRepository ?? (_sessionRepository = new SessionRepository(_dbContext));
             }
         }
 
@@ -82,11 +85,30 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _roleRepository ?? (_roleRepository = new RoleRepository(new DatabaseContext()));
+                return _roleRepository ?? (_roleRepository = new RoleRepository(_dbContext));
             }
         }
 
         #endregion
 
+        #region Disposing logic
+
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed || !disposing) return;
+
+            _dbContext.Dispose();
+            _disposed = true;
+        }
+
+        #endregion Disposing logic
     }
 }

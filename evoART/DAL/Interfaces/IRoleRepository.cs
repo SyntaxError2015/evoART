@@ -5,7 +5,7 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IRoleRepository : IDisposable
+    interface IRoleRepository
     {
         string[] GetRoleNames();
 
