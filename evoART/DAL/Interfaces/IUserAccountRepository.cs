@@ -3,7 +3,7 @@ using evoART.Models;
 
 namespace evoART.DAL.Interfaces
 {
-    public interface IUserAccountRepository : IStandardInterface, IDisposable
+    interface IUserAccountRepository : IStandardInterface, IDisposable
     {
         bool VerifyExists(string userName);
 

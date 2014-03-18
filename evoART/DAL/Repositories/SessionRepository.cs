@@ -9,7 +9,7 @@ namespace evoART.DAL.Repositories
 {
     public class SessionRepository : StandardRepository, ISessions
     {
-        public SessionRepository(DatabaseContext context) : base(context)
+        public SessionRepository(DatabaseContext context) : base()
         {
         }
 

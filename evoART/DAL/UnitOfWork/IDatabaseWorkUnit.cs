@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace evoART.DAL.Interfaces
+namespace evoART.DAL.UnitOfWork
 {
-    interface IStandardInterface
+    interface IDatabaseWorkUnit
     {
-        void Save();
+        bool Register();
     }
 }

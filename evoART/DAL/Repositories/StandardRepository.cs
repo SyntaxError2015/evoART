@@ -9,11 +9,11 @@ namespace evoART.DAL.Repositories
 {
     public abstract class StandardRepository
     {
-        private DatabaseContext _context;
+        protected internal DatabaseContext DbContext;
 
-        protected internal StandardRepository(DatabaseContext context)
+        protected internal StandardRepository()
         {
-            this._context = context;
+            this.DbContext = DatabaseContext.Instance;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace evoART.DAL.Interfaces
 {
-    public interface ISessions : IStandardInterface, IDisposable
+    interface ISessions : IStandardInterface, IDisposable
     {
         void OpenSession(int userId);
 

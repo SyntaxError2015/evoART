@@ -10,7 +10,7 @@ namespace evoART.DAL.Repositories
 {
     public class UserAccountRepository : StandardRepository, IUserAccountRepository
     {
-        protected internal UserAccountRepository(DatabaseContext context) : base(context)
+        protected internal UserAccountRepository(DatabaseContext context) : base()
         {
         }
 

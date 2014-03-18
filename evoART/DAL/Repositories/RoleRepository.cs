@@ -5,12 +5,13 @@ using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace evoART.DAL.Repositories
 {
     public class RoleRepository : StandardRepository, IRoleRepository
     {
-        protected internal RoleRepository(DatabaseContext context) : base(context)
+        protected internal RoleRepository(DatabaseContext context) : base()
         {
         }
 
@@ -26,7 +27,7 @@ namespace evoART.DAL.Repositories
 
         public void Insert(AccountModels.Role role)
         {
-            throw new NotImplementedException();
+            DbContext.Roles.Add(role);
         }
 
         public void Delete(int roleId)

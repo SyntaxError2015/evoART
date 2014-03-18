@@ -10,7 +10,7 @@ namespace evoART.DAL.Repositories
 {
     public class AccountValidationRepository : StandardRepository, IAccountValidationRepository
     {
-        protected internal AccountValidationRepository(DatabaseContext context) : base(context)
+        protected internal AccountValidationRepository(DatabaseContext context) : base()
         {
         }
 

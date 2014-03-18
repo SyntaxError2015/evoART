@@ -12,7 +12,7 @@ namespace evoART.Controllers
     {
         public ActionResult Index()
         {
-            using (var db = new DatabaseContext())
+            using (var db = DatabaseContext.Instance)
             {
                 db.UserAccounts.Count();
             }

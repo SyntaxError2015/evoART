@@ -14,11 +14,18 @@ namespace evoART.DAL.DbContexts
         /// <summary>
         /// Get an instance of the DatabaseContext class
         /// </summary>
-        public static DatabaseContext DatabaseContextInstance
+        public static DatabaseContext Instance
         {
             get
             {
-                return _dbContext ?? (_dbContext = new DatabaseContext());
+                try
+                {
+                    return _dbContext ?? (_dbContext = new DatabaseContext());
+                }
+                catch
+                {
+                    return _dbContext = new DatabaseContext();
+                }
             }
         }
 
