@@ -31,6 +31,8 @@ namespace evoART.Models
             public virtual Role Role { get; set; }
 
             public virtual AccountValidation AccountValidation { get; set; }
+
+            public virtual Session Session { get; set; }
         }
 
         [TableName("AccountValidation")]
@@ -56,6 +58,16 @@ namespace evoART.Models
             public string RoleName { get; set; }
 
             public virtual ICollection<UserAccount> UserAccounts { get; set; }
+        }
+
+        [TableName("Session")]
+        public class Session
+        {
+            public int SessionId { get; set; }
+
+            public DateTime LoginTime { get; set; }
+
+            public virtual UserAccount UserAccount { get; set; }
         }
     }
 }

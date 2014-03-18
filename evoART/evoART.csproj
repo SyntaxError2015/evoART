@@ -128,10 +128,12 @@
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\IAccountValidationRepository.cs" />
     <Compile Include="DAL\Interfaces\IRoleRepository.cs" />
+    <Compile Include="DAL\Interfaces\ISessions.cs" />
     <Compile Include="DAL\Interfaces\IUserAccountRepository.cs" />
-    <Compile Include="DAL\Interfaces\StandardInterface.cs" />
+    <Compile Include="DAL\Interfaces\IStandardInterface.cs" />
     <Compile Include="DAL\Repositories\AccountValidationRepository.cs" />
     <Compile Include="DAL\Repositories\RoleRepository.cs" />
+    <Compile Include="DAL\Repositories\SessionRepository.cs" />
     <Compile Include="DAL\Repositories\StandardRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccountRepository.cs" />
     <Compile Include="Global.asax.cs">

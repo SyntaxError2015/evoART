@@ -3,7 +3,7 @@ using evoART.Models;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IRoleRepository : IDisposable
+    interface IRoleRepository : IStandardInterface, IDisposable
     {
         string[] GetRoleNames();
 

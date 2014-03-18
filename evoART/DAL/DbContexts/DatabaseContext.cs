@@ -17,6 +17,7 @@ namespace evoART.DAL.DbContexts
             InitializeUserAccountsTable(modelBuilder);
             InitializeAccountValidationsTable(modelBuilder);
             InitializeRolesTable(modelBuilder);
+            InitializeSessionsTable(modelBuilder);
         }
 
         protected virtual void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
@@ -25,15 +26,24 @@ namespace evoART.DAL.DbContexts
                 .HasKey(t => t.UserId)
                 .Property(t => t.UserId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            // Map foreign key for the Roles table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasRequired(t => t.Role)
                 .WithMany(t => t.UserAccounts)
                 .Map(m => m.MapKey("RoleId"))
                 .WillCascadeOnDelete(false);
 
+            // Map foreign key for the AccountValidations table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasRequired(t => t.AccountValidation)
-                .WithRequiredPrincipal(t => t.UserAccount)
+                .WithRequiredPrincipal(p => p.UserAccount)
+                .Map(m => m.MapKey("UserId"))
+                .WillCascadeOnDelete(true);
+
+            // Map foreign key for the Sessions table
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .HasRequired(t => t.Session)
+                .WithRequiredPrincipal(p => p.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
@@ -87,10 +97,21 @@ namespace evoART.DAL.DbContexts
                 .Property(p => p.RoleName).IsRequired();
         }
 
+        private void InitializeSessionsTable(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountModels.Session>()
+                .HasKey(k => k.SessionId);
+
+            modelBuilder.Entity<AccountModels.Session>()
+                .Property(p => p.LoginTime).IsRequired();
+        }
+
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
 
         public DbSet<AccountModels.AccountValidation> AccountValidations { get; set; }
 
         public DbSet<AccountModels.Role> Roles { get; set; }
+
+        public DbSet<AccountModels.Session> Sessions { get; set; }
     }
 }
