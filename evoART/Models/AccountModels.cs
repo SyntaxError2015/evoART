@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.DynamicData;
+using Antlr.Runtime;
 
 namespace evoART.Models
 {
@@ -36,13 +37,10 @@ namespace evoART.Models
         public class AccountValidation
         {
             public int AccountValidationId { get; set; }
-
             public bool IsVerified { get; set; }
 
-            [DataType(DataType.Text)]
             public string ValidationToken { get; set; }
 
-            [DataType(DataType.DateTime)]
             public DateTime ValidationTokenExpireDate { get; set; }
 
             public int LoginFails { get; set; }

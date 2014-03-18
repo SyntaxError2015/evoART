@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -12,7 +13,8 @@ namespace evoART.Models
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base("evoARTConnection")
+        public DatabaseContext()
+            : base("evoARTConnection")
         {
             Database.SetInitializer(new DatabaseContextInitializer());
         }
@@ -50,12 +52,36 @@ namespace evoART.Models
 
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .Property(t => t.Password).IsRequired();
+
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .Property(t => t.FistName).IsOptional();
+
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .Property(t => t.LastName).IsOptional();
+
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .Property(t => t.PhoneNumber).IsOptional();
+
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .Property(t => t.BirthDate).IsOptional();
         }
 
         private void InitializeAccountValidationsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.AccountValidation>()
-                .HasKey(t => t.AccountValidationId);
+                .HasKey(k => k.AccountValidationId);
+
+            modelBuilder.Entity<AccountModels.AccountValidation>()
+                .Property(p => p.IsVerified).IsRequired();
+
+            modelBuilder.Entity<AccountModels.AccountValidation>()
+                .Property(p => p.LoginFails).IsRequired();
+
+            modelBuilder.Entity<AccountModels.AccountValidation>()
+                .Property(p => p.ValidationToken).IsOptional();
+
+            modelBuilder.Entity<AccountModels.AccountValidation>()
+                .Property(p => p.ValidationTokenExpireDate).IsOptional();
         }
 
         private void InitializeRolesTable(DbModelBuilder modelBuilder)
@@ -63,6 +89,9 @@ namespace evoART.Models
             modelBuilder.Entity<AccountModels.Role>()
                 .HasKey(t => t.RoleId)
                 .Property(t => t.RoleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<AccountModels.Role>()
+                .Property(p => p.RoleName).IsRequired();
         }
 
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
