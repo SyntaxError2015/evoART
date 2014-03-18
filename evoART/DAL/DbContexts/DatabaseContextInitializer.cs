@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using evoART.Models;
 
-namespace evoART.DAL
+namespace evoART.DAL.DbContexts
 {
     public class DatabaseContextInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     {
