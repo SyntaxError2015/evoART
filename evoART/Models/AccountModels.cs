@@ -65,7 +65,7 @@ namespace evoART.Models
         {
             public int SessionId { get; set; }
 
-            public DateTime LoginTime { get; set; }
+            public string SessionKey { get; set; }
 
             public virtual UserAccount UserAccount { get; set; }
         }

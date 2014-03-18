@@ -103,7 +103,7 @@ namespace evoART.DAL.DbContexts
                 .HasKey(k => k.SessionId);
 
             modelBuilder.Entity<AccountModels.Session>()
-                .Property(p => p.LoginTime).IsRequired();
+                .Property(p => p.SessionKey).IsRequired();
         }
 
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
