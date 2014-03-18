@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using evoART.DAL.DbContexts;
@@ -10,8 +11,11 @@ namespace evoART.DAL.Repositories
 {
     public class AccountValidationRepository : StandardRepository, IAccountValidationRepository
     {
-        protected internal AccountValidationRepository(DatabaseContext context) : base()
+        private readonly DbSet<AccountModels.AccountValidation> _dbSet;
+
+        public AccountValidationRepository(DatabaseContext context) : base(context)
         {
+            _dbSet = context.AccountValidations;
         }
 
         public void Dispose()
@@ -60,11 +64,6 @@ namespace evoART.DAL.Repositories
         }
 
         public void Update(AccountModels.UserAccount validation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
         {
             throw new NotImplementedException();
         }

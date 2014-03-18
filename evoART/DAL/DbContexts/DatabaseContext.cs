@@ -4,32 +4,9 @@ using evoART.Models;
 
 namespace evoART.DAL.DbContexts
 {
-    /// <summary>
-    /// This class is a singleton
-    /// </summary>
     public class DatabaseContext : DbContext
     {
-        private static DatabaseContext _dbContext = null;
-
-        /// <summary>
-        /// Get an instance of the DatabaseContext class
-        /// </summary>
-        public static DatabaseContext Instance
-        {
-            get
-            {
-                try
-                {
-                    return _dbContext ?? (_dbContext = new DatabaseContext());
-                }
-                catch
-                {
-                    return _dbContext = new DatabaseContext();
-                }
-            }
-        }
-
-        private DatabaseContext()
+        protected internal DatabaseContext()
             : base("evoARTConnection")
         {
             Database.SetInitializer(new DatabaseContextInitializer());
@@ -92,7 +69,7 @@ namespace evoART.DAL.DbContexts
                 .Property(t => t.BirthDate).IsOptional();
         }
 
-        private void InitializeAccountValidationsTable(DbModelBuilder modelBuilder)
+        private static void InitializeAccountValidationsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.AccountValidation>()
                 .HasKey(k => k.AccountValidationId);
@@ -110,7 +87,7 @@ namespace evoART.DAL.DbContexts
                 .Property(p => p.ValidationTokenExpireDate).IsOptional();
         }
 
-        private void InitializeRolesTable(DbModelBuilder modelBuilder)
+        private static void InitializeRolesTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.Role>()
                 .HasKey(t => t.RoleId)
@@ -120,7 +97,7 @@ namespace evoART.DAL.DbContexts
                 .Property(p => p.RoleName).IsRequired();
         }
 
-        private void InitializeSessionsTable(DbModelBuilder modelBuilder)
+        private static void InitializeSessionsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.Session>()
                 .HasKey(k => k.SessionId);

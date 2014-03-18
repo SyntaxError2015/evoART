@@ -10,7 +10,6 @@ namespace evoART.DAL.DbContexts
         protected override void Seed(DatabaseContext context)
         {
             base.Seed(context);
-
         }
 
         public override void InitializeDatabase(DatabaseContext context)
@@ -22,12 +21,14 @@ namespace evoART.DAL.DbContexts
 
         private static void PopulateRolesTable()
         {
-            using (var db = DatabaseContext.Instance)
+            using (var db = new DatabaseContext())
             {
                 if (db.Roles.Any()) return;
 
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Simple user" });
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Photographer" });
+
+                DatabaseWorkUnit.Instance.RoleRepository.Save();
             }
         }
     }

@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
+using evoART.Models;
 
 namespace evoART.DAL.Repositories
 {
     public class SessionRepository : StandardRepository, ISessions
     {
-        public SessionRepository(DatabaseContext context) : base()
-        {
-        }
+        private readonly DbSet<AccountModels.Session> _dbSet;
 
-        public void Save()
+        public SessionRepository(DatabaseContext context) : base(context)
         {
-            throw new NotImplementedException();
+            _dbSet = context.Sessions;
         }
 
         public void Dispose()

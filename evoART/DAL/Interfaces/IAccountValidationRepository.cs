@@ -3,7 +3,7 @@ using evoART.Models;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IAccountValidationRepository : IStandardInterface, IDisposable
+    interface IAccountValidationRepository : IDisposable
     {
         string GetValidationToken(int userId);
 

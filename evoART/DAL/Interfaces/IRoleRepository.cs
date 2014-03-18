@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Data.Entity;
 using evoART.Models;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IRoleRepository : IStandardInterface, IDisposable
+    interface IRoleRepository : IDisposable
     {
         string[] GetRoleNames();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using evoART.DAL.DbContexts;
@@ -10,16 +11,14 @@ namespace evoART.DAL.Repositories
 {
     public class UserAccountRepository : StandardRepository, IUserAccountRepository
     {
-        protected internal UserAccountRepository(DatabaseContext context) : base()
+        private readonly DbSet<AccountModels.UserAccount> _dbSet;
+
+        public UserAccountRepository(DatabaseContext context) : base(context)
         {
+            _dbSet = context.UserAccounts;
         }
 
         public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
         {
             throw new NotImplementedException();
         }

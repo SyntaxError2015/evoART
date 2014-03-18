@@ -1,5 +1,7 @@
-﻿using evoART.DAL.DbContexts;
+﻿using System.Data.Entity;
+using evoART.DAL.DbContexts;
 using evoART.DAL.Repositories;
+using evoART.Models;
 
 namespace evoART.DAL.UnitOfWork
 {
@@ -7,13 +9,12 @@ namespace evoART.DAL.UnitOfWork
     {
         private DatabaseWorkUnit()
         {
-            
+
         }
 
         /// <summary>
         /// All the fields here are singletons and their values are instantiated in the representing properties
         /// </summary>
-
         #region fields
         private static DatabaseWorkUnit _instance = null;
 
@@ -27,7 +28,6 @@ namespace evoART.DAL.UnitOfWork
         /// <summary>
         /// Singleton initializations
         /// </summary>
-
         #region properties
 
         public static DatabaseWorkUnit Instance
@@ -42,7 +42,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _userAccountRepository ?? (_userAccountRepository = new UserAccountRepository(DatabaseContext.Instance));
+                return _userAccountRepository ?? (_userAccountRepository = new UserAccountRepository(new DatabaseContext()));
             }
         }
 
@@ -50,7 +50,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _accountValidationRepository ?? (_accountValidationRepository = new AccountValidationRepository(DatabaseContext.Instance));
+                return _accountValidationRepository ?? (_accountValidationRepository = new AccountValidationRepository(new DatabaseContext()));
             }
         }
 
@@ -58,7 +58,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _sessionRepository ?? (_sessionRepository = new SessionRepository(DatabaseContext.Instance));
+                return _sessionRepository ?? (_sessionRepository = new SessionRepository(new DatabaseContext()));
             }
         }
 
@@ -66,7 +66,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
-                return _roleRepository ?? (_roleRepository = new RoleRepository(DatabaseContext.Instance));
+                return _roleRepository ?? (_roleRepository = new RoleRepository(new DatabaseContext()));
             }
         }
 

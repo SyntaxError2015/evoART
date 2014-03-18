@@ -9,5 +9,7 @@ namespace evoART.DAL.Interfaces
     interface IStandardInterface
     {
         void Save();
+
+        void SaveAsync();
     }
 }

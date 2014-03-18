@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using evoART.DAL.DbContexts;
@@ -11,8 +12,11 @@ namespace evoART.DAL.Repositories
 {
     public class RoleRepository : StandardRepository, IRoleRepository
     {
-        protected internal RoleRepository(DatabaseContext context) : base()
+        private readonly DbSet<AccountModels.Role> _dbSet;
+
+        public RoleRepository(DatabaseContext context) : base(context)
         {
+            _dbSet = context.Roles;
         }
 
         public void Dispose()
@@ -27,7 +31,7 @@ namespace evoART.DAL.Repositories
 
         public void Insert(AccountModels.Role role)
         {
-            DbContext.Roles.Add(role);
+            _dbSet.Add(role);
         }
 
         public void Delete(int roleId)
@@ -36,11 +40,6 @@ namespace evoART.DAL.Repositories
         }
 
         public void Update(AccountModels.Role role)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
         {
             throw new NotImplementedException();
         }
