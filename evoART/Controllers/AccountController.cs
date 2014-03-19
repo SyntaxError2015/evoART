@@ -36,21 +36,16 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
-<<<<<<< HEAD
-        public string Login(evoART.Models.LoginModel.Login model)
-=======
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model)
->>>>>>> 568e7e24d6fd6ca5b262ed2225bf2f1ca83ce1c4
+        public string Login(LoginModel model)
         {
 
             if (model.UserName != "user") return "U";
 
-            if (model.Password != "pass") return "P";
-
-            return "K";
+            return model.Password != "pass" ? "P" : "K";
         }
+
     }
 }
