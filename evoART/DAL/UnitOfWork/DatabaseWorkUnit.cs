@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Data.Entity;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Repositories;
-using evoART.Models;
 
 namespace evoART.DAL.UnitOfWork
 {
@@ -20,14 +18,14 @@ namespace evoART.DAL.UnitOfWork
 
         // All the fields here are singletons and their values are instantiated in the representing properties
         #region fields
-        private static DatabaseWorkUnit _instance = null;
+        private static DatabaseWorkUnit _instance;
 
         private readonly DatabaseContext _dbContext;
 
-        private UserAccountRepository _userAccountRepository = null;
-        private AccountValidationRepository _accountValidationRepository = null;
-        private SessionRepository _sessionRepository = null;
-        private RoleRepository _roleRepository = null;
+        private UserAccountRepository _userAccountRepository;
+        private AccountValidationRepository _accountValidationRepository;
+        private SessionRepository _sessionRepository;
+        private RoleRepository _roleRepository;
 
         #endregion
 

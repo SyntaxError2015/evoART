@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class SessionRepository : BaseRepository, ISessions
+    public class SessionRepository : BaseRepository, ISessionRepository
     {
         private readonly DbSet<AccountModels.Session> _dbSet;
 
@@ -23,16 +21,19 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Open a session for a certain user
         /// </summary>
-        /// <param name="userId">The Id of the user who wants to log in</param>
+        /// <param name="userName">The nickname of the user who wants to log in</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool Login(int userId)
+        public bool Login(string userName)
         {
             try
             {
                 var session = new AccountModels.Session
                 {
-                    UserAccount = _dbContext.UserAccounts.Find(userId),
-                    SessionKey = MD5.Create(DateTime.Now.ToFileTime().ToString()).GetHashCode().ToString()
+                    UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
+                    SessionKey = MD5.Create(DateTime.Now.ToFileTime()
+                        .ToString(CultureInfo.InvariantCulture))
+                        .GetHashCode()
+                        .ToString(CultureInfo.InvariantCulture)
                 };
 
                 _dbSet.Add(session);
@@ -49,13 +50,13 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Close a session for a certain user
         /// </summary>
-        /// <param name="userId">The Id of the user who wants to log out</param>
+        /// <param name="userName">The nickname of the user who wants to log out</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool Logout(int userId)
+        public bool Logout(string userName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId));
+                _dbSet.Remove(_dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName));
 
                 return Save();
             }

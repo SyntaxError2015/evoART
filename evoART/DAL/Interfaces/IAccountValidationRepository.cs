@@ -1,28 +1,29 @@
 ﻿using System;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
     interface IAccountValidationRepository
     {
-        string GetValidationToken(int userId);
+        string GetValidationToken(string userName);
 
-        DateTime GetValidationTokenExpireDate(int userId);
+        DateTime GetValidationTokenExpireDate(string userName);
 
-        int GetFailedLoginAttempts(int userId);
+        int GetFailedLoginAttempts(string userName);
 
-        void ResetLoginFailAttempts(int userId);
+        void ResetLoginFailAttempts(string userName);
 
-        bool GenerateNewValidationToken(int userId);
+        bool GenerateNewValidationToken(string userName);
 
         bool GenerateNewValidationToken(AccountModels.AccountValidation validation);
 
-        void SetAsVerified(int userId);
+        void SetAsVerified(string userName);
 
-        bool Insert(int userId);
+        bool CheckIfVerified(string userName);
 
-        bool Delete(int userId);
+        bool Insert(string userName);
+
+        bool Delete(string userName);
 
         bool Update(AccountModels.AccountValidation validation);
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using evoART.Models;
-using evoART.Models.DbModels;
+﻿using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces
 {
@@ -11,7 +8,7 @@ namespace evoART.DAL.Interfaces
 
         bool Insert(AccountModels.Role role);
 
-        bool Delete(int roleId);
+        bool Delete(string roleName);
 
         bool Update(AccountModels.Role role);
     }

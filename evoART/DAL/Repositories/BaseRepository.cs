@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web;
-using evoART.DAL.DbContexts;
+﻿using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
-using evoART.Models;
 
 namespace evoART.DAL.Repositories
 {
@@ -17,7 +10,7 @@ namespace evoART.DAL.Repositories
 
         internal BaseRepository(DatabaseContext context)
         {
-            this._dbContext = context;
+            _dbContext = context;
         }
 
         #region Persistence logic

@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts

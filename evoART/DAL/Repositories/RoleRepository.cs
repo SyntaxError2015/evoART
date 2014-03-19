@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
-using evoART.Models;
 using evoART.Models.DbModels;
-using Microsoft.Ajax.Utilities;
-using WebGrease.Css.Extensions;
 
 namespace evoART.DAL.Repositories
 {
@@ -61,11 +55,11 @@ namespace evoART.DAL.Repositories
         /// Delete a role from the database
         /// </summary>
         /// <returns>A bool value indicating the success of the operation</returns>
-        public bool Delete(int roleId)
+        public bool Delete(string roleName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.Find(roleId));
+                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.RoleName == roleName));
 
                 return Save();
             }
