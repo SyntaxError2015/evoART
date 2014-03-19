@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace evoART.Models.ViewModels
@@ -14,6 +15,22 @@ namespace evoART.Models.ViewModels
         [DataType(DataType.EmailAddress)]
         [DisplayName("Email address")]
         public string EmailAddress { get; set; }
+
+        [DataType(DataType.Text)]
+        [DisplayName("First name")]
+        public string FirstName { get; set; }
+
+        [DataType(DataType.Text)]
+        [DisplayName("LastName")]
+        public string LastName { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Birth Date")]
+        public DateTime? BirthDate { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [DisplayName("Phone number")]
+        public PhoneAttribute PhoneNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
