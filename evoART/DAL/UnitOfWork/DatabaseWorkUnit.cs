@@ -26,6 +26,7 @@ namespace evoART.DAL.UnitOfWork
         private AccountValidationRepository _accountValidationRepository;
         private SessionRepository _sessionRepository;
         private RoleRepository _roleRepository;
+        private OAuthLoginRepository _oAuthLoginRepository;
 
         #endregion
 
@@ -85,6 +86,17 @@ namespace evoART.DAL.UnitOfWork
             get
             {
                 return _roleRepository ?? (_roleRepository = new RoleRepository(_dbContext));
+            }
+        }
+
+        /// <summary>
+        /// Get the repository representing the OAuthLoginModel
+        /// </summary>
+        public OAuthLoginRepository OAuthLoginRepository
+        {
+            get
+            {
+                return _oAuthLoginRepository ?? (_oAuthLoginRepository = new OAuthLoginRepository(_dbContext));
             }
         }
 

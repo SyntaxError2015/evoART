@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.DynamicData;
 
 namespace evoART.Models.DbModels
@@ -30,6 +31,8 @@ namespace evoART.Models.DbModels
             public virtual AccountValidation AccountValidation { get; set; }
 
             public virtual Session Session { get; set; }
+
+            public virtual OAuthLogin OAuthLogins { get; set; }
         }
 
         [TableName("AccountValidation")]
@@ -65,6 +68,18 @@ namespace evoART.Models.DbModels
             public string SessionKey { get; set; }
 
             public virtual UserAccount UserAccount { get; set; }
+        }
+
+        [TableName("OAuthLogin")]
+        public class OAuthLogin
+        {
+            public int OAuthLoginId { get; set; }
+
+            public string Provider { get; set; }
+
+            public string Key { get; set; }
+
+            public virtual UserAccount UserAccounts { get; set; }
         }
     }
 }

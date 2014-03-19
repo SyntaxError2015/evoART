@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
@@ -9,14 +8,11 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class AccountValidationRepository : BaseRepository, IAccountValidationRepository
+    public class AccountValidationRepository : BaseRepository<AccountModels.AccountValidation>, IAccountValidationRepository
     {
-        private readonly DbSet<AccountModels.AccountValidation> _dbSet;
-
         public AccountValidationRepository(DatabaseContext context)
             : base(context)
         {
-            _dbSet = context.AccountValidations;
         }
 
         /// <summary>
