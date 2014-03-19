@@ -11,6 +11,8 @@ namespace evoART.DAL.Interfaces
 
         int GetFailedLoginAttempts(string userName);
 
+        void IncrementFailedLoginAttempts(string userName);
+
         void ResetLoginFailAttempts(string userName);
 
         bool GenerateNewValidationToken(string userName);
@@ -18,6 +20,8 @@ namespace evoART.DAL.Interfaces
         bool GenerateNewValidationToken(AccountModels.AccountValidation validation);
 
         void SetAsVerified(string userName);
+
+        void SetAsNotVerified(string userName);
 
         bool CheckIfVerified(string userName);
 

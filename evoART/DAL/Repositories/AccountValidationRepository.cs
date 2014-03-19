@@ -46,9 +46,22 @@ namespace evoART.DAL.Repositories
         /// <returns>An integer value</returns>
         public int GetFailedLoginAttempts(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
             return validation == null ? -1 : validation.LoginFails;
+        }
+
+        /// <summary>
+        /// Increment the number of login fail attempts for a certain user
+        /// </summary>
+        /// <param name="userName">The user for which to do the incrementation</param>
+        public void IncrementFailedLoginAttempts(string userName)
+        {
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
+
+            validation.LoginFails++;
+
+            Update(validation);
         }
 
         /// <summary>
@@ -91,7 +104,7 @@ namespace evoART.DAL.Repositories
         /// <param name="userName">The nickname of the user</param>
         public void SetAsVerified(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
             if (validation == null)
                 return;
@@ -101,9 +114,34 @@ namespace evoART.DAL.Repositories
             Update(validation);
         }
 
+        /// <summary>
+        /// Set a certain user account as NOT being verified
+        /// </summary>
+        /// <param name="userName">The nickname of the user</param>
+        public void SetAsNotVerified(string userName)
+        {
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
+
+            if (validation == null)
+                return;
+
+            validation.IsVerified = false;
+
+            Update(validation);
+        }
+
+        /// <summary>
+        /// Check if a certain user account is verified
+        /// </summary>
+        /// <param name="userName">The nickname of the user</param>
         public bool CheckIfVerified(string userName)
         {
-            throw new NotImplementedException();
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
+
+            if (validation == null)
+                return false;
+
+            return validation.IsVerified;
         }
 
         /// <summary>
