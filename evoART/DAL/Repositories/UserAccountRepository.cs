@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Migrations;
+﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Security.Cryptography;
 using evoART.DAL.DbContexts;
@@ -8,14 +7,11 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class UserAccountRepository : BaseRepository, IUserAccountRepository
+    public class UserAccountRepository : BaseRepository<AccountModels.UserAccount>, IUserAccountRepository
     {
-        private readonly DbSet<AccountModels.UserAccount> _dbSet;
-
         public UserAccountRepository(DatabaseContext context)
             : base(context)
         {
-            _dbSet = context.UserAccounts;
         }
 
         /// <summary>

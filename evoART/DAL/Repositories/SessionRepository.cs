@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,13 +8,10 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class SessionRepository : BaseRepository, ISessionRepository
+    public class SessionRepository : BaseRepository<AccountModels.Session>, ISessionRepository
     {
-        private readonly DbSet<AccountModels.Session> _dbSet;
-
         public SessionRepository(DatabaseContext context) : base(context)
         {
-            _dbSet = context.Sessions;
         }
 
         /// <summary>
