@@ -15,6 +15,24 @@ namespace evoART.DAL.Repositories
         }
 
         /// <summary>
+        /// Verify if a user is already logged in or not
+        /// </summary>
+        /// <param name="userName">The nickname of the user for which to verify</param>
+        /// <returns>A bool value</returns>
+        public bool IsLoggedIn(string userName)
+        {
+            try
+            {
+                return _dbSet.Count(u => u.UserAccount.UserName == userName) > 0;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Open a session for a certain user
         /// </summary>
         /// <param name="userName">The nickname of the user who wants to log in</param>
