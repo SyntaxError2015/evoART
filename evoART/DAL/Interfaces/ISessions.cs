@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace evoART.DAL
+namespace evoART.DAL.Interfaces
 {
-    interface IRoleRepository
+    interface ISessions
     {
+        bool Login(int userId);
+
+        bool Logout(int userId);
     }
 }

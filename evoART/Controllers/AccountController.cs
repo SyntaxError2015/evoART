@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using evoART.Models;
+using evoART.Models.ViewModels;
 
 namespace evoART.Controllers
 {
@@ -38,7 +39,7 @@ namespace evoART.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(evoART.Models.LoginModel.Login model)
+        public ActionResult Login(LoginModel model)
         {
             if (true)
             {
