@@ -55,11 +55,11 @@ namespace evoART.DAL.Repositories
         /// Delete a role from the database
         /// </summary>
         /// <returns>A bool value indicating the success of the operation</returns>
-        public bool Delete(int roleId)
+        public bool Delete(string roleName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.Find(roleId));
+                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.RoleName == roleName));
 
                 return Save();
             }

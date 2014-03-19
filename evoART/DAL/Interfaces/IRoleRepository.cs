@@ -8,7 +8,7 @@ namespace evoART.DAL.Interfaces
 
         bool Insert(AccountModels.Role role);
 
-        bool Delete(int roleId);
+        bool Delete(string roleName);
 
         bool Update(AccountModels.Role role);
     }

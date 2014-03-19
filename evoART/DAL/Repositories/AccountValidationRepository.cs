@@ -22,11 +22,11 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Get the validation token for a certain user
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
+        /// <param name="userName">The nickname of the user</param>
         /// <returns>A string value</returns>
-        public string GetValidationToken(int userId)
+        public string GetValidationToken(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId);
+            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
 
             return validation == null ? null : validation.ValidationToken;
         }
@@ -34,11 +34,11 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Get the date and time when the validation token expires
         /// </summary>
-        /// <param name="userId">The Id of the user for which to get the data</param>
+        /// <param name="userName">The nickname of the user for which to get the data</param>
         /// <returns>A DateTime instance</returns>
-        public DateTime GetValidationTokenExpireDate(int userId)
+        public DateTime GetValidationTokenExpireDate(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId);
+            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
 
             return validation == null ? DateTime.Now : validation.ValidationTokenExpireDate;
         }
@@ -46,11 +46,11 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Get the number of failed login attempts for a certain user
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
+        /// <param name="userName">The nickname of the user</param>
         /// <returns>An integer value</returns>
-        public int GetFailedLoginAttempts(int userId)
+        public int GetFailedLoginAttempts(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId);
+            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
 
             return validation == null ? -1 : validation.LoginFails;
         }
@@ -58,10 +58,10 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Reset the number of login attempts to 0 for a user
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
-        public void ResetLoginFailAttempts(int userId)
+        /// <param name="userName">The nickname of the user</param>
+        public void ResetLoginFailAttempts(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId);
+            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
 
             if (validation != null)
                 Update(validation);
@@ -70,10 +70,10 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Generates a new validation token for a certain user
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
-        public bool GenerateNewValidationToken(int userId)
+        /// <param name="userName">The nickname of the user</param>
+        public bool GenerateNewValidationToken(string userName)
         {
-            return (GenerateNewValidationToken(_dbSet.FirstOrDefault(v => v.UserAccount.UserId == userId)));
+            return (GenerateNewValidationToken(_dbSet.FirstOrDefault(v => v.UserAccount.UserName == userName)));
         }
 
         /// <summary>
@@ -92,10 +92,10 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Set a certain user account as being verified
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
-        public void SetAsVerified(int userId)
+        /// <param name="userName">The nickname of the user</param>
+        public void SetAsVerified(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserId == userId);
+            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
 
             if (validation == null)
                 return;
@@ -105,18 +105,23 @@ namespace evoART.DAL.Repositories
             Update(validation);
         }
 
+        public bool CheckIfVerified(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Insert a new account validation instance into the database
         /// </summary>
-        /// <param name="userId">The Id of the user for which to se the new validation</param>
+        /// <param name="userName">The nickname of the user for which to se the new validation</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool Insert(int userId)
+        public bool Insert(string userName)
         {
             try
             {
                 var validation = new AccountModels.AccountValidation
                 {
-                    UserAccount = _dbContext.UserAccounts.Find(userId),
+                    UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
                     ValidationTokenExpireDate = DateTime.Now.AddHours(24),
                     LoginFails = 0,
                     IsVerified = false
@@ -138,13 +143,13 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Delete an account validation instance from the database
         /// </summary>
-        /// <param name="userId">The Id of the user for which to se the new validation</param>
+        /// <param name="userName">The nickname of the user for which to se the new validation</param>
         /// <returns>A bool value indicating the success of the action</returns>
-        public bool Delete(int userId)
+        public bool Delete(string userName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.UserAccount.UserId == userId));
+                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.UserAccount.UserName == userName));
 
                 return Save();
             }

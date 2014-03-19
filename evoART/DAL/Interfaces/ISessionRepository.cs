@@ -2,8 +2,8 @@
 {
     interface ISessionRepository
     {
-        bool Login(int userId);
+        bool Login(string userName);
 
-        bool Logout(int userId);
+        bool Logout(string userName);
     }
 }
