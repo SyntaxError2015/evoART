@@ -1,5 +1,4 @@
 ﻿using System;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces

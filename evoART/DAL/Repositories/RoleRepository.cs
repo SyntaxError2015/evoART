@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
-using evoART.Models;
 using evoART.Models.DbModels;
-using Microsoft.Ajax.Utilities;
-using WebGrease.Css.Extensions;
 
 namespace evoART.DAL.Repositories
 {

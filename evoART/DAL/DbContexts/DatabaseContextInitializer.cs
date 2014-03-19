@@ -1,18 +1,12 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using evoART.DAL.UnitOfWork;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {
     public class DatabaseContextInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     {
-        protected override void Seed(DatabaseContext context)
-        {
-            base.Seed(context);
-        }
-
         public override void InitializeDatabase(DatabaseContext context)
         {
             base.InitializeDatabase(context);

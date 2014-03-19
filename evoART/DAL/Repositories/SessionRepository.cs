@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
-using evoART.Models;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories

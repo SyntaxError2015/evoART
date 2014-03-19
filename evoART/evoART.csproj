@@ -129,7 +129,7 @@
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\IAccountValidationRepository.cs" />
     <Compile Include="DAL\Interfaces\IRoleRepository.cs" />
-    <Compile Include="DAL\Interfaces\ISessions.cs" />
+    <Compile Include="DAL\Interfaces\ISessionRepository.cs" />
     <Compile Include="DAL\Interfaces\IUserAccountRepository.cs" />
     <Compile Include="DAL\Interfaces\IBaseInterface.cs" />
     <Compile Include="DAL\Repositories\AccountValidationRepository.cs" />
