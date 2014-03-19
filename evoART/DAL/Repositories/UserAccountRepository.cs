@@ -74,11 +74,11 @@ namespace evoART.DAL.Repositories
         /// Delete a user from the database
         /// </summary>
         /// <returns>A bool value indicating if the operation was successful</returns>
-        public bool Delete(int userId)
+        public bool Delete(string userName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.Find(userId));
+                _dbSet.Remove(_dbSet.First(u => u.UserName == userName));
 
                 return Save();
             }

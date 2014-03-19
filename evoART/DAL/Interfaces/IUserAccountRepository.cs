@@ -10,7 +10,7 @@ namespace evoART.DAL.Interfaces
 
         bool Insert(AccountModels.UserAccount userAccount);
 
-        bool Delete(int userId);
+        bool Delete(string userName);
 
         bool Update(AccountModels.UserAccount userAccount);
     }
