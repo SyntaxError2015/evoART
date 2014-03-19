@@ -42,7 +42,9 @@ namespace evoART.DAL.Repositories
         {
             try
             {
-                return _dbSet.Count(u => u.UserName == userName && u.Password == MD5.Create(password).ToString()) > 0;
+                return _dbSet.Count(u => 
+                    u.UserName == userName && 
+                    u.Password == Special.TextWarping.EncryptMD5(password).ToString()) > 0;
             }
 
             catch
@@ -59,6 +61,7 @@ namespace evoART.DAL.Repositories
         {
             try
             {
+                userAccount.Password = Special.TextWarping.EncryptMD5(userAccount.Password);
                 _dbSet.Add(userAccount);
 
                 return Save();

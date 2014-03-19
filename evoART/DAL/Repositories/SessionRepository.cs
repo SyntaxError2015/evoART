@@ -26,10 +26,7 @@ namespace evoART.DAL.Repositories
                 var session = new AccountModels.Session
                 {
                     UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
-                    SessionKey = MD5.Create(DateTime.Now.ToFileTime()
-                        .ToString(CultureInfo.InvariantCulture))
-                        .GetHashCode()
-                        .ToString(CultureInfo.InvariantCulture)
+                    SessionKey = Special.TextWarping.EncryptMD5(DateTime.Now.ToFileTime().ToString())
                 };
 
                 _dbSet.Add(session);
