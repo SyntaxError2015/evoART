@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace evoART.DAL.Interfaces
 {
-    interface IStandardInterface
+    interface IBaseInterface
     {
         bool Save();
 

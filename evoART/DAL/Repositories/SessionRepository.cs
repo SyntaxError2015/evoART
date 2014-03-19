@@ -11,7 +11,7 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class SessionRepository : StandardRepository, ISessions
+    public class SessionRepository : BaseRepository, ISessions
     {
         private readonly DbSet<AccountModels.Session> _dbSet;
 

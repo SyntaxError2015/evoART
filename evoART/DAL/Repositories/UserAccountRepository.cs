@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
@@ -10,7 +13,7 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class UserAccountRepository : StandardRepository, IUserAccountRepository
+    public class UserAccountRepository : BaseRepository, IUserAccountRepository
     {
         private readonly DbSet<AccountModels.UserAccount> _dbSet;
 
@@ -41,19 +44,33 @@ namespace evoART.DAL.Repositories
         /// <summary>
         /// Verify if the password is correct for a certain user
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
+        /// <param name="userName">The name of the user</param>
+        /// <param name="password">The entered password to verify</param>
         /// <returns></returns>
         public bool VerifyPassword(string userName, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _dbSet.Count(u => u.UserName == userName && u.Password == MD5.Create(password).ToString()) > 0;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Insert a new user into the database
+        /// </summary>
+        /// <returns>A bool value indicating if the operation was successful</returns>
         public bool Insert(AccountModels.UserAccount userAccount)
         {
             try
             {
-                return true;
+                _dbSet.Add(userAccount);
+
+                return Save();
             }
 
             catch
@@ -62,11 +79,17 @@ namespace evoART.DAL.Repositories
             }
         }
 
+        /// <summary>
+        /// Delete a user from the database
+        /// </summary>
+        /// <returns>A bool value indicating if the operation was successful</returns>
         public bool Delete(int userId)
         {
             try
             {
-                return true;
+                _dbSet.Remove(_dbSet.Find(userId));
+
+                return Save();
             }
 
             catch
@@ -75,11 +98,17 @@ namespace evoART.DAL.Repositories
             }
         }
 
+        /// <summary>
+        /// Update the details for a certain user
+        /// </summary>
+        /// <returns>A bool value indicating if the operation was successful</returns>
         public bool Update(AccountModels.UserAccount userAccount)
         {
             try
             {
-                return true;
+                _dbSet.AddOrUpdate(userAccount);
+
+                return Save();
             }
 
             catch

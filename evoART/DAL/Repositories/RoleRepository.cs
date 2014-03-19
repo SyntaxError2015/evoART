@@ -13,7 +13,7 @@ using WebGrease.Css.Extensions;
 
 namespace evoART.DAL.Repositories
 {
-    public class RoleRepository : StandardRepository, IRoleRepository
+    public class RoleRepository : BaseRepository, IRoleRepository
     {
         private readonly DbSet<AccountModels.Role> _dbSet;
 

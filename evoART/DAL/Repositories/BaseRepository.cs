@@ -10,12 +10,12 @@ using evoART.Models;
 
 namespace evoART.DAL.Repositories
 {
-    public abstract class StandardRepository : IStandardInterface
+    public abstract class BaseRepository : IBaseInterface
     {
         // ReSharper disable once InconsistentNaming
         internal readonly DatabaseContext _dbContext;
 
-        internal StandardRepository(DatabaseContext context)
+        internal BaseRepository(DatabaseContext context)
         {
             this._dbContext = context;
         }

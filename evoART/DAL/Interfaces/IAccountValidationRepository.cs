@@ -8,20 +8,22 @@ namespace evoART.DAL.Interfaces
     {
         string GetValidationToken(int userId);
 
-        string GetValidationTokenExpireDate(int userId);
+        DateTime GetValidationTokenExpireDate(int userId);
 
         int GetFailedLoginAttempts(int userId);
 
         void ResetLoginFailAttempts(int userId);
 
-        void GenerateNewValidationToken(int userId);
+        bool GenerateNewValidationToken(int userId);
 
-        void SetVerified(int userId, bool verified);
+        bool GenerateNewValidationToken(AccountModels.AccountValidation validation);
 
-        bool Insert(AccountModels.AccountValidation validation, int userId);
+        void SetAsVerified(int userId);
+
+        bool Insert(int userId);
 
         bool Delete(int userId);
 
-        bool Update(AccountModels.UserAccount validation);
+        bool Update(AccountModels.AccountValidation validation);
     }
 }

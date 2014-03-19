@@ -41,6 +41,7 @@ namespace evoART.DAL.UnitOfWork
         {
             get
             {
+                _disposed = false;
                 return _instance ?? (_instance = new DatabaseWorkUnit());
             }
         }
@@ -93,7 +94,7 @@ namespace evoART.DAL.UnitOfWork
 
         #region Disposing logic
 
-        private bool _disposed;
+        private static bool _disposed;
 
         public void Dispose()
         {
