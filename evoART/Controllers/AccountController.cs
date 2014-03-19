@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using evoART.Models;
+using evoART.Models.ViewModels;
 
 namespace evoART.Controllers
 {
@@ -35,7 +36,14 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
+<<<<<<< HEAD
         public string Login(evoART.Models.LoginModel.Login model)
+=======
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModel model)
+>>>>>>> 568e7e24d6fd6ca5b262ed2225bf2f1ca83ce1c4
         {
 
             if (model.UserName != "user") return "U";
