@@ -28,8 +28,6 @@ namespace evoART.DAL.DbContexts
 
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Simple user" });
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Photographer" });
-
-                DatabaseWorkUnit.Instance.RoleRepository.Save();
             }
         }
     }
