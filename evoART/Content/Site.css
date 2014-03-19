@@ -9,6 +9,31 @@
     padding-right: 15px;
 }
 
+ @-webkit-keyframes myfirst {
+        from{
+            -webkit-transform: rotateY(90deg); /* Chrome, Safari, Opera */
+        transform: rotateY(90deg);
+        }
+
+        to {
+            -webkit-transform: rotateY(0deg); /* Chrome, Safari, Opera */
+        transform: rotateY(0deg);
+        }
+    }
+
+    /* Standard syntax */
+    @keyframes myfirst {
+        from {
+            -webkit-transform: rotateY(90deg); /* Chrome, Safari, Opera */
+        transform: rotateY(90deg);
+        }
+
+        to {
+            -webkit-transform: rotateY(0deg); /* Chrome, Safari, Opera */
+        transform: rotateY(0deg);
+        }
+    }
+
 .topbar {
     height:50px;
     width:100%;
@@ -55,6 +80,8 @@
 .userbox input, submit{
     max-width:200px;
     color:black;
+    border-color:red;
+    border:0px;
 }
 
 .userbox table,td{

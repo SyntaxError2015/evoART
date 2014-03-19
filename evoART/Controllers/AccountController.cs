@@ -35,20 +35,14 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(evoART.Models.LoginModel.Login model)
+        public string Login(evoART.Models.LoginModel.Login model)
         {
-            if (true)
-            {
-                return Redirect("/");
-            }
 
-            // If we got this far, something failed, redisplay form
+            if (model.UserName != "user") return "U";
 
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            return View(model);
+            if (model.Password != "pass") return "P";
+
+            return "K";
         }
     }
 }
