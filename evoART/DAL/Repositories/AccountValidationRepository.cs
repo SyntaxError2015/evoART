@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data.Entity.Migrations;
-using System.Globalization;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
 using evoART.Models.DbModels;
+using evoART.Special;
 
 namespace evoART.DAL.Repositories
 {
@@ -92,7 +92,7 @@ namespace evoART.DAL.Repositories
         /// <returns></returns>
         public bool GenerateNewValidationToken(AccountModels.AccountValidation validation)
         {
-            validation.ValidationToken = GetNewValidationToken(validation);
+            validation.ValidationToken = TokenGenerator.GenerateValidationToken(validation);
             validation.ValidationTokenExpireDate = DateTime.Now.AddHours(24);
 
             return Update(validation);
@@ -161,7 +161,7 @@ namespace evoART.DAL.Repositories
                     IsVerified = false
                 };
 
-                validation.ValidationToken = GetNewValidationToken(validation);
+                validation.ValidationToken = TokenGenerator.GenerateValidationToken(validation);
 
                 _dbSet.Add(validation);
 
@@ -214,9 +214,6 @@ namespace evoART.DAL.Repositories
             }
         }
 
-        private static string GetNewValidationToken(AccountModels.AccountValidation validation)
-        {
-            return validation.GetHashCode().ToString(CultureInfo.InvariantCulture);
-        }
+        
     }
 }

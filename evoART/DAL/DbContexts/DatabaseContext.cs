@@ -36,22 +36,22 @@ namespace evoART.DAL.DbContexts
 
             // Map foreign key for the AccountValidations table
             modelBuilder.Entity<AccountModels.UserAccount>()
-                .HasRequired(t => t.AccountValidation)
-                .WithRequiredPrincipal(p => p.UserAccount)
+                .HasOptional(t => t.AccountValidation)
+                .WithOptionalPrincipal(p => p.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
             // Map foreign key for the Sessions table
             modelBuilder.Entity<AccountModels.UserAccount>()
-                .HasRequired(t => t.Session)
-                .WithRequiredPrincipal(p => p.UserAccount)
+                .HasOptional(t => t.Session)
+                .WithOptionalPrincipal(p => p.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
             // Map foreign ket for the OAuthLogin table
             modelBuilder.Entity<AccountModels.UserAccount>()
-                .HasRequired(t => t.OAuthLogins)
-                .WithRequiredPrincipal(t => t.UserAccounts)
+                .HasOptional(t => t.OAuthLogins)
+                .WithOptionalPrincipal(t => t.UserAccounts)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 

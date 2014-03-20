@@ -6,6 +6,8 @@ namespace evoART.DAL.Interfaces
     {
         string[] GetRoleNames();
 
+        AccountModels.Role GetRole(string roleName);
+
         bool Insert(AccountModels.Role role);
 
         bool Delete(string roleName);

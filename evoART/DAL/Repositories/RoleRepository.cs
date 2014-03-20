@@ -29,6 +29,16 @@ namespace evoART.DAL.Repositories
         }
 
         /// <summary>
+        /// Get the Role entity which has the selected name
+        /// </summary>
+        /// <param name="roleName">The name of the role</param>
+        /// <returns>A AccountModels.Role instance</returns>
+        public AccountModels.Role GetRole(string roleName)
+        {
+            return _dbSet.First(r => r.RoleName == roleName);
+        }
+
+        /// <summary>
         /// Insert a new role in the database
         /// </summary>
         /// <returns>A bool value indicating the success of the operation</returns>

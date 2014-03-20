@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
-using evoART.Models;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
 using evoART.DAL.UnitOfWork;
@@ -18,7 +14,8 @@ namespace evoART.Controllers
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
+                new System.Net.Mail.MailAddress(email);
+
                 return true;
             }
             catch
@@ -38,7 +35,7 @@ namespace evoART.Controllers
         {
             if (textBox1 != "Enter text")
             {
-                return "Ai scris: \"" + textBox1.ToString() + "\" at " +
+                return "Ai scris: \"" + textBox1 + "\" at " +
                     DateTime.Now.ToLongTimeString();
             }
 
@@ -84,20 +81,22 @@ namespace evoART.Controllers
                 UserName = model.UserName,
                 Email = model.EmailAddress,
                 Password = model.Password,
-                Role = new AccountModels.Role() { RoleName = model.Role}
+                //Role = new AccountModels.Role() { RoleName = model.Role}
+                Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
-            return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
+            var ok = DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser);
+
+            if (ok)
+                ok = DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(model.UserName);
+
+            return ok ? "K" : "F";
         }
 
         public PartialViewResult RegisterTab()
         {
-            var t = new List<SelectListItem>();
+            var t = DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
 
-            foreach (var r in DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames())
-            {
-                t.Add(new SelectListItem(){Text=r,Value = r});
-            }
             ViewData["Roles"] = t;
 
             return PartialView("Register");
