@@ -20,7 +20,11 @@
         <div class="topitem userlink">
             Log In
             <div class="userbox">
-                @Html.Partial("~/Views/Partials/Login.cshtml")
+                @Ajax.ActionLink("Log in", "LoginTab", "Account", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "userform" })
+                |
+                @Ajax.ActionLink("Register", "RegisterTab", "Account", new AjaxOptions { InsertionMode = InsertionMode.Replace,  UpdateTargetId = "userform"})
+
+                <div id="userform">@Html.Partial("~/Views/Shared/Login.cshtml")</div>
             </div>
         </div>
     </div>

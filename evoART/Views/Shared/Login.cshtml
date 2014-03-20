@@ -1,0 +1,41 @@
+﻿@model evoART.Models.ViewModels.LoginModel
+@{
+    Layout = null;
+}
+
+
+<script>
+    function testLoginResponse(data)
+    {
+        //Initialisations
+        document.getElementById("UserName").style.border = "none";
+        document.getElementById("Password").style.border = "none";
+        document.getElementById("loginStatus").innerHTML = "";
+        
+        if (data == "K") document.location.reload(true);
+        if (data == "U") document.getElementById("UserName").style.border = "solid 2px red";
+        if (data == "P") document.getElementById("Password").style.border = "2px solid red";
+        if (data == "E") document.getElementById("loginStatus").innerHTML = "You exceeded the number of login attempts!";
+    }
+</script>
+
+@using (Ajax.BeginForm("Login", "Account", new AjaxOptions {OnSuccess="testLoginResponse(data)"}))
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.UserName)</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Password)</td>
+            <td>@Html.PasswordFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input class="btn" type="submit" value="Log in" />
+            </td>
+        </tr>
+    </table>
+    <div id="loginStatus"></div>
+}
