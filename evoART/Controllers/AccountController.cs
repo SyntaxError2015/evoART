@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
-using evoART.DAL.UnitOfWork;
 
 namespace evoART.Controllers
 {
@@ -45,20 +45,20 @@ namespace evoART.Controllers
         public string Login(LoginModel model)
         {
 
-            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+            if (!UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
                 return "U";
 
-            if (DatabaseWorkUnit.Instance.AccountValidationRepository.GetFailedLoginAttempts(model.UserName) > 10)
+            if (UserAccountsWorkUnit.Instance.AccountValidationRepository.GetFailedLoginAttempts(model.UserName) > 10)
                 return "E";
 
-            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyPassword(model.UserName, model.Password))
+            if (!UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyPassword(model.UserName, model.Password))
             {
-                DatabaseWorkUnit.Instance.AccountValidationRepository.IncrementFailedLoginAttempts(model.UserName);
+                UserAccountsWorkUnit.Instance.AccountValidationRepository.IncrementFailedLoginAttempts(model.UserName);
                 return "P";
             }
                 
             //When login succeeds reset the failed logins
-            DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
+            UserAccountsWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
 
             return "K";
         }
@@ -67,7 +67,7 @@ namespace evoART.Controllers
         {
             if (model.UserName==null || model.UserName.Length < 4 || model.UserName.Length > 28 || !Char.IsLetter(model.UserName[0]))
                 return "U";
-            if (DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+            if (UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
                 return "D";
             if (model.EmailAddress==null || !IsValidEmail(model.EmailAddress))
                 return "E";
@@ -82,20 +82,20 @@ namespace evoART.Controllers
                 Email = model.EmailAddress,
                 Password = model.Password,
                 //Role = new AccountModels.Role() { RoleName = model.Role}
-                Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.Role)
+                Role = UserAccountsWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
-            var ok = DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser);
+            var ok = UserAccountsWorkUnit.Instance.UserAccountRepository.Insert(newUser);
 
             if (ok)
-                ok = DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(model.UserName);
+                ok = UserAccountsWorkUnit.Instance.AccountValidationRepository.Insert(model.UserName);
 
             return ok ? "K" : "F";
         }
 
         public PartialViewResult RegisterTab()
         {
-            var t = DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
+            var t = UserAccountsWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
 
             ViewData["Roles"] = t;
 
