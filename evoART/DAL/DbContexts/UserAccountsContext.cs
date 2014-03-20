@@ -7,7 +7,7 @@ namespace evoART.DAL.DbContexts
     public class UserAccountsContext : DbContext
     {
         protected internal UserAccountsContext()
-            : base("evoARTConnection")
+            : base("evoARTUsers")
         {
             Database.SetInitializer(new DatabaseInitializer());
         }
