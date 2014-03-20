@@ -5,18 +5,27 @@ using System.Web;
 using System.Web.Mvc;
 
 using evoART.Models;
+using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
+using evoART.DAL.UnitOfWork;
 
 namespace evoART.Controllers
 {
     public class AccountController : Controller
     {
 
-        public string Register()
+        public bool IsValidEmail(string email)
         {
-            return "hahahaa";
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
-
 
 
         public string GetStatus()
@@ -36,16 +45,68 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public string Login(LoginModel model)
         {
 
-            if (model.UserName != "user") return "U";
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+                return "U";
 
-            return model.Password != "pass" ? "P" : "K";
+            if (DatabaseWorkUnit.Instance.AccountValidationRepository.GetFailedLoginAttempts(model.UserName) > 10)
+                return "E";
+
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyPassword(model.UserName, model.Password))
+            {
+                DatabaseWorkUnit.Instance.AccountValidationRepository.IncrementFailedLoginAttempts(model.UserName);
+                return "P";
+            }
+                
+            //When login succeeds reset the failed logins
+            DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
+
+            return "K";
         }
 
+        public string Register(RegisterModel model)
+        {
+            if (model.UserName==null || model.UserName.Length < 4 || model.UserName.Length > 28 || !Char.IsLetter(model.UserName[0]))
+                return "U";
+            if (DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+                return "D";
+            if (model.EmailAddress==null || !IsValidEmail(model.EmailAddress))
+                return "E";
+            if (model.Password==null || model.Password.Length < 6 || model.Password.Length > 28)
+                return "P";
+            if (model.PasswordConfirmation==null || model.Password != model.PasswordConfirmation)
+                return "M";
+
+            var newUser = new AccountModels.UserAccount
+            {
+                UserName = model.UserName,
+                Email = model.EmailAddress,
+                Password = model.Password,
+                Role = new AccountModels.Role() { RoleName = model.Role}
+            };
+
+            return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
+        }
+
+        public PartialViewResult RegisterTab()
+        {
+            var t = new List<SelectListItem>();
+
+            foreach (var r in DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames())
+            {
+                t.Add(new SelectListItem(){Text=r,Value = r});
+            }
+            ViewData["Roles"] = t;
+
+            return PartialView("Register");
+        }
+
+        public PartialViewResult LoginTab()
+        {
+            return PartialView("Login");
+        }
+            
     }
 }
