@@ -85,12 +85,10 @@ namespace evoART.Controllers
                 Role = UserAccountsWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
-            var ok = UserAccountsWorkUnit.Instance.UserAccountRepository.Insert(newUser);
-
-            if (ok)
-                ok = UserAccountsWorkUnit.Instance.AccountValidationRepository.Insert(model.UserName);
-
-            return ok ? "K" : "F";
+            // When creating a new user, the UnitOfWork automatically creates a validation entry in the
+            // AccountValidations table for the user.
+            // The password is also automatically encrypted in the model
+            return UserAccountsWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
         }
 
         public PartialViewResult RegisterTab()

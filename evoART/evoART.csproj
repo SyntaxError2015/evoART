@@ -139,7 +139,7 @@
     <Compile Include="DAL\Repositories\UserAccounts\AccountValidationRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\RoleRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\SessionRepository.cs" />
-    <Compile Include="DAL\Repositories\UserAccounts\BaseRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\BaseAccountsRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\UserAccountRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

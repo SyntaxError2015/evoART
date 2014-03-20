@@ -2,6 +2,7 @@
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.UserAccounts;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.UserAccounts
@@ -63,7 +64,7 @@ namespace evoART.DAL.Repositories.UserAccounts
                 userAccount.Password = Special.TokenGenerator.EncryptMD5(userAccount.Password);
                 _dbSet.Add(userAccount);
 
-                return Save();
+                return Save() && UserAccountsWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
             }
 
             catch
