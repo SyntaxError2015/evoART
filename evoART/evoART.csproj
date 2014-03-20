@@ -118,11 +118,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DAL\Interfaces\Photos\" />
+    <Folder Include="DAL\Repositories\Photos\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\DbContexts\PhotosContext.cs" />
+    <Compile Include="DAL\DbContexts\PhotosInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="DAL\UnitsOfWork\PhotosWorkUnit.cs" />
     <Compile Include="Special\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -130,7 +135,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\UnitsOfWork\UserAccountsWorkUnit.cs" />
-    <Compile Include="DAL\DbContexts\DatabaseInitializer.cs" />
+    <Compile Include="DAL\DbContexts\UserAccountsInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IRoleRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\ISessionRepository.cs" />

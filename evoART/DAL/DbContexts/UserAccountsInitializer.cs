@@ -5,7 +5,7 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<UserAccountsContext>
+    public class UserAccountsInitializer : DropCreateDatabaseIfModelChanges<UserAccountsContext>
     {
         public override void InitializeDatabase(UserAccountsContext context)
         {

@@ -33,6 +33,8 @@ namespace evoART.Models.DbModels
             public string AlbumName { get; set; }
 
             public string AlbumDescription { get; set; }
+
+            public ICollection<Photo> Photos { get; set; }
         }
 
         [TableName("Categories")]
@@ -48,7 +50,7 @@ namespace evoART.Models.DbModels
         [TableName("Keywords")]
         public class Keyword
         {
-            public long keyWordId { get; set; }
+            public long KeywordId { get; set; }
 
             public string KeywordName { get; set; }
         }

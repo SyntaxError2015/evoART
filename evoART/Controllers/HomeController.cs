@@ -17,6 +17,11 @@ namespace evoART.Controllers
                 db.UserAccounts.Count();
             }
 
+            using (var db = new PhotosContext())
+            {
+                db.Photos.Count();
+            }
+
             return View();
         }
 

@@ -9,11 +9,13 @@ namespace evoART.DAL.DbContexts
         protected internal UserAccountsContext()
             : base("evoARTUsers")
         {
-            Database.SetInitializer(new DatabaseInitializer());
+            Database.SetInitializer(new UserAccountsInitializer());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             InitializeUserAccountsTable(modelBuilder);
             InitializeAccountValidationsTable(modelBuilder);
             InitializeRolesTable(modelBuilder);
