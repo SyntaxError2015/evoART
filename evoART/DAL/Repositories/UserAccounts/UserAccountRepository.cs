@@ -42,9 +42,9 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                return _dbSet.Count(u => 
-                    u.UserName == userName && 
-                    u.Password == Special.TokenGenerator.EncryptMD5(password).ToString()) > 0;
+                password = Special.TokenGenerator.EncryptMD5(password);
+
+                return _dbSet.Count(u => u.UserName == userName && u.Password == password) > 0;
             }
 
             catch

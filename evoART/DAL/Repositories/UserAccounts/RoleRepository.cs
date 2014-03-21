@@ -65,7 +65,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.RoleName == roleName));
+                _dbSet.Remove(_dbSet.First(r => r.RoleName == roleName));
 
                 return Save();
             }

@@ -41,7 +41,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             {
                 var session = new AccountModels.Session
                 {
-                    UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
+                    UserAccount = _dbContext.UserAccounts.First(u => u.UserName == userName),
                     SessionKey = Special.TokenGenerator.EncryptMD5(DateTime.Now.ToFileTime().ToString())
                 };
 
@@ -65,7 +65,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                _dbSet.Remove(_dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName));
+                _dbSet.Remove(_dbSet.First(t => t.UserAccount.UserName == userName));
 
                 return Save();
             }

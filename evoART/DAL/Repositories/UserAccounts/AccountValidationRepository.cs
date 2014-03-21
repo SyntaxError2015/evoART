@@ -22,7 +22,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// <returns>A string value</returns>
         public string GetValidationToken(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
             return validation == null ? null : validation.ValidationToken;
         }
@@ -34,7 +34,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// <returns>A DateTime instance</returns>
         public DateTime GetValidationTokenExpireDate(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
             return validation == null ? DateTime.Now : validation.ValidationTokenExpireDate;
         }
@@ -70,7 +70,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// <param name="userName">The nickname of the user</param>
         public void ResetLoginFailAttempts(string userName)
         {
-            var validation = _dbSet.FirstOrDefault(t => t.UserAccount.UserName == userName);
+            var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
             if (validation != null)
                 Update(validation);
@@ -82,7 +82,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// <param name="userName">The nickname of the user</param>
         public bool GenerateNewValidationToken(string userName)
         {
-            return (GenerateNewValidationToken(_dbSet.FirstOrDefault(v => v.UserAccount.UserName == userName)));
+            return (GenerateNewValidationToken(_dbSet.First(v => v.UserAccount.UserName == userName)));
         }
 
         /// <summary>
@@ -138,10 +138,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             var validation = _dbSet.First(t => t.UserAccount.UserName == userName);
 
-            if (validation == null)
-                return false;
-
-            return validation.IsVerified;
+            return validation != null && validation.IsVerified;
         }
 
         /// <summary>
@@ -155,7 +152,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             {
                 var validation = new AccountModels.AccountValidation
                 {
-                    UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
+                    UserAccount = _dbContext.UserAccounts.First(u => u.UserName == userName),
                     ValidationTokenExpireDate = DateTime.Now.AddHours(24),
                     LoginFails = 0,
                     IsVerified = false
@@ -183,7 +180,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                _dbSet.Remove(_dbSet.FirstOrDefault(r => r.UserAccount.UserName == userName));
+                _dbSet.Remove(_dbSet.First(r => r.UserAccount.UserName == userName));
 
                 return Save();
             }
