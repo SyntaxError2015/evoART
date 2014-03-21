@@ -121,7 +121,8 @@
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\DbContexts\UserAccountsInitializer.cs" />
+    <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
+    <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\IOAuthLoginRepository.cs" />
     <Compile Include="DAL\Repositories\OAuthLoginRepository.cs" />
     <Compile Include="Special\AuthConfig.cs" />

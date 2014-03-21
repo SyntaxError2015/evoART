@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
@@ -20,9 +21,15 @@ namespace evoART.Models.DbModels
 
             public DateTime UploadDate { get; set; }
 
-            public AccountModels.UserAccount UserAccount { get; set; }
+            public virtual AccountModels.UserAccount UserAccount { get; set; }
 
-            public Album Album { get; set; }
+            public virtual Album Album { get; set; }
+
+            //public virtual Photo_Category PhotoCategory { get; set; }
+            public virtual ICollection<Category> Categories { get; set; }
+
+            //public virtual Keyword_Photo KeywordPhoto { get; set; }
+            public virtual ICollection<Keyword> Keywords { get; set; } 
         }
 
         [TableName("Albums")]
@@ -34,7 +41,7 @@ namespace evoART.Models.DbModels
 
             public string AlbumDescription { get; set; }
 
-            public ICollection<Photo> Photos { get; set; }
+            public virtual ICollection<Photo> Photos { get; set; }
         }
 
         [TableName("Categories")]
@@ -45,6 +52,9 @@ namespace evoART.Models.DbModels
             public string CategoryName { get; set; }
 
             public string CategoryDescription { get; set; }
+
+            //public virtual Photo_Category PhotoCategory { get; set; }
+            public virtual ICollection<Photo> Photos { get; set; } 
         }
 
         [TableName("Keywords")]
@@ -53,26 +63,9 @@ namespace evoART.Models.DbModels
             public long KeywordId { get; set; }
 
             public string KeywordName { get; set; }
-        }
 
-        [TableName("Photos_Categories")]
-        public class Photo_Category
-        {
-            public long Photo_CategoryId { get; set; }
-
-            public Photo Photo { get; set; }
-
-            public Category Category { get; set; }
-        }
-
-        [TableName("Keywords_Photos")]
-        public class Keyword_Photo
-        {
-            public long Keyword_PhotoId { get; set; }
-
-            public Keyword Keyword { get; set; }
-
-            public Photo Photo { get; set; }
+            //public virtual Keyword_Photo KeywordPhoto { get; set; }
+            public virtual ICollection<Photo> Photos { get; set; } 
         }
     }
 }

@@ -16,9 +16,12 @@ namespace evoART.DAL.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            UserAccountsInitializer.InitializeUserAccountsModels(modelBuilder);
+            UserAccountsContextInitializer.InitializeUserAccountsModels(modelBuilder);
+            PhotosContextInitializer.InitializePhotosModels(modelBuilder);
         }
 
+        #region User accounts
+        
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
 
         public DbSet<AccountModels.AccountValidation> AccountValidations { get; set; }
@@ -28,5 +31,19 @@ namespace evoART.DAL.DbContexts
         public DbSet<AccountModels.Session> Sessions { get; set; }
 
         public DbSet<AccountModels.OAuthLogin> OAuthLogins { get; set; }
+
+        #endregion
+
+        #region Photos
+
+        public DbSet<PhotoModels.Photo> Photos { get; set; }
+
+        public DbSet<PhotoModels.Album> Albums { get; set; }
+
+        public DbSet<PhotoModels.Category> Categories { get; set; }
+
+        public DbSet<PhotoModels.Keyword> Keywords { get; set; }
+
+        #endregion
     }
 }
