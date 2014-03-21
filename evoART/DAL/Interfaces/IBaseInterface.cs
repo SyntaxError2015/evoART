@@ -1,4 +1,4 @@
-﻿namespace evoART.DAL.Interfaces.UserAccounts
+﻿namespace evoART.DAL.Interfaces
 {
     interface IBaseInterface
     {
