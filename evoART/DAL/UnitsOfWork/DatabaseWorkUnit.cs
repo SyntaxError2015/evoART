@@ -1,6 +1,6 @@
 ﻿using System;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Repositories;
+using evoART.DAL.Repositories.Photos;
 using evoART.DAL.Repositories.UserAccounts;
 
 namespace evoART.DAL.UnitsOfWork
@@ -16,23 +16,9 @@ namespace evoART.DAL.UnitsOfWork
         {
             _dbContext = new DatabaseContext();
         }
-
-        // All the fields here are singletons and their values are instantiated in the representing properties
-        #region fields
+        
         private static DatabaseWorkUnit _instance;
-
         private readonly DatabaseContext _dbContext;
-
-        private UserAccountRepository _userAccountRepository;
-        private AccountValidationRepository _accountValidationRepository;
-        private SessionRepository _sessionRepository;
-        private RoleRepository _roleRepository;
-        private OAuthLoginRepository _oAuthLoginRepository;
-
-        #endregion
-
-        // Singleton initializations
-        #region Properties
 
         /// <summary>
         /// Get the available instance for this class
@@ -45,6 +31,29 @@ namespace evoART.DAL.UnitsOfWork
                 return _instance ?? (_instance = new DatabaseWorkUnit());
             }
         }
+
+        // All the fields here are singletons and their values are instantiated in the representing properties
+        #region Fields for the User Accounts module
+
+        private UserAccountRepository _userAccountRepository;
+        private AccountValidationRepository _accountValidationRepository;
+        private SessionRepository _sessionRepository;
+        private RoleRepository _roleRepository;
+        private OAuthLoginRepository _oAuthLoginRepository;
+
+        #endregion
+
+        #region Fields for the Photos module
+
+        private PhotosRepository _photosRepository;
+        private AlbumsRepository _albumsRepository;
+        private CategoriesRepository _categoriesRepository;
+        private KeywordsRepository _keywordsRepository;
+
+        #endregion
+
+        // Singleton initializations
+        #region Properties for the User Accounts module
 
         /// <summary>
         /// Get the repository representing the UserAccount model
@@ -98,6 +107,42 @@ namespace evoART.DAL.UnitsOfWork
             get
             {
                 return _oAuthLoginRepository ?? (_oAuthLoginRepository = new OAuthLoginRepository(_dbContext));
+            }
+        }
+
+        #endregion
+
+        #region Properties for the Photos module
+
+        public PhotosRepository PhotosRepository
+        {
+            get
+            {
+                return _photosRepository ?? (_photosRepository = new PhotosRepository());
+            }
+        }
+
+        public AlbumsRepository AlbumsRepository
+        {
+            get
+            {
+                return _albumsRepository ?? (_albumsRepository = new AlbumsRepository());
+            }
+        }
+
+        public CategoriesRepository CategoriesRepository
+        {
+            get
+            {
+                return _categoriesRepository ?? (_categoriesRepository = new CategoriesRepository());
+            }
+        }
+
+        public KeywordsRepository KeywordsRepository
+        {
+            get
+            {
+                return _keywordsRepository ?? (_keywordsRepository = new KeywordsRepository());
             }
         }
 

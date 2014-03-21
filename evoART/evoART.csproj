@@ -118,14 +118,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DAL\Interfaces\Photos\" />
-    <Folder Include="DAL\Repositories\Photos\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IAlbumsRepository.cs" />
+    <Compile Include="DAL\Interfaces\Photos\ICategoriesRepository.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IKeywordsRepository.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IPhotosRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\AlbumsRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\CategoriesRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\KeywordsRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\PhotosRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
     <Compile Include="Special\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
