@@ -1,4 +1,4 @@
-﻿namespace evoART.DAL.Interfaces
+﻿namespace evoART.DAL.Interfaces.UserAccounts
 {
     internal interface IOAuthLoginRepository
     {

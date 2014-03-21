@@ -1,7 +1,7 @@
 ﻿using System;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Interfaces
+namespace evoART.DAL.Interfaces.UserAccounts
 {
     interface IAccountValidationRepository
     {

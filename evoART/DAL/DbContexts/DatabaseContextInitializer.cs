@@ -12,17 +12,21 @@ namespace evoART.DAL.DbContexts
             base.InitializeDatabase(context);
 
             PopulateRolesTable();
+            PopulateAlbumsTable();
         }
 
         private static void PopulateRolesTable()
         {
             using (var db = new DatabaseContext())
             {
-                if (db.Roles.Any()) return;
-
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Simple user" });
                 DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Photographer" });
             }
+        }
+
+        private static void PopulateAlbumsTable()
+        {
+            // Create a default item for the albums table
         }
     }
 }

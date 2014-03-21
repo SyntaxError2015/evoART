@@ -2,11 +2,11 @@
 using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces;
+using evoART.DAL.Interfaces.UserAccounts;
 using evoART.Models.DbModels;
 using evoART.Special;
 
-namespace evoART.DAL.Repositories
+namespace evoART.DAL.Repositories.UserAccounts
 {
     public class AccountValidationRepository : BaseRepository<AccountModels.AccountValidation>, IAccountValidationRepository
     {

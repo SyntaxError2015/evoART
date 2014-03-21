@@ -1,6 +1,7 @@
 ﻿using System;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Repositories;
+using evoART.DAL.Repositories.UserAccounts;
 
 namespace evoART.DAL.UnitsOfWork
 {

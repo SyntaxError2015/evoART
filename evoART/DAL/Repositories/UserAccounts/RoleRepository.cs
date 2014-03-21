@@ -1,10 +1,10 @@
 ﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces;
+using evoART.DAL.Interfaces.UserAccounts;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories
+namespace evoART.DAL.Repositories.UserAccounts
 {
     public class RoleRepository : BaseRepository<AccountModels.Role>, IRoleRepository
     {
@@ -46,7 +46,7 @@ namespace evoART.DAL.Repositories
         {
             try
             {
-                _dbSet.Add(role);
+                _dbSet.AddOrUpdate(role);
 
                 return Save();
             }

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces;
+using evoART.DAL.Interfaces.UserAccounts;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories
+namespace evoART.DAL.Repositories.UserAccounts
 {
     public class OAuthLoginRepository : BaseRepository<AccountModels.OAuthLogin>, IOAuthLoginRepository
     {
