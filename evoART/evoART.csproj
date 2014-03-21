@@ -118,13 +118,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DAL\Interfaces\Photos\" />
+    <Folder Include="DAL\Repositories\Photos\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
-    <Compile Include="DAL\Interfaces\IOAuthLoginRepository.cs" />
-    <Compile Include="DAL\Repositories\OAuthLoginRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
     <Compile Include="Special\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -133,16 +135,16 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\UnitsOfWork\DatabaseWorkUnit.cs" />
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
-    <Compile Include="DAL\Interfaces\IAccountValidationRepository.cs" />
-    <Compile Include="DAL\Interfaces\IRoleRepository.cs" />
-    <Compile Include="DAL\Interfaces\ISessionRepository.cs" />
-    <Compile Include="DAL\Interfaces\IUserAccountRepository.cs" />
-    <Compile Include="DAL\Interfaces\IBaseInterface.cs" />
-    <Compile Include="DAL\Repositories\AccountValidationRepository.cs" />
-    <Compile Include="DAL\Repositories\RoleRepository.cs" />
-    <Compile Include="DAL\Repositories\SessionRepository.cs" />
-    <Compile Include="DAL\Repositories\BaseAccountsRepository.cs" />
-    <Compile Include="DAL\Repositories\UserAccountRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IRoleRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\ISessionRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IUserAccountRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IBaseInterface.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\AccountValidationRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\RoleRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\SessionRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\BaseAccountsRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\UserAccountRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
