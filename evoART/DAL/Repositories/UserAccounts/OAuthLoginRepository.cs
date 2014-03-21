@@ -68,7 +68,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             {
                 var item = new AccountModels.OAuthLogin()
                 {
-                    UserAccounts = _dbContext.UserAccounts.FirstOrDefault(t => t.UserName == userName),
+                    UserAccounts = _dbContext.UserAccounts.First(t => t.UserName == userName),
                     Provider = providerName,
                     Key = idFromProvider
                 };
