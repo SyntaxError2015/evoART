@@ -8,7 +8,7 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class SessionRepository : BaseRepository<AccountModels.Session>, ISessionRepository
     {
-        public SessionRepository(UserAccountsContext context) : base(context)
+        public SessionRepository(DatabaseContext context) : base(context)
         {
         }
 

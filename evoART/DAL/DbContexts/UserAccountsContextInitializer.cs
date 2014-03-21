@@ -4,15 +4,9 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {
-    public class UserAccountsContext : DbContext
+    public static class UserAccountsContextInitializer
     {
-        protected internal UserAccountsContext()
-            : base("evoARTUsers")
-        {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public static void InitializeUserAccountsModels(DbModelBuilder modelBuilder)
         {
             InitializeUserAccountsTable(modelBuilder);
             InitializeAccountValidationsTable(modelBuilder);
@@ -21,34 +15,34 @@ namespace evoART.DAL.DbContexts
             InitializeOAuthLoginsTable(modelBuilder);
         }
 
-        protected virtual void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
+        private static void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasKey(t => t.UserId)
                 .Property(t => t.UserId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            // Map foreign key for the Roles table
+            // Map foreign key to the Roles table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasRequired(t => t.Role)
                 .WithMany(t => t.UserAccounts)
                 .Map(m => m.MapKey("RoleId"))
                 .WillCascadeOnDelete(false);
 
-            // Map foreign key for the AccountValidations table
+            // Map foreign key to the AccountValidations table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasOptional(t => t.AccountValidation)
                 .WithOptionalPrincipal(p => p.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
-            // Map foreign key for the Sessions table
+            // Map foreign key to the Sessions table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasOptional(t => t.Session)
                 .WithOptionalPrincipal(p => p.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
-            // Map foreign ket for the OAuthLogin table
+            // Map foreign ket to the OAuthLogin table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasOptional(t => t.OAuthLogins)
                 .WithOptionalPrincipal(t => t.UserAccounts)
@@ -126,15 +120,5 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<AccountModels.OAuthLogin>()
                 .Property(p => p.Key).IsRequired();
         }
-
-        public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
-
-        public DbSet<AccountModels.AccountValidation> AccountValidations { get; set; }
-
-        public DbSet<AccountModels.Role> Roles { get; set; }
-
-        public DbSet<AccountModels.Session> Sessions { get; set; }
-
-        public DbSet<AccountModels.OAuthLogin> OAuthLogins { get; set; }
     }
 }

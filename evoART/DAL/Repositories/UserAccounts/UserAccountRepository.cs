@@ -9,7 +9,7 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class UserAccountRepository : BaseRepository<AccountModels.UserAccount>, IUserAccountRepository
     {
-        public UserAccountRepository(UserAccountsContext context)
+        public UserAccountRepository(DatabaseContext context)
             : base(context)
         {
         }
@@ -64,7 +64,7 @@ namespace evoART.DAL.Repositories.UserAccounts
                 userAccount.Password = Special.TokenGenerator.EncryptMD5(userAccount.Password);
                 _dbSet.Add(userAccount);
 
-                return Save() && UserAccountsWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
+                return Save() && DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
             }
 
             catch

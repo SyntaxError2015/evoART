@@ -10,7 +10,7 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class AccountValidationRepository : BaseRepository<AccountModels.AccountValidation>, IAccountValidationRepository
     {
-        public AccountValidationRepository(UserAccountsContext context)
+        public AccountValidationRepository(DatabaseContext context)
             : base(context)
         {
         }

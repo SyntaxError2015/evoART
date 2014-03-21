@@ -8,7 +8,7 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class RoleRepository : BaseRepository<AccountModels.Role>, IRoleRepository
     {
-        public RoleRepository(UserAccountsContext context) : base(context)
+        public RoleRepository(DatabaseContext context) : base(context)
         {
         }
 
@@ -46,7 +46,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                _dbSet.Add(role);
+                _dbSet.AddOrUpdate(role);
 
                 return Save();
             }

@@ -7,7 +7,7 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class OAuthLoginRepository : BaseRepository<AccountModels.OAuthLogin>, IOAuthLoginRepository
     {
-        public OAuthLoginRepository(UserAccountsContext context) : base(context)
+        public OAuthLoginRepository(DatabaseContext context) : base(context)
         {
         }
 

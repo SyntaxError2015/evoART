@@ -33,6 +33,8 @@ namespace evoART.Models.DbModels
             public virtual Session Session { get; set; }
 
             public virtual OAuthLogin OAuthLogins { get; set; }
+
+            public virtual ICollection<PhotoModels.Photo> Photos { get; set; }
         }
 
         [TableName("AccountValidation")]

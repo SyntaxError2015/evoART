@@ -10,18 +10,18 @@ namespace evoART.DAL.UnitsOfWork
     /// 
     /// Thsi class is a singleton
     /// </summary>
-    public class UserAccountsWorkUnit : IDisposable
+    public class DatabaseWorkUnit : IDisposable
     {
-        private UserAccountsWorkUnit()
+        private DatabaseWorkUnit()
         {
-            _dbContext = new UserAccountsContext();
+            _dbContext = new DatabaseContext();
         }
 
         // All the fields here are singletons and their values are instantiated in the representing properties
         #region fields
-        private static UserAccountsWorkUnit _instance;
+        private static DatabaseWorkUnit _instance;
 
-        private readonly UserAccountsContext _dbContext;
+        private readonly DatabaseContext _dbContext;
 
         private UserAccountRepository _userAccountRepository;
         private AccountValidationRepository _accountValidationRepository;
@@ -37,12 +37,12 @@ namespace evoART.DAL.UnitsOfWork
         /// <summary>
         /// Get the available instance for this class
         /// </summary>
-        public static UserAccountsWorkUnit Instance
+        public static DatabaseWorkUnit Instance
         {
             get
             {
                 _disposed = false;
-                return _instance ?? (_instance = new UserAccountsWorkUnit());
+                return _instance ?? (_instance = new DatabaseWorkUnit());
             }
         }
 

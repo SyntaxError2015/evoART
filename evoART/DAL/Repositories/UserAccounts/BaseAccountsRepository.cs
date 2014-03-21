@@ -6,10 +6,10 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public abstract class BaseRepository<T> : IBaseInterface where T : class
     {
-        internal readonly UserAccountsContext _dbContext;
+        internal readonly DatabaseContext _dbContext;
         internal readonly DbSet<T> _dbSet;
 
-        internal BaseRepository(UserAccountsContext context)
+        internal BaseRepository(DatabaseContext context)
         {
             _dbContext = context;
             _dbSet = context.Set<T>();

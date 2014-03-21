@@ -118,9 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DAL\Interfaces\Photos\" />
+    <Folder Include="DAL\Repositories\Photos\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
+    <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
     <Compile Include="Special\AuthConfig.cs" />
@@ -129,8 +133,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DAL\UnitsOfWork\UserAccountsWorkUnit.cs" />
-    <Compile Include="DAL\DbContexts\DatabaseInitializer.cs" />
+    <Compile Include="DAL\UnitsOfWork\DatabaseWorkUnit.cs" />
+    <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IRoleRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\ISessionRepository.cs" />
@@ -144,7 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="DAL\DbContexts\UserAccountsContext.cs" />
+    <Compile Include="DAL\DbContexts\DatabaseContext.cs" />
     <Compile Include="Models\DbModels\AccountModels.cs" />
     <Compile Include="Models\DbModels\PhotoModels.cs" />
     <Compile Include="Models\DbModels\SocialModels.cs" />
