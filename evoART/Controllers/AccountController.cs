@@ -45,20 +45,20 @@ namespace evoART.Controllers
         public string Login(LoginModel model)
         {
 
-            if (!UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
                 return "U";
 
-            if (UserAccountsWorkUnit.Instance.AccountValidationRepository.GetFailedLoginAttempts(model.UserName) > 10)
+            if (DatabaseWorkUnit.Instance.AccountValidationRepository.GetFailedLoginAttempts(model.UserName) > 10)
                 return "E";
 
-            if (!UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyPassword(model.UserName, model.Password))
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyPassword(model.UserName, model.Password))
             {
-                UserAccountsWorkUnit.Instance.AccountValidationRepository.IncrementFailedLoginAttempts(model.UserName);
+                DatabaseWorkUnit.Instance.AccountValidationRepository.IncrementFailedLoginAttempts(model.UserName);
                 return "P";
             }
                 
             //When login succeeds reset the failed logins
-            UserAccountsWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
+            DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
 
             return "K";
         }
@@ -67,7 +67,7 @@ namespace evoART.Controllers
         {
             if (model.UserName==null || model.UserName.Length < 4 || model.UserName.Length > 28 || !Char.IsLetter(model.UserName[0]))
                 return "U";
-            if (UserAccountsWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
+            if (DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserName))
                 return "D";
             if (model.EmailAddress==null || !IsValidEmail(model.EmailAddress))
                 return "E";
@@ -82,18 +82,18 @@ namespace evoART.Controllers
                 Email = model.EmailAddress,
                 Password = model.Password,
                 //Role = new AccountModels.Role() { RoleName = model.Role}
-                Role = UserAccountsWorkUnit.Instance.RoleRepository.GetRole(model.Role)
+                Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
             // When creating a new user, the UnitOfWork automatically creates a validation entry in the
             // AccountValidations table for the user.
             // The password is also automatically encrypted in the model
-            return UserAccountsWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
+            return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
         }
 
         public PartialViewResult RegisterTab()
         {
-            var t = UserAccountsWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
+            var t = DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
 
             ViewData["Roles"] = t;
 

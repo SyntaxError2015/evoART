@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces.UserAccounts;
+using evoART.DAL.Interfaces;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories.UserAccounts
+namespace evoART.DAL.Repositories
 {
     public class SessionRepository : BaseRepository<AccountModels.Session>, ISessionRepository
     {
-        public SessionRepository(UserAccountsContext context) : base(context)
+        public SessionRepository(DatabaseContext context) : base(context)
         {
         }
 

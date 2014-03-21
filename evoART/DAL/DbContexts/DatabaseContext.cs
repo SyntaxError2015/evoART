@@ -4,12 +4,12 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {
-    public class UserAccountsContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        protected internal UserAccountsContext()
+        protected internal DatabaseContext()
             : base("evoARTUsers")
         {
-            Database.SetInitializer(new UserAccountsInitializer());
+            Database.SetInitializer(new DatabaseContextInitializer());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

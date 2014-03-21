@@ -1,15 +1,15 @@
 ﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces.UserAccounts;
+using evoART.DAL.Interfaces;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories.UserAccounts
+namespace evoART.DAL.Repositories
 {
     public class UserAccountRepository : BaseRepository<AccountModels.UserAccount>, IUserAccountRepository
     {
-        public UserAccountRepository(UserAccountsContext context)
+        public UserAccountRepository(DatabaseContext context)
             : base(context)
         {
         }
@@ -64,7 +64,7 @@ namespace evoART.DAL.Repositories.UserAccounts
                 userAccount.Password = Special.TokenGenerator.EncryptMD5(userAccount.Password);
                 _dbSet.Add(userAccount);
 
-                return Save() && UserAccountsWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
+                return Save() && DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
             }
 
             catch

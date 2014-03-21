@@ -1,6 +1,6 @@
 ﻿using evoART.Models.DbModels;
 
-namespace evoART.DAL.Interfaces.UserAccounts
+namespace evoART.DAL.Interfaces
 {
     interface IRoleRepository
     {

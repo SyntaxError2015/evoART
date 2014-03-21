@@ -1,14 +1,14 @@
 ﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces.UserAccounts;
+using evoART.DAL.Interfaces;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories.UserAccounts
+namespace evoART.DAL.Repositories
 {
     public class RoleRepository : BaseRepository<AccountModels.Role>, IRoleRepository
     {
-        public RoleRepository(UserAccountsContext context) : base(context)
+        public RoleRepository(DatabaseContext context) : base(context)
         {
         }
 
