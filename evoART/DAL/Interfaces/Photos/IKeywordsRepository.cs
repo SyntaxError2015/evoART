@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces.Photos
 {
     interface IKeywordsRepository
     {
+        bool Insert(string keywordName);
+
+        bool Delete(string keywordName);
+
+        bool Update(PhotoModels.Keyword keyword);
     }
 }
