@@ -1,15 +1,36 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
+using System.Collections.Generic;
+using System.Web.Security;
+using evoART.Special;
 
 namespace evoART.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly HttpContext context;
+        private readonly CookieHelper myCookie;
 
+        public AccountController()
+        {
+            context = System.Web.HttpContext.Current;
+            myCookie=new CookieHelper();
+            
+            //FormsAuthentication.SetAuthCookie();
+            //FormsAuthentication.CookieMode
+        }
+
+        /// <summary>
+        /// Test if the specified email is valid
+        /// </summary>
+        /// <param name="email">The email string to be tested</param>
+        /// <returns>Whether the email is valid or not</returns>
         public bool IsValidEmail(string email)
         {
             try
@@ -24,6 +45,7 @@ namespace evoART.Controllers
             }
         }
 
+        
 
         public string GetStatus()
         {
@@ -42,6 +64,13 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
+        
+        /// <summary>
+        /// Log the user in
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>A string value used in javascript checking</returns>
+        [HttpPost]
         public string Login(LoginModel model)
         {
 
@@ -60,9 +89,21 @@ namespace evoART.Controllers
             //When login succeeds reset the failed logins
             DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
 
+            //Make a new session for the user
+            AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
+
+            //Create the cookies for the session
+            myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+            myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
             return "K";
         }
 
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>A string value used in javascript checking</returns>
         public string Register(RegisterModel model)
         {
             if (model.UserName==null || model.UserName.Length < 4 || model.UserName.Length > 28 || !Char.IsLetter(model.UserName[0]))
@@ -81,7 +122,6 @@ namespace evoART.Controllers
                 UserName = model.UserName,
                 Email = model.EmailAddress,
                 Password = model.Password,
-                //Role = new AccountModels.Role() { RoleName = model.Role}
                 Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
@@ -89,6 +129,22 @@ namespace evoART.Controllers
             // AccountValidations table for the user.
             // The password is also automatically encrypted in the model
             return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
+        }
+
+        public string GetUserName()
+        {
+            return "";
+        }
+
+        public AccountModels.UserAccount GetUserDetails()
+        {
+            if (myCookie.GetCookie("sessionId") == "" || myCookie.GetCookie("sessionKey") == "")
+                return null;
+
+            AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
+                new Guid(myCookie.GetCookie("sessionId")), myCookie.GetCookie("sessionKey"));
+
+            return user;
         }
 
         public PartialViewResult RegisterTab()
@@ -104,6 +160,8 @@ namespace evoART.Controllers
         {
             return PartialView("Login");
         }
-            
+
+
+       
     }
 }

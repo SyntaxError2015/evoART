@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using evoART.DAL.DbContexts;
+using evoART.Special;
 
 namespace evoART.Controllers
 {
     public class HomeController : Controller
     {
+        
         public ActionResult Index()
         {
             using (var db = new DatabaseContext())
@@ -13,10 +16,12 @@ namespace evoART.Controllers
                 db.UserAccounts.Count();
             }
 
-            /*using (var db = new PhotosContext())
-            {
-                db.Photos.Count();
-            }*/
+            //new AccountController().SetCookie("test","bla",DateTime.Now.AddHours(5));
+
+            var myCookie = new CookieHelper();
+            myCookie.SetCookie("test", "bla", DateTime.Now.AddHours(10));
+
+            ViewBag.UserDetails = new AccountController().GetUserDetails();
 
             return View();
         }
@@ -28,6 +33,7 @@ namespace evoART.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
