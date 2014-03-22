@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Ajax.Utilities;
-
-namespace evoART.App_Start
+﻿namespace evoART.Special
 {
     public static class AuthConfig
     {
@@ -25,7 +19,7 @@ namespace evoART.App_Start
         }
 
 #if MICROSOFT
-/*public static class MicrosoftClient
+    /*public static class MicrosoftClient
         {
             private const string _clientId = "";
             private const string _clientSecret = "";

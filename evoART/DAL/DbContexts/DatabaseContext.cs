@@ -40,9 +40,7 @@ namespace evoART.DAL.DbContexts
 
         public DbSet<PhotoModels.Album> Albums { get; set; }
 
-        public DbSet<PhotoModels.Category> Categories { get; set; }
-
-        public DbSet<PhotoModels.Keyword> Keywords { get; set; }
+        public DbSet<PhotoModels.HashTag> HashTags { get; set; }
 
         #endregion
     }

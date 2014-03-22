@@ -1,10 +1,12 @@
-﻿namespace evoART.DAL.Interfaces.UserAccounts
+﻿using evoART.Models.DbModels;
+
+namespace evoART.DAL.Interfaces.UserAccounts
 {
     interface ISessionRepository
     {
-        bool IsLoggedIn(string userName);
+        AccountModels.UserAccount GetUser(int sessionId, string sessionKey);
 
-        bool Login(string userName);
+        AccountModels.Session Login(string userName);
 
         bool Logout(string userName);
     }
