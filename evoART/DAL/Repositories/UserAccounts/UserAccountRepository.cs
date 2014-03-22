@@ -71,9 +71,19 @@ namespace evoART.DAL.Repositories.UserAccounts
                 
                 _dbSet.Add(userAccount);
 
-                return Save() && 
-                    DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName)
-                    && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(DEFAULT_ALBUM_NAME);
+                //return Save() && 
+                //    DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName)
+                //    && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(DEFAULT_ALBUM_NAME);
+
+                bool ok = Save();
+
+                if (ok)
+                    ok = DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
+
+                if (ok)
+                    ok = DatabaseWorkUnit.Instance.AlbumsRepository.Insert(userAccount.UserId, DEFAULT_ALBUM_NAME);
+
+                return ok;
             }
 
             catch
