@@ -7,9 +7,9 @@ namespace evoART.DAL.Interfaces.Photos
     {
         PhotoModels.Album[] GetAlbumsForUser(Guid userId);
 
-        bool Insert(PhotoModels.Album album);
+        bool Insert(PhotoModels.Album album, Guid userId);
 
-        bool Insert(string albumName, string albumDescription = "");
+        bool Insert(Guid userId, string albumName, string albumDescription = "");
 
         bool Delete(string albumName, Guid userId);
 

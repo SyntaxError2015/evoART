@@ -38,11 +38,13 @@ namespace evoART.DAL.Repositories.Photos
         /// Insert a new album in the database
         /// </summary>
         /// <param name="album">An Album entity containing all the album details</param>
-        public bool Insert(PhotoModels.Album album)
+        /// <param name="userId">The Id of the user</param>
+        public bool Insert(PhotoModels.Album album, Guid userId)
         {
             try
             {
                 album.AlbumId = Guid.NewGuid();
+                album.UserAccount = _dbContext.UserAccounts.Find(userId);
 
                 _dbSet.Add(album);
 
@@ -58,9 +60,10 @@ namespace evoART.DAL.Repositories.Photos
         /// <summary>
         /// Insert a new album in the database
         /// </summary>
+        /// <param name="userId">The Id of the user</param>
         /// <param name="albumName">The name of the album</param>
         /// <param name="albumDescription">The description for the album</param>
-        public bool Insert(string albumName, string albumDescription = "")
+        public bool Insert(Guid userId, string albumName, string albumDescription = "")
         {
             var album = new PhotoModels.Album
             {
@@ -68,7 +71,7 @@ namespace evoART.DAL.Repositories.Photos
                 AlbumDescription = albumDescription
             };
 
-            return Insert(album);
+            return Insert(album, userId);
         }
 
         /// <summary>
