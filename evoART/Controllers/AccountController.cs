@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
@@ -10,6 +11,11 @@ namespace evoART.Controllers
     public class AccountController : Controller
     {
 
+        /// <summary>
+        /// Test if the specified email is valid
+        /// </summary>
+        /// <param name="email">The email string to be tested</param>
+        /// <returns>Whether the email is valid or not</returns>
         public bool IsValidEmail(string email)
         {
             try
@@ -24,6 +30,37 @@ namespace evoART.Controllers
             }
         }
 
+        /// <summary>
+        /// Add or replace a cookie
+        /// </summary>
+        /// <param name="name">The cookie name</param>
+        /// <param name="value">The cookie value</param>
+        /// <param name="expires">When it expires</param>
+        public void SetCookie(string name, string value, DateTime expires)
+        {
+            var cookie = new HttpCookie(name)
+            {
+                Domain = "/",
+                Value = value,
+                Expires = expires
+            };
+            Response.SetCookie(cookie);
+        }
+
+        /// <summary>
+        /// Delete a cookie
+        /// </summary>
+        /// <param name="name">The name of the cookie to be deleted</param>
+        public void DeleteCookie(string name)
+        {
+            var cookie = new HttpCookie(name)
+            {
+                Domain = "/",
+                Value = null,
+                Expires = DateTime.Now.AddDays(-1)
+            };
+            Response.SetCookie(cookie);
+        }
 
         public string GetStatus()
         {
@@ -42,6 +79,11 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
+        /// <summary>
+        /// Log the user in
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>A string value used in javascript checking</returns>
         public string Login(LoginModel model)
         {
 
@@ -60,9 +102,21 @@ namespace evoART.Controllers
             //When login succeeds reset the failed logins
             DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
 
+            //Make a new session for the user
+            AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
+
+            //Create the cookies for the session
+            SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+            SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
             return "K";
         }
 
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>A string value used in javascript checking</returns>
         public string Register(RegisterModel model)
         {
             if (model.UserName==null || model.UserName.Length < 4 || model.UserName.Length > 28 || !Char.IsLetter(model.UserName[0]))
@@ -81,7 +135,6 @@ namespace evoART.Controllers
                 UserName = model.UserName,
                 Email = model.EmailAddress,
                 Password = model.Password,
-                //Role = new AccountModels.Role() { RoleName = model.Role}
                 Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.Role)
             };
 
