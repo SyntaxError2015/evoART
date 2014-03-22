@@ -23,7 +23,7 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.UserAccount.UserId == userId);
+                IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.UserAccount.UserId == userId).OrderBy(a => a.AlbumName);
 
                 return albums.ToArray();
             }
