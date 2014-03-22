@@ -9,6 +9,8 @@ namespace evoART.DAL.Interfaces.Photos
 
         bool VerifyExists(Guid userId, Guid albumId, string photoName);
 
+        PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId, Guid userId);
+
         // Returns the photo Id
         Guid Insert(PhotoModels.Photo photo);
 

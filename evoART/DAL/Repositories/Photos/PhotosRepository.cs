@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
@@ -9,7 +10,8 @@ namespace evoART.DAL.Repositories.Photos
 {
     public class PhotosRepository : BaseRepository<PhotoModels.Photo>, IPhotosRepository
     {
-        public PhotosRepository(DatabaseContext context) : base(context)
+        public PhotosRepository(DatabaseContext context)
+            : base(context)
         {
         }
 
@@ -39,6 +41,22 @@ namespace evoART.DAL.Repositories.Photos
             catch
             {
                 return false;
+            }
+        }
+
+        public PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId, Guid userId)
+        {
+            try
+            {
+                IEnumerable<PhotoModels.Photo> photos =
+                    _dbSet.Where(a => a.Album.AlbumId == albumId && a.UserAccount.UserId == userId);
+
+                return photos.ToArray();
+            }
+
+            catch
+            {
+                return null;
             }
         }
 

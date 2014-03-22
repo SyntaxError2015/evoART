@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
@@ -16,33 +16,75 @@ namespace evoART.DAL.Repositories.Photos
 
         public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
-            throw new NotImplementedException();
-            //IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.Photos.Contains())
-        }
+            try
+            {
+                IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.UserAccount.UserId == userId);
 
-        public PhotoModels.Photo[] GetAlbumPhotos(Guid albumId, Guid userId)
-        {
-            throw new NotImplementedException();
+                return albums.ToArray();
+            }
+
+            catch
+            {
+                return null;
+            }
         }
 
         public bool Insert(PhotoModels.Album album)
         {
-            throw new NotImplementedException();
+            try
+            {
+                album.AlbumId = Guid.NewGuid();
+
+                _dbSet.Add(album);
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool Insert(string albumName, string albumDescription)
+        public bool Insert(string albumName, string albumDescription = "")
         {
-            throw new NotImplementedException();
+            var album = new PhotoModels.Album()
+            {
+                AlbumName = albumName,
+                AlbumDescription = albumDescription
+            };
+
+            return Insert(album);
         }
 
-        public bool Delete(string albumName)
+        public bool Delete(string albumName, Guid userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.Remove(_dbSet.First(a => a.AlbumName == albumName && a.UserAccount.UserId == userId));
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         public bool Update(PhotoModels.Album album)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.AddOrUpdate(album);
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
         }
     }
 }
