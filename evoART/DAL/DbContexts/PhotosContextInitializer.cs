@@ -19,10 +19,10 @@ namespace evoART.DAL.DbContexts
                 .HasKey(k => k.PhotoId);
 
             modelBuilder.Entity<PhotoModels.Photo>()
-                .Property(p => p.Name).IsOptional();
+                .Property(p => p.PhotoName).IsOptional();
 
             modelBuilder.Entity<PhotoModels.Photo>()
-                .Property(p => p.Description).IsOptional();
+                .Property(p => p.PhotoDescription).IsOptional();
 
             modelBuilder.Entity<PhotoModels.Photo>()
                 .Property(p => p.UploadDate).IsRequired();
@@ -43,8 +43,8 @@ namespace evoART.DAL.DbContexts
 
             // Map the many-to-many relationship between the Photos table and the HashTags table
             modelBuilder.Entity<PhotoModels.Photo>()
-                .HasMany(kp => kp.HashTags)
-                .WithMany(kp => kp.Photos)
+                .HasMany(hp => hp.HashTags)
+                .WithMany(hp => hp.Photos)
                 .Map(m =>
                 {
                     m.ToTable("HashTags_Photos");
@@ -57,6 +57,13 @@ namespace evoART.DAL.DbContexts
         {
             modelBuilder.Entity<PhotoModels.Album>()
                 .HasKey(k => k.AlbumId);
+
+            // Map foreign key to the UserAccounts table
+            modelBuilder.Entity<PhotoModels.Album>()
+                .HasRequired(u => u.UserAccount)
+                .WithMany(u => u.Albums)
+                .Map(m => m.MapKey("UserId"))
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<PhotoModels.Album>()
                 .Property(p => p.AlbumName).IsRequired();

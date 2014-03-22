@@ -20,7 +20,15 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// <returns>An UserAccount instance or null if there is no session for the user</returns>
         public AccountModels.UserAccount GetUser(Guid sessionId, string sessionKey)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _dbSet.First(s => s.SessionId == sessionId && s.SessionKey == sessionKey).UserAccount;
+            }
+
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
