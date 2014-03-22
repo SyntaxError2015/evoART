@@ -1,11 +1,17 @@
 ﻿using System;
+using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
+using evoART.DAL.Repositories.UserAccounts;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
 {
-    public class HashTagsRepository : IHashTagsRepository
+    public class HashTagsRepository : BaseRepository<PhotoModels.HashTag>, IHashTagsRepository
     {
+        public HashTagsRepository(DatabaseContext context) : base(context)
+        {
+        }
+
         public PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "")
         {
             throw new NotImplementedException();
