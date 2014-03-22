@@ -6,11 +6,25 @@ using System.Web.SessionState;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
+using System.Collections.Generic;
+using System.Web.Security;
+using evoART.Special;
 
 namespace evoART.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly HttpContext context;
+        private readonly CookieHelper myCookie;
+
+        public AccountController()
+        {
+            context = System.Web.HttpContext.Current;
+            myCookie=new CookieHelper();
+            
+            //FormsAuthentication.SetAuthCookie();
+            //FormsAuthentication.CookieMode
+        }
 
         /// <summary>
         /// Test if the specified email is valid
@@ -31,48 +45,7 @@ namespace evoART.Controllers
             }
         }
 
-        /// <summary>
-        /// Add or replace a cookie
-        /// </summary>
-        /// <param name="name">The cookie name</param>
-        /// <param name="value">The cookie value</param>
-        /// <param name="expires">When it expires</param>
-        public void SetCookie(string name, string value, DateTime expires)
-        {
-            var cookie = new HttpCookie(name)
-            {
-                Domain = "/",
-                Value = value,
-                Expires = expires
-            };
-            Response.SetCookie(cookie);
-        }
-
-        /// <summary>
-        /// Delete a cookie
-        /// </summary>
-        /// <param name="name">The name of the cookie to be deleted</param>
-        public void DeleteCookie(string name)
-        {
-            var cookie = new HttpCookie(name)
-            {
-                Domain = "/",
-                Value = null,
-                Expires = DateTime.Now.AddDays(-1)
-            };
-            Response.SetCookie(cookie);
-        }
-
-        /// <summary>
-        /// Get the cookie value
-        /// </summary>
-        /// <param name="name">The cookie name</param>
-        /// <returns>The cookie's value</returns>
-        public string GetCookie(string name)
-        {
-
-            return Response.Cookies[name]!=null ? Response.Cookies[name].Value : "";
-        }
+        
 
         public string GetStatus()
         {
@@ -91,11 +64,13 @@ namespace evoART.Controllers
             return String.Empty;
         }
 
+        
         /// <summary>
         /// Log the user in
         /// </summary>
         /// <param name="model"></param>
         /// <returns>A string value used in javascript checking</returns>
+        [HttpPost]
         public string Login(LoginModel model)
         {
 
@@ -118,8 +93,8 @@ namespace evoART.Controllers
             AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
 
             //Create the cookies for the session
-            SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
-            SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+            myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+            myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
 
             return "K";
         }
@@ -158,18 +133,18 @@ namespace evoART.Controllers
 
         public string GetUserName()
         {
-            
+            return "";
         }
 
-        public bool IsLoggedIn()
+        public AccountModels.UserAccount GetUserDetails()
         {
-            if (GetCookie("sessionId") == null || GetCookie("sessionKey") == null) 
-                return false;
+            if (myCookie.GetCookie("sessionId") == "" || myCookie.GetCookie("sessionKey") == "")
+                return null;
 
             AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
-                GetCookie("sessionId"), GetCookie("sessionKey"));
+                new Guid(myCookie.GetCookie("sessionId")), myCookie.GetCookie("sessionKey"));
 
-            return user != null ? true : false;
+            return user;
         }
 
         public PartialViewResult RegisterTab()
@@ -185,6 +160,8 @@ namespace evoART.Controllers
         {
             return PartialView("Login");
         }
-            
+
+
+       
     }
 }
