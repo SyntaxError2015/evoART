@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
 using evoART.Models.DbModels;
@@ -14,6 +17,7 @@ namespace evoART.DAL.Repositories.Photos
         public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             throw new NotImplementedException();
+            //IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.Photos.Contains())
         }
 
         public PhotoModels.Photo[] GetAlbumPhotos(Guid albumId, Guid userId)

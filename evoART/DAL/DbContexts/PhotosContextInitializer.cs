@@ -58,6 +58,13 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<PhotoModels.Album>()
                 .HasKey(k => k.AlbumId);
 
+            // Map foreign key to the UserAccounts table
+            modelBuilder.Entity<PhotoModels.Album>()
+                .HasRequired(u => u.UserAccount)
+                .WithMany(u => u.Albums)
+                .Map(m => m.MapKey("UserId"))
+                .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<PhotoModels.Album>()
                 .Property(p => p.AlbumName).IsRequired();
             
