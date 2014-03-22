@@ -19,8 +19,8 @@ namespace evoART.DAL.DbContexts
         {
             using (var db = new DatabaseContext())
             {
-                DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Simple user" });
-                DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Photographer" });
+                DatabaseWorkUnit.Instance.RoleRepository.Insert("Simple user" );
+                DatabaseWorkUnit.Instance.RoleRepository.Insert("Photographer" );
             }
         }
 

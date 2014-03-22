@@ -26,7 +26,7 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
-        public bool VerifyExists(int userId, int albumId, string photoName)
+        public bool VerifyExists(Guid userId, Guid albumId, string photoName)
         {
             try
             {
@@ -47,12 +47,12 @@ namespace evoART.DAL.Repositories.Photos
             throw new NotImplementedException();
         }
 
-        public int Insert(string photoName, string photoDescription, int albumId, int userId)
+        public int Insert(string photoName, string photoDescription, Guid albumId, Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int photoId)
+        public bool Delete(Guid photoId)
         {
             throw new NotImplementedException();
         }

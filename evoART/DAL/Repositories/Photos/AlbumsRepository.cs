@@ -1,7 +1,6 @@
 ﻿using System;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
-using evoART.DAL.Repositories.UserAccounts;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
@@ -12,12 +11,12 @@ namespace evoART.DAL.Repositories.Photos
         {
         }
 
-        public PhotoModels.Album[] GetAlbumsForUser(int userId)
+        public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public PhotoModels.Photo[] GetAlbumPhotos(int albumId, int userId)
+        public PhotoModels.Photo[] GetAlbumPhotos(Guid albumId, Guid userId)
         {
             throw new NotImplementedException();
         }
