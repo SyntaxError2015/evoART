@@ -14,16 +14,12 @@ namespace evoART.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly HttpContext context;
+
         private readonly CookieHelper _myCookie;
 
         public AccountController()
         {
-            context = System.Web.HttpContext.Current;
             _myCookie=new CookieHelper();
-            
-            //FormsAuthentication.SetAuthCookie();
-            //FormsAuthentication.CookieMode
         }
 
         /// <summary>
@@ -141,9 +137,15 @@ namespace evoART.Controllers
             if (_myCookie.GetCookie("sessionId") == "" || _myCookie.GetCookie("sessionKey") == "")
                 return null;
 
-            AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
+            var user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
                 new Guid(_myCookie.GetCookie("sessionId")), _myCookie.GetCookie("sessionKey"));
 
+            if (user == null)
+            {
+                _myCookie.DeleteCookie("sessionId");
+                _myCookie.DeleteCookie("sessionKey");
+            }
+                
             return user;
         }
 
