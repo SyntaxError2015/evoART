@@ -11,9 +11,9 @@ namespace evoART.Models.DbModels
         {
             public Guid PhotoId { get; set; }
 
-            public string Name { get; set; }
+            public string PhotoName { get; set; }
 
-            public string Description { get; set; }
+            public string PhotoDescription { get; set; }
 
             public DateTime UploadDate { get; set; }
 
@@ -34,6 +34,8 @@ namespace evoART.Models.DbModels
             public string AlbumDescription { get; set; }
 
             public virtual ICollection<Photo> Photos { get; set; }
+
+            public virtual AccountModels.UserAccount UserAccount { get; set; }
         }
 
         [TableName("HashTags")]

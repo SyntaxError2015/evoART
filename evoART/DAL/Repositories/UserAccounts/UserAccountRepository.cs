@@ -10,6 +10,8 @@ namespace evoART.DAL.Repositories.UserAccounts
 {
     public class UserAccountRepository : BaseRepository<AccountModels.UserAccount>, IUserAccountRepository
     {
+        private const string DEFAULT_ALBUM_NAME = "My album";
+
         public UserAccountRepository(DatabaseContext context)
             : base(context)
         {
@@ -55,7 +57,9 @@ namespace evoART.DAL.Repositories.UserAccounts
         }
 
         /// <summary>
-        /// Insert a new user into the database
+        /// Insert a new user into the database.
+        /// The password for the user if encrypted with MD5 before adding the user to the database.
+        /// This also creates an entry in the AccountValidation table and a default album for the user
         /// </summary>
         /// <returns>A bool value indicating if the operation was successful</returns>
         public bool Insert(AccountModels.UserAccount userAccount)
@@ -67,7 +71,9 @@ namespace evoART.DAL.Repositories.UserAccounts
                 
                 _dbSet.Add(userAccount);
 
-                return Save() && DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
+                return Save() && 
+                    DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName)
+                    && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(DEFAULT_ALBUM_NAME);
             }
 
             catch

@@ -9,11 +9,13 @@ namespace evoART.DAL.Interfaces.Photos
 
         bool VerifyExists(Guid userId, Guid albumId, string photoName);
 
-        // Returns the photo Id
-        int Insert(PhotoModels.Photo photo);
+        PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId, Guid userId);
 
         // Returns the photo Id
-        int Insert(string photoName, string photoDescription, Guid albumId, Guid userId);
+        Guid Insert(PhotoModels.Photo photo);
+
+        // Returns the photo Id
+        Guid Insert(string photoName, string photoDescription, Guid albumId, Guid userId);
 
         bool Delete(Guid photoId);
 
