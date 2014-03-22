@@ -15,12 +15,12 @@ namespace evoART.Controllers
     public class AccountController : Controller
     {
         private readonly HttpContext context;
-        private readonly CookieHelper myCookie;
+        private readonly CookieHelper _myCookie;
 
         public AccountController()
         {
             context = System.Web.HttpContext.Current;
-            myCookie=new CookieHelper();
+            _myCookie=new CookieHelper();
             
             //FormsAuthentication.SetAuthCookie();
             //FormsAuthentication.CookieMode
@@ -93,8 +93,8 @@ namespace evoART.Controllers
             AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
 
             //Create the cookies for the session
-            myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
-            myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+            _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+            _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
 
             return "K";
         }
@@ -138,11 +138,11 @@ namespace evoART.Controllers
 
         public AccountModels.UserAccount GetUserDetails()
         {
-            if (myCookie.GetCookie("sessionId") == "" || myCookie.GetCookie("sessionKey") == "")
+            if (_myCookie.GetCookie("sessionId") == "" || _myCookie.GetCookie("sessionKey") == "")
                 return null;
 
             AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
-                new Guid(myCookie.GetCookie("sessionId")), myCookie.GetCookie("sessionKey"));
+                new Guid(_myCookie.GetCookie("sessionId")), _myCookie.GetCookie("sessionKey"));
 
             return user;
         }

@@ -31,7 +31,6 @@ namespace evoART.Special
         {
             var cookie = new HttpCookie(name)
             {
-                Domain = "/",
                 Value = null,
                 Expires = DateTime.Now.AddDays(-1)
             };
