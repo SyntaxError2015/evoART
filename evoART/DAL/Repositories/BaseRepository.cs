@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces.UserAccounts;
+using evoART.DAL.Interfaces;
 
-namespace evoART.DAL.Repositories.UserAccounts
+namespace evoART.DAL.Repositories
 {
     public abstract class BaseRepository<T> : IBaseInterface where T : class
     {

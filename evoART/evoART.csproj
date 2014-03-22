@@ -143,7 +143,7 @@
     <Compile Include="DAL\Interfaces\UserAccounts\IRoleRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\ISessionRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IUserAccountRepository.cs" />
-    <Compile Include="DAL\Interfaces\UserAccounts\IBaseInterface.cs" />
+    <Compile Include="DAL\Interfaces\IBaseInterface.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\AccountValidationRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\RoleRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\SessionRepository.cs" />

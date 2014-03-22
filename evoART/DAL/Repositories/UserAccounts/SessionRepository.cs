@@ -34,6 +34,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             {
                 var session = new AccountModels.Session
                 {
+                    SessionId = Guid.NewGuid(),
                     UserAccount = _dbContext.UserAccounts.First(u => u.UserName == userName),
                     SessionKey = Special.TokenGenerator.EncryptMD5(DateTime.Now.ToFileTime().ToString())
                 };

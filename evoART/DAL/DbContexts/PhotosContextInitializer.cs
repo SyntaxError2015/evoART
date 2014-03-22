@@ -16,8 +16,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializePhotosTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PhotoModels.Photo>()
-                .HasKey(k => k.PhotoId)
-                .Property(p => p.PhotoId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(k => k.PhotoId);
 
             modelBuilder.Entity<PhotoModels.Photo>()
                 .Property(p => p.Name).IsOptional();
@@ -57,8 +56,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializeAlbumsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PhotoModels.Album>()
-                .HasKey(k => k.AlbumId)
-                .Property(k => k.AlbumId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(k => k.AlbumId);
 
             modelBuilder.Entity<PhotoModels.Album>()
                 .Property(p => p.AlbumName).IsRequired();
@@ -70,8 +68,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializeHashTagsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PhotoModels.HashTag>()
-                .HasKey(k => k.HashTagId)
-                .Property(k => k.HashTagId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(k => k.HashTagId);
 
             modelBuilder.Entity<PhotoModels.HashTag>()
                 .Property(p => p.HashTagName).IsRequired();
