@@ -43,8 +43,8 @@ namespace evoART.DAL.DbContexts
 
             // Map the many-to-many relationship between the Photos table and the HashTags table
             modelBuilder.Entity<PhotoModels.Photo>()
-                .HasMany(kp => kp.HashTags)
-                .WithMany(kp => kp.Photos)
+                .HasMany(hp => hp.HashTags)
+                .WithMany(hp => hp.Photos)
                 .Map(m =>
                 {
                     m.ToTable("HashTags_Photos");

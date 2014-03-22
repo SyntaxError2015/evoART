@@ -7,10 +7,19 @@ namespace evoART.DAL.Interfaces.Photos
     {
         PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "");
 
-        bool Insert(string[] hashTagName, Guid photoId);
+        bool DeleteHashTagForPhoto(PhotoModels.HashTag hashTag, PhotoModels.Photo photo);
 
-        bool DeleteHashForPhoto(Guid photoId, Guid keywordId);
+        bool DeleteHashTagForPhoto(Guid hashTagId, PhotoModels.Photo photo);
 
-        bool DeleteAllHashesForPhoto(Guid photoId);
+        bool DeleteHashTagForPhoto(Guid hashTagId, Guid keywordId);
+
+        bool DeleteAllHasheTagsForPhoto(Guid photoId);
+
+        bool Insert(string[] hashTagNames, Guid photoId);
+
+        bool DeleteHashTag(Guid hashTagId);
+
+        bool DeleteHashTag(string hashTagName);
+
     }
 }
