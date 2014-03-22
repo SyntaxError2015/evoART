@@ -16,6 +16,12 @@ namespace evoART.DAL.Repositories.Photos
         {
         }
 
+        /// <summary>
+        /// Get a the list with the most popular tags on the website
+        /// </summary>
+        /// <param name="number">The number of tags to return</param>
+        /// <param name="name">The name part for the tags to search for</param>
+        /// <returns>A HashTag entity array</returns>
         public PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "")
         {
             try
@@ -42,6 +48,12 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Delete a an association between a hashtag and a photo
+        /// </summary>
+        /// <param name="hashTag">The HashTag entity for which to beak the association</param>
+        /// <param name="photo">The Photo entity for which to beak the association</param>
+        /// <returns>A bool value indicating the success of the action</returns>
         public bool DeleteHashTagForPhoto(PhotoModels.HashTag hashTag, PhotoModels.Photo photo)
         {
             try
@@ -57,6 +69,12 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Delete a an association between a hashtag and a photo
+        /// </summary>
+        /// <param name="hashTagId">The Id of the hashtag</param>
+        /// <param name="photo">The Photo entity for which to beak the association</param>
+        /// <returns>A bool value indicating the success of the action</returns>
         public bool DeleteHashTagForPhoto(Guid hashTagId, PhotoModels.Photo photo)
         {
             photo.HashTags.Remove(_dbSet.Find(hashTagId));
@@ -65,6 +83,12 @@ namespace evoART.DAL.Repositories.Photos
             return DeleteHashTagForPhoto(hashTag, photo);
         }
 
+        /// <summary>
+        /// Delete a an association between a hashtag and a photo
+        /// </summary>
+        /// <param name="hashTagId">The Id of the hashtag</param>
+        /// <param name="photoId">The Id of the photo</param>
+        /// <returns>A bool value indicating the success of the action</returns>
         public bool DeleteHashTagForPhoto(Guid hashTagId, Guid photoId)
         {
             var photo = _dbContext.Photos.Find(photoId);
@@ -72,6 +96,11 @@ namespace evoART.DAL.Repositories.Photos
             return DeleteHashTagForPhoto(hashTagId, photo);
         }
 
+        /// <summary>
+        /// Delete all the association that a photo has with all its hashtags
+        /// </summary>
+        /// <param name="photoId">The Id of the photo</param>
+        /// <returns>A bool value indicating the success of the action</returns>
         public bool DeleteAllHasheTagsForPhoto(Guid photoId)
         {
             var error = false;
@@ -84,6 +113,11 @@ namespace evoART.DAL.Repositories.Photos
             return !error;
         }
 
+        /// <summary>
+        /// Insert new hashtags into the database
+        /// </summary>
+        /// <param name="hashTagNames">An array of strings representing the hashtag names</param>
+        /// <param name="photoId">The Id of the photo for which to add these hashtags</param>
         public bool Insert(string[] hashTagNames, Guid photoId)
         {
             var photo = _dbContext.Photos.Find(photoId);
@@ -113,6 +147,10 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Delete a certain hashtag from the server
+        /// </summary>
+        /// <param name="hashTagId">The Id of the hashtag to delete</param>
         public bool DeleteHashTag(Guid hashTagId)
         {
             try
@@ -128,6 +166,10 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Delete a certain hashtag from the server
+        /// </summary>
+        /// <param name="hashTagName">The name of the hashtag to delete</param>
         public bool DeleteHashTag(string hashTagName)
         {
             try
