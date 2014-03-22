@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using evoART.Models.DbModels;
+﻿using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces.Photos
 {
     interface IAlbumsRepository
     {
+        PhotoModels.Album[] GetAlbumsForUser(int userId);
+
+        PhotoModels.Photo[] GetAlbumPhotos(int albumId, int userId);
+
         bool Insert(PhotoModels.Album album);
 
         bool Insert(string albumName, string albumDescription);

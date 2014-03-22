@@ -1,30 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using evoART.DAL.Interfaces.Photos;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
 {
-    public class CategoriesRepository : ICategoriesRepository
+    public class HashTagsRepository : IHashTagsRepository
     {
-        public bool Insert(PhotoModels.Category category)
+        public PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "")
         {
             throw new NotImplementedException();
         }
 
-        public bool Insert(string categoryName, string categoryDescription)
+        public bool Insert(string[] hashTagName, int photoId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(string categoryName)
+        public bool DeleteHashForPhoto(int photoId, int keywordId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(PhotoModels.Category category)
+        public bool DeleteAllHashesForPhoto(int photoId)
         {
             throw new NotImplementedException();
         }

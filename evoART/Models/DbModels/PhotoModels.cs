@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Web;
 using System.Web.DynamicData;
 
 namespace evoART.Models.DbModels
@@ -25,11 +21,7 @@ namespace evoART.Models.DbModels
 
             public virtual Album Album { get; set; }
 
-            //public virtual Photo_Category PhotoCategory { get; set; }
-            public virtual ICollection<Category> Categories { get; set; }
-
-            //public virtual Keyword_Photo KeywordPhoto { get; set; }
-            public virtual ICollection<Keyword> Keywords { get; set; } 
+            public virtual ICollection<HashTag> HashTags { get; set; } 
         }
 
         [TableName("Albums")]
@@ -44,27 +36,13 @@ namespace evoART.Models.DbModels
             public virtual ICollection<Photo> Photos { get; set; }
         }
 
-        [TableName("Categories")]
-        public class Category
+        [TableName("HashTags")]
+        public class HashTag
         {
-            public int CategoryId { get; set; }
+            public long HashTagId { get; set; }
 
-            public string CategoryName { get; set; }
+            public string HashTagName { get; set; }
 
-            public string CategoryDescription { get; set; }
-
-            //public virtual Photo_Category PhotoCategory { get; set; }
-            public virtual ICollection<Photo> Photos { get; set; } 
-        }
-
-        [TableName("Keywords")]
-        public class Keyword
-        {
-            public long KeywordId { get; set; }
-
-            public string KeywordName { get; set; }
-
-            //public virtual Keyword_Photo KeywordPhoto { get; set; }
             public virtual ICollection<Photo> Photos { get; set; } 
         }
     }

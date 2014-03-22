@@ -47,8 +47,8 @@ namespace evoART.DAL.UnitsOfWork
 
         private PhotosRepository _photosRepository;
         private AlbumsRepository _albumsRepository;
-        private CategoriesRepository _categoriesRepository;
-        private KeywordsRepository _keywordsRepository;
+        private HashTagsRepository _hashTagsRepository;
+        private HashTagsRepository _keywordsRepository;
 
         #endregion
 
@@ -130,19 +130,19 @@ namespace evoART.DAL.UnitsOfWork
             }
         }
 
-        public CategoriesRepository CategoriesRepository
+        public HashTagsRepository HashTagsRepository
         {
             get
             {
-                return _categoriesRepository ?? (_categoriesRepository = new CategoriesRepository());
+                return _hashTagsRepository ?? (_hashTagsRepository = new HashTagsRepository());
             }
         }
 
-        public KeywordsRepository KeywordsRepository
+        public HashTagsRepository KeywordsRepository
         {
             get
             {
-                return _keywordsRepository ?? (_keywordsRepository = new KeywordsRepository());
+                return _keywordsRepository ?? (_keywordsRepository = new HashTagsRepository());
             }
         }
 
