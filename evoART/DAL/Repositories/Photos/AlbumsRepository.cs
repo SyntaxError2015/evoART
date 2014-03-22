@@ -14,6 +14,11 @@ namespace evoART.DAL.Repositories.Photos
         {
         }
 
+        /// <summary>
+        /// Get all the albums that a user has
+        /// </summary>
+        /// <param name="userId">The Id of the user</param>
+        /// <returns></returns>
         public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             try
@@ -29,6 +34,10 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Insert a new album in the database
+        /// </summary>
+        /// <param name="album">An Album entity containing all the album details</param>
         public bool Insert(PhotoModels.Album album)
         {
             try
@@ -46,9 +55,14 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Insert a new album in the database
+        /// </summary>
+        /// <param name="albumName">The name of the album</param>
+        /// <param name="albumDescription">The description for the album</param>
         public bool Insert(string albumName, string albumDescription = "")
         {
-            var album = new PhotoModels.Album()
+            var album = new PhotoModels.Album
             {
                 AlbumName = albumName,
                 AlbumDescription = albumDescription
@@ -57,6 +71,11 @@ namespace evoART.DAL.Repositories.Photos
             return Insert(album);
         }
 
+        /// <summary>
+        /// Detele an album from the database
+        /// </summary>
+        /// <param name="albumName">The name of the album</param>
+        /// <param name="userId">The Id of the user that owns the album</param>
         public bool Delete(string albumName, Guid userId)
         {
             try
@@ -72,6 +91,10 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
+        /// <summary>
+        /// Update a certain album from the database
+        /// </summary>
+        /// <param name="album">The Album entity to be updated</param>
         public bool Update(PhotoModels.Album album)
         {
             try

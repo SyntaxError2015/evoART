@@ -94,7 +94,7 @@ namespace evoART.DAL.Repositories.Photos
 
                 for (var i = 0; i < hashTags.Length; i++)
                 {
-                    hashTags[i] = new PhotoModels.HashTag()
+                    hashTags[i] = new PhotoModels.HashTag
                     {
                         HashTagId = Guid.NewGuid(),
                         HashTagName = hashTagNames[i]
