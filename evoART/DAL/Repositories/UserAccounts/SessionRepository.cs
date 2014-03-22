@@ -13,29 +13,22 @@ namespace evoART.DAL.Repositories.UserAccounts
         }
 
         /// <summary>
-        /// Verify if a user is already logged in or not
+        /// Get the user that has the selected session details
         /// </summary>
-        /// <param name="userName">The nickname of the user for which to verify</param>
-        /// <returns>A bool value</returns>
-        public bool IsLoggedIn(string userName)
+        /// <param name="sessionId">The Id of the session</param>
+        /// <param name="sessionKey">The Key for the session</param>
+        /// <returns>An UserAccount instance or null if there is no session for the user</returns>
+        public AccountModels.UserAccount GetUser(int sessionId, string sessionKey)
         {
-            try
-            {
-                return _dbSet.Count(u => u.UserAccount.UserName == userName) > 0;
-            }
-
-            catch
-            {
-                return false;
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Open a session for a certain user
         /// </summary>
         /// <param name="userName">The nickname of the user who wants to log in</param>
-        /// <returns>A bool value indicating the success of the action</returns>
-        public bool Login(string userName)
+        /// <returns>A Session instance or a null value if it doesn't exist</returns>
+        public AccountModels.Session Login(string userName)
         {
             try
             {
@@ -47,12 +40,12 @@ namespace evoART.DAL.Repositories.UserAccounts
 
                 _dbSet.Add(session);
 
-                return Save();
+                return Save() ? session : null;
             }
 
             catch
             {
-                return false;
+                return null;
             }
         }
 

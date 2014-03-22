@@ -10,8 +10,7 @@ namespace evoART.DAL.DbContexts
         {
             InitializePhotosTable(modelBuilder);
             InitializeAlbumsTable(modelBuilder);
-            InitializeCategoriesTable(modelBuilder);
-            InitializeKeywordsTable(modelBuilder);
+            InitializeHashTagsTable(modelBuilder);
         }
 
         private static void InitializePhotosTable(DbModelBuilder modelBuilder)
@@ -43,25 +42,14 @@ namespace evoART.DAL.DbContexts
                 .Map(m => m.MapKey("AlbumId"))
                 .WillCascadeOnDelete(false);
 
-            // Map the many-to-many relationship between the Photos table and the Categories table
+            // Map the many-to-many relationship between the Photos table and the HashTags table
             modelBuilder.Entity<PhotoModels.Photo>()
-                .HasMany(pc => pc.Categories)
-                .WithMany(pc => pc.Photos)
-                .Map(m =>
-                {
-                    m.ToTable("Photos_Categories");
-                    m.MapLeftKey("CategoryId");
-                    m.MapRightKey("PhotoId");
-                });
-
-            // Map the many-to-many relationship between the Photos table and the Keywords table
-            modelBuilder.Entity<PhotoModels.Photo>()
-                .HasMany(kp => kp.Keywords)
+                .HasMany(kp => kp.HashTags)
                 .WithMany(kp => kp.Photos)
                 .Map(m =>
                 {
-                    m.ToTable("Keywords_Photos");
-                    m.MapLeftKey("KeywordId");
+                    m.ToTable("HashTags_Photos");
+                    m.MapLeftKey("HashTagId");
                     m.MapRightKey("PhotoId");
                 });
         }
@@ -79,27 +67,14 @@ namespace evoART.DAL.DbContexts
                 .Property(p => p.AlbumDescription).IsOptional();
         }
 
-        private static void InitializeCategoriesTable(DbModelBuilder modelBuilder)
+        private static void InitializeHashTagsTable(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PhotoModels.Category>()
-                .HasKey(k => k.CategoryId)
-                .Property(k => k.CategoryId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<PhotoModels.HashTag>()
+                .HasKey(k => k.HashTagId)
+                .Property(k => k.HashTagId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<PhotoModels.Category>()
-                .Property(p => p.CategoryName).IsRequired();
-
-            modelBuilder.Entity<PhotoModels.Category>()
-                .Property(p => p.CategoryDescription).IsOptional();
-        }
-
-        private static void InitializeKeywordsTable(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<PhotoModels.Keyword>()
-                .HasKey(k => k.KeywordId)
-                .Property(k => k.KeywordId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            modelBuilder.Entity<PhotoModels.Keyword>()
-                .Property(p => p.KeywordName).IsRequired();
+            modelBuilder.Entity<PhotoModels.HashTag>()
+                .Property(p => p.HashTagName).IsRequired();
         }
     }
 }
