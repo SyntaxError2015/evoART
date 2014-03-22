@@ -1,17 +1,22 @@
 ﻿using System;
+using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
 {
-    public class AlbumsRepository : IAlbumsRepository
+    public class AlbumsRepository : BaseRepository<PhotoModels.Album>, IAlbumsRepository
     {
-        public PhotoModels.Album[] GetAlbumsForUser(int userId)
+        public AlbumsRepository(DatabaseContext context) : base(context)
+        {
+        }
+
+        public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public PhotoModels.Photo[] GetAlbumPhotos(int albumId, int userId)
+        public PhotoModels.Photo[] GetAlbumPhotos(Guid albumId, Guid userId)
         {
             throw new NotImplementedException();
         }

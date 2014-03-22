@@ -1,4 +1,5 @@
-﻿using evoART.Models.DbModels;
+﻿using System;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces.Photos
 {
@@ -6,10 +7,10 @@ namespace evoART.DAL.Interfaces.Photos
     {
         PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "");
 
-        bool Insert(string[] hashTagName, int photoId);
+        bool Insert(string[] hashTagName, Guid photoId);
 
-        bool DeleteHashForPhoto(int photoId, int keywordId);
+        bool DeleteHashForPhoto(Guid photoId, Guid keywordId);
 
-        bool DeleteAllHashesForPhoto(int photoId);
+        bool DeleteAllHashesForPhoto(Guid photoId);
     }
 }

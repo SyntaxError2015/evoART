@@ -152,6 +152,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             {
                 var validation = new AccountModels.AccountValidation
                 {
+                    AccountValidationId = Guid.NewGuid(),
                     UserAccount = _dbContext.UserAccounts.First(u => u.UserName == userName),
                     ValidationTokenExpireDate = DateTime.Now.AddHours(24),
                     LoginFails = 0,

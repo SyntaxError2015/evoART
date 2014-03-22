@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.UserAccounts;
@@ -61,7 +62,9 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
+                userAccount.UserId = Guid.NewGuid();
                 userAccount.Password = Special.TokenGenerator.EncryptMD5(userAccount.Password);
+                
                 _dbSet.Add(userAccount);
 
                 return Save() && DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
