@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
@@ -60,6 +61,17 @@ namespace evoART.Controllers
                 Expires = DateTime.Now.AddDays(-1)
             };
             Response.SetCookie(cookie);
+        }
+
+        /// <summary>
+        /// Get the cookie value
+        /// </summary>
+        /// <param name="name">The cookie name</param>
+        /// <returns>The cookie's value</returns>
+        public string GetCookie(string name)
+        {
+
+            return Response.Cookies[name]!=null ? Response.Cookies[name].Value : "";
         }
 
         public string GetStatus()
@@ -142,6 +154,22 @@ namespace evoART.Controllers
             // AccountValidations table for the user.
             // The password is also automatically encrypted in the model
             return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
+        }
+
+        public string GetUserName()
+        {
+            
+        }
+
+        public bool IsLoggedIn()
+        {
+            if (GetCookie("sessionId") == null || GetCookie("sessionKey") == null) 
+                return false;
+
+            AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
+                GetCookie("sessionId"), GetCookie("sessionKey"));
+
+            return user != null ? true : false;
         }
 
         public PartialViewResult RegisterTab()
