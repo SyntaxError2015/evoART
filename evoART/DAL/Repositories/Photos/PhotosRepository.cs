@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
-using evoART.DAL.Repositories.UserAccounts;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
@@ -33,7 +33,7 @@ namespace evoART.DAL.Repositories.Photos
                 return _dbSet.Count(p =>
                     p.UserAccount.UserId == userId &&
                     p.Album.AlbumId == albumId &&
-                    p.Name == photoName) > 0;
+                    p.PhotoName == photoName) > 0;
             }
 
             catch
@@ -42,24 +42,72 @@ namespace evoART.DAL.Repositories.Photos
             }
         }
 
-        public int Insert(PhotoModels.Photo photo)
+        public Guid Insert(PhotoModels.Photo photo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                photo.PhotoId = Guid.NewGuid();
+
+                _dbSet.Add(photo);
+
+                return Save() ? photo.PhotoId : Guid.Empty;
+            }
+
+            catch
+            {
+                return Guid.Empty;
+            }
         }
 
-        public int Insert(string photoName, string photoDescription, Guid albumId, Guid userId)
+        public Guid Insert(string photoName, string photoDescription, Guid albumId, Guid userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var photo = new PhotoModels.Photo()
+                {
+                    PhotoId = Guid.NewGuid(),
+                    PhotoName = photoName
+                };
+
+                _dbSet.Add(photo);
+
+                return Save() ? photo.PhotoId : Guid.Empty;
+            }
+
+            catch
+            {
+                return Guid.Empty;
+            }
         }
 
         public bool Delete(Guid photoId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.Remove(_dbSet.Find(photoId));
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         public bool Update(PhotoModels.Photo photo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.AddOrUpdate(photo);
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -19,10 +19,10 @@ namespace evoART.DAL.DbContexts
                 .HasKey(k => k.PhotoId);
 
             modelBuilder.Entity<PhotoModels.Photo>()
-                .Property(p => p.Name).IsOptional();
+                .Property(p => p.PhotoName).IsOptional();
 
             modelBuilder.Entity<PhotoModels.Photo>()
-                .Property(p => p.Description).IsOptional();
+                .Property(p => p.PhotoDescription).IsOptional();
 
             modelBuilder.Entity<PhotoModels.Photo>()
                 .Property(p => p.UploadDate).IsRequired();
