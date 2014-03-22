@@ -9,7 +9,7 @@ namespace evoART.Models.DbModels
         [TableName("Photos")]
         public class Photo
         {
-            public long PhotoId { get; set; }
+            public Guid PhotoId { get; set; }
 
             public string Name { get; set; }
 
@@ -27,7 +27,7 @@ namespace evoART.Models.DbModels
         [TableName("Albums")]
         public class Album
         {
-            public long AlbumId { get; set; }
+            public Guid AlbumId { get; set; }
 
             public string AlbumName { get; set; }
 
@@ -39,7 +39,7 @@ namespace evoART.Models.DbModels
         [TableName("HashTags")]
         public class HashTag
         {
-            public long HashTagId { get; set; }
+            public Guid HashTagId { get; set; }
 
             public string HashTagName { get; set; }
 
