@@ -9,7 +9,7 @@ namespace evoART.Models.DbModels
         [TableName("UserAccount")]
         public class UserAccount
         {
-            public int UserId { get; set; }
+            public Guid UserId { get; set; }
 
             public string UserName { get; set; }
 
@@ -39,7 +39,7 @@ namespace evoART.Models.DbModels
         [TableName("AccountValidation")]
         public class AccountValidation
         {
-            public int AccountValidationId { get; set; }
+            public Guid AccountValidationId { get; set; }
             public bool IsVerified { get; set; }
 
             public string ValidationToken { get; set; }
@@ -54,7 +54,7 @@ namespace evoART.Models.DbModels
         [TableName("Role")]
         public class Role
         {
-            public int RoleId { get; set; }
+            public Guid RoleId { get; set; }
 
             public string RoleName { get; set; }
 
@@ -64,7 +64,7 @@ namespace evoART.Models.DbModels
         [TableName("Session")]
         public class Session
         {
-            public int SessionId { get; set; }
+            public Guid SessionId { get; set; }
 
             public string SessionKey { get; set; }
 
@@ -74,7 +74,7 @@ namespace evoART.Models.DbModels
         [TableName("OAuthLogin")]
         public class OAuthLogin
         {
-            public int OAuthLoginId { get; set; }
+            public Guid OAuthLoginId { get; set; }
 
             public string Provider { get; set; }
 

@@ -118,7 +118,7 @@ namespace evoART.DAL.UnitsOfWork
         {
             get
             {
-                return _photosRepository ?? (_photosRepository = new PhotosRepository());
+                return _photosRepository ?? (_photosRepository = new PhotosRepository(_dbContext));
             }
         }
 
@@ -126,7 +126,7 @@ namespace evoART.DAL.UnitsOfWork
         {
             get
             {
-                return _albumsRepository ?? (_albumsRepository = new AlbumsRepository());
+                return _albumsRepository ?? (_albumsRepository = new AlbumsRepository(_dbContext));
             }
         }
 
@@ -134,7 +134,7 @@ namespace evoART.DAL.UnitsOfWork
         {
             get
             {
-                return _hashTagsRepository ?? (_hashTagsRepository = new HashTagsRepository());
+                return _hashTagsRepository ?? (_hashTagsRepository = new HashTagsRepository(_dbContext));
             }
         }
 
@@ -142,7 +142,7 @@ namespace evoART.DAL.UnitsOfWork
         {
             get
             {
-                return _keywordsRepository ?? (_keywordsRepository = new HashTagsRepository());
+                return _keywordsRepository ?? (_keywordsRepository = new HashTagsRepository(_dbContext));
             }
         }
 

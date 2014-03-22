@@ -18,8 +18,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.UserAccount>()
-                .HasKey(t => t.UserId)
-                .Property(t => t.UserId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(t => t.UserId);
 
             // Map foreign key to the Roles table
             modelBuilder.Entity<AccountModels.UserAccount>()
@@ -92,8 +91,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializeRolesTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.Role>()
-                .HasKey(t => t.RoleId)
-                .Property(t => t.RoleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(t => t.RoleId);
 
             modelBuilder.Entity<AccountModels.Role>()
                 .Property(p => p.RoleName).IsRequired();
@@ -111,8 +109,7 @@ namespace evoART.DAL.DbContexts
         private static void InitializeOAuthLoginsTable(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountModels.OAuthLogin>()
-                .HasKey(k => k.OAuthLoginId)
-                .Property(p => p.OAuthLoginId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasKey(k => k.OAuthLoginId);
 
             modelBuilder.Entity<AccountModels.OAuthLogin>()
                 .Property(p => p.Provider).IsRequired();

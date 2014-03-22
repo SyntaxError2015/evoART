@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.UserAccounts;
@@ -42,10 +43,16 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// Insert a new role in the database
         /// </summary>
         /// <returns>A bool value indicating the success of the operation</returns>
-        public bool Insert(AccountModels.Role role)
+        public bool Insert(string roleName)
         {
             try
             {
+                var role = new AccountModels.Role()
+                {
+                    RoleId = Guid.NewGuid(),
+                    RoleName = roleName
+                };
+
                 _dbSet.AddOrUpdate(role);
 
                 return Save();

@@ -1,4 +1,5 @@
-﻿using evoART.Models.DbModels;
+﻿using System;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.Interfaces.Photos
 {
@@ -6,15 +7,15 @@ namespace evoART.DAL.Interfaces.Photos
     {
         PhotoModels.Photo GetPhoto(int photoId);
 
-        bool VerifyExists(int userId, int albumId, string photoName);
+        bool VerifyExists(Guid userId, Guid albumId, string photoName);
 
         // Returns the photo Id
         int Insert(PhotoModels.Photo photo);
 
         // Returns the photo Id
-        int Insert(string photoName, string photoDescription, int albumId, int userId);
+        int Insert(string photoName, string photoDescription, Guid albumId, Guid userId);
 
-        bool Delete(int photoId);
+        bool Delete(Guid photoId);
 
         bool Update(PhotoModels.Photo photo);
     }
