@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,10 +10,12 @@ namespace UnitTesting
     [TestClass]
     public class PhotomanipTests
     {
-        private const string FILE = @"C:\Users\Coddo\Desktop\test.JPG";
-        private const string RESIZED = @"C:\Users\Coddo\Desktop\resized.JPG";
-        private const string THUMB = @"C:\Users\Coddo\Desktop\thumb.JPG";
-        private const string HEX = @"C:\Users\Coddo\Desktop\hex.png";
+        private static readonly string FILE = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\test.jpg";
+        private static readonly string RESIZED = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\resized.JPG";
+        private static readonly string THUMB = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\thumb.JPG";
+        private static readonly string HEX = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\hex.png";
+        private static readonly string WTMKTXT = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmktxt.png";
+        private static readonly string WTMKIMG = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmkimg.png";
 
         [TestMethod]
         public void ResizeImage()
@@ -39,12 +42,38 @@ namespace UnitTesting
         [TestMethod]
         public void CreateHexThumbnail()
         {
-            var hex = ImageResizer.CreateThumbnail(Image.FromFile(FILE));
+            var hex = ImageResizer.CreateHexagonImage(Image.FromFile(FILE));
 
             if (File.Exists(HEX))
                 File.Delete(HEX);
 
             hex.Save(HEX, ImageFormat.Png);
+        }
+
+        [TestMethod]
+        public void PlaceTextWatermark()
+        {
+            const string text = "Copyright @ 2014 - Codoban Claudiu";
+
+            var img = WatermarkGenerator.AddStringWatermark(Image.FromFile(RESIZED), text);
+
+            if (File.Exists(WTMKTXT))
+                File.Delete(WTMKTXT);
+
+            img.Save(WTMKTXT, ImageFormat.Jpeg);
+        }
+
+        [TestMethod]
+        public void PlaceImageWatermark()
+        {
+            var wtmk = Image.FromFile(HEX);
+
+            var img = WatermarkGenerator.AddImageWatermark(Image.FromFile(FILE), wtmk);
+
+            if (File.Exists(WTMKIMG))
+                File.Delete(WTMKIMG);
+
+            img.Save(WTMKIMG, ImageFormat.Jpeg);
         }
     }
 }
