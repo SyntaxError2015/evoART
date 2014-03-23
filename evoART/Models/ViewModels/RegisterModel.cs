@@ -21,7 +21,7 @@ namespace evoART.Models.ViewModels
         public string FirstName { get; set; }
 
         [DataType(DataType.Text)]
-        [DisplayName("LastName")]
+        [DisplayName("Last name")]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]

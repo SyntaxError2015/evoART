@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
-using evoART.DAL.UnitOfWork;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
@@ -20,8 +20,8 @@ namespace evoART.DAL.DbContexts
             {
                 if (db.Roles.Any()) return;
 
-                DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Simple user" });
-                DatabaseWorkUnit.Instance.RoleRepository.Insert(new AccountModels.Role { RoleName = "Photographer" });
+                DatabaseWorkUnit.Instance.RoleRepository.Insert("Simple user" );
+                DatabaseWorkUnit.Instance.RoleRepository.Insert("Photographer" );
             }
         }
     }
