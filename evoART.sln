@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evoART", "evoART\evoART.csproj", "{53CAF66E-AA43-4A42-8204-7ACC11F44318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{82FB9CFC-224D-4CCA-BAFC-667399C93B4A}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoManipulator", "PhotoManipulator\PhotoManipulator.csproj", "{CB4102BB-0416-4946-973D-A0EBBD4451A0}"
 EndProject
 Global
@@ -17,6 +19,10 @@ Global
 		{53CAF66E-AA43-4A42-8204-7ACC11F44318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53CAF66E-AA43-4A42-8204-7ACC11F44318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53CAF66E-AA43-4A42-8204-7ACC11F44318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82FB9CFC-224D-4CCA-BAFC-667399C93B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82FB9CFC-224D-4CCA-BAFC-667399C93B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82FB9CFC-224D-4CCA-BAFC-667399C93B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FB9CFC-224D-4CCA-BAFC-667399C93B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB4102BB-0416-4946-973D-A0EBBD4451A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB4102BB-0416-4946-973D-A0EBBD4451A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB4102BB-0416-4946-973D-A0EBBD4451A0}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -118,33 +118,51 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
+    <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IAlbumsRepository.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IHashTagsRepository.cs" />
+    <Compile Include="DAL\Interfaces\Photos\IPhotosRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\AlbumsRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\HashTagsRepository.cs" />
+    <Compile Include="DAL\Repositories\Photos\PhotosRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\LayoutModel.cs" />
+    <Compile Include="Special\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DAL\UnitOfWork\DatabaseWorkUnit.cs" />
+    <Compile Include="DAL\UnitsOfWork\DatabaseWorkUnit.cs" />
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
-    <Compile Include="DAL\Interfaces\IAccountValidationRepository.cs" />
-    <Compile Include="DAL\Interfaces\IRoleRepository.cs" />
-    <Compile Include="DAL\Interfaces\ISessionRepository.cs" />
-    <Compile Include="DAL\Interfaces\IUserAccountRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IRoleRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\ISessionRepository.cs" />
+    <Compile Include="DAL\Interfaces\UserAccounts\IUserAccountRepository.cs" />
     <Compile Include="DAL\Interfaces\IBaseInterface.cs" />
-    <Compile Include="DAL\Repositories\AccountValidationRepository.cs" />
-    <Compile Include="DAL\Repositories\RoleRepository.cs" />
-    <Compile Include="DAL\Repositories\SessionRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\AccountValidationRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\RoleRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\SessionRepository.cs" />
     <Compile Include="DAL\Repositories\BaseRepository.cs" />
-    <Compile Include="DAL\Repositories\UserAccountRepository.cs" />
+    <Compile Include="DAL\Repositories\UserAccounts\UserAccountRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="DAL\DbContexts\DatabaseContext.cs" />
     <Compile Include="Models\DbModels\AccountModels.cs" />
+    <Compile Include="Models\DbModels\PhotoModels.cs" />
+    <Compile Include="Models\DbModels\SocialModels.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
     <Compile Include="Models\ViewModels\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Special\Sorting.cs" />
+    <Compile Include="Special\CookieHelper.cs" />
+    <Compile Include="Special\TokenGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -188,7 +206,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
-    <Content Include="Views\Partials\Login.cshtml" />
+    <Content Include="Views\Shared\Login.cshtml" />
+    <Content Include="Views\Shared\Register.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -213,7 +232,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1147</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1147/</IISUrl>
+          <IISUrl>http://localhost:1112/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

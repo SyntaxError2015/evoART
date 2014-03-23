@@ -9,7 +9,7 @@ namespace evoART.Models.DbModels
         [TableName("UserAccount")]
         public class UserAccount
         {
-            public int UserId { get; set; }
+            public Guid UserId { get; set; }
 
             public string UserName { get; set; }
 
@@ -30,12 +30,18 @@ namespace evoART.Models.DbModels
             public virtual AccountValidation AccountValidation { get; set; }
 
             public virtual Session Session { get; set; }
+
+            public virtual OAuthLogin OAuthLogins { get; set; }
+
+            public virtual ICollection<PhotoModels.Album> Albums { get; set; }
+
+            public virtual ICollection<PhotoModels.Photo> Photos { get; set; }
         }
 
         [TableName("AccountValidation")]
         public class AccountValidation
         {
-            public int AccountValidationId { get; set; }
+            public Guid AccountValidationId { get; set; }
             public bool IsVerified { get; set; }
 
             public string ValidationToken { get; set; }
@@ -50,7 +56,7 @@ namespace evoART.Models.DbModels
         [TableName("Role")]
         public class Role
         {
-            public int RoleId { get; set; }
+            public Guid RoleId { get; set; }
 
             public string RoleName { get; set; }
 
@@ -60,11 +66,23 @@ namespace evoART.Models.DbModels
         [TableName("Session")]
         public class Session
         {
-            public int SessionId { get; set; }
+            public Guid SessionId { get; set; }
 
             public string SessionKey { get; set; }
 
             public virtual UserAccount UserAccount { get; set; }
+        }
+
+        [TableName("OAuthLogin")]
+        public class OAuthLogin
+        {
+            public Guid OAuthLoginId { get; set; }
+
+            public string Provider { get; set; }
+
+            public string Key { get; set; }
+
+            public virtual UserAccount UserAccounts { get; set; }
         }
     }
 }

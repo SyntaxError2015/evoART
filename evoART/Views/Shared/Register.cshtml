@@ -1,0 +1,74 @@
+﻿@model evoART.Models.ViewModels.RegisterModel
+@{
+    Layout = null;
+}
+
+
+<script>
+    function testResponse(data) {
+        document.getElementById("UserName").style.border = "none";
+        document.getElementById("Password").style.border = "none";
+        document.getElementById("PasswordConfirmation").style.border = "none";
+        document.getElementById("EmailAddress").style.border = "none";
+        document.getElementById("registerStatus").innerHTML = "";
+
+        if (data == "K") document.getElementById("userform").innerHTML = "<center>Register successful!<br/>Click on Login and enter your details.</center>";
+        if (data == "U") {
+            document.getElementById("UserName").style.border = "solid 2px red";
+            document.getElementById("registerStatus").innerHTML = "Username between 4-28 chars, starting with letter.";
+        }
+        if (data == "D") {
+            document.getElementById("UserName").style.border = "solid 2px red";
+            document.getElementById("registerStatus").innerHTML = "This username is already taken!";
+        }
+        if (data == "E") {
+            document.getElementById("EmailAddress").style.border = "solid 2px red";
+            document.getElementById("registerStatus").innerHTML = "The email address is not valid!";
+        }
+        if (data == "P") {
+            document.getElementById("Password").style.border = "solid 2px red";
+            document.getElementById("registerStatus").innerHTML = "The password must be between 6-28 chars!";
+        }
+        if (data == "M") {
+            document.getElementById("PasswordConfirmation").style.border = "solid 2px red";
+            document.getElementById("registerStatus").innerHTML = "The passwords don't match!";
+        }
+        if (data == "F") {
+            document.getElementById("registerStatus").innerHTML = "The registration failed!";
+        }
+        
+    }
+</script>
+
+@using (Ajax.BeginForm("Register", "Account", new AjaxOptions { OnSuccess = "testResponse(data)" }))
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.UserName)</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.EmailAddress)</td>
+            <td>@Html.TextBoxFor(m => m.EmailAddress)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Password)</td>
+            <td>@Html.PasswordFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.PasswordConfirmation)</td>
+            <td>@Html.PasswordFor(m => m.PasswordConfirmation)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Role)</td>
+            <td>@Html.DropDownListFor(m => m.Role, (IEnumerable<SelectListItem>)ViewData["Roles"])</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input class="btn" type="submit" value="Register" />
+            </td>
+        </tr>
+    </table>
+    <div id="registerStatus"></div>
+}
