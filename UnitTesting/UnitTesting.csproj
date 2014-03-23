@@ -33,6 +33,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,19 @@
     <Compile Include="PhotoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserAccountTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\evoART\evoART.csproj">
+      <Project>{53caf66e-aa43-4a42-8204-7acc11f44318}</Project>
+      <Name>evoART</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhotoManipulator\PhotoManipulator.csproj">
+      <Project>{cb4102bb-0416-4946-973d-a0ebbd4451a0}</Project>
+      <Name>PhotoManipulator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
