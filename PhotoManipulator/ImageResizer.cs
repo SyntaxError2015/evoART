@@ -80,6 +80,31 @@ namespace PhotoManipulator
             return polygon;
         }
 
+        private static int[] GetPolygonCorners(PointF[] polygon)
+        {
+            var left = polygon[0].X;
+            var top = polygon[0].Y;
+            var right = polygon[0].X;
+            var bottom = polygon[0].Y;
+
+            for (var i = 1; i < polygon.Length; i++)
+            {
+                if (polygon[i].X < left)
+                    left = polygon[i].X;
+
+                if (polygon[i].X > right)
+                    right = polygon[i].X;
+
+                if (polygon[i].Y < top)
+                    top = polygon[i].Y;
+
+                if (polygon[i].Y > bottom)
+                    bottom = polygon[i].Y;
+            }
+
+            return new int[] { (int)left - 2, (int)top - 2, (int)right + 2, (int)bottom + 3 };
+        }
+
         #endregion
 
         #region Public methods
@@ -142,12 +167,22 @@ namespace PhotoManipulator
         {
             image = ResizeForHexagonShape(image);
 
-            var rect = new Rectangle(0, 0, image.Width, image.Height);
+            var hexPoints = GenerateHexagonPointsForImage(image);
+    
+            var normalize = GetPolygonCorners(hexPoints);
+
+            for (var i = 0; i < hexPoints.Length; i++)
+            {
+                hexPoints[i].X -= normalize[0];
+                hexPoints[i].Y -= normalize[1];
+            }
+
+            var rect = new Rectangle(-normalize[0], -normalize[1], image.Width, image.Height);
 
             var clip = new GraphicsPath();
-            clip.AddPolygon(GenerateHexagonPointsForImage(image));
+            clip.AddPolygon(hexPoints);
 
-            var img = new Bitmap(image.Width, image.Height);
+            var img = new Bitmap(normalize[2] - normalize[0], normalize[3] - normalize[1]);
 
             var g = Graphics.FromImage(img);
 
