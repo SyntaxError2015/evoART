@@ -12,6 +12,7 @@ namespace UnitTesting
         private const string FILE = @"C:\Users\Coddo\Desktop\test.JPG";
         private const string RESIZED = @"C:\Users\Coddo\Desktop\resized.JPG";
         private const string THUMB = @"C:\Users\Coddo\Desktop\thumb.JPG";
+        private const string HEX = @"C:\Users\Coddo\Desktop\hex.png";
 
         [TestMethod]
         public void ResizeImage()
@@ -33,6 +34,17 @@ namespace UnitTesting
                 File.Delete(THUMB);
 
             thumbnail.Save(THUMB, ImageFormat.Jpeg);
+        }
+
+        [TestMethod]
+        public void CreateHexThumbnail()
+        {
+            var hex = ImageResizer.CreateThumbnail(Image.FromFile(FILE));
+
+            if (File.Exists(HEX))
+                File.Delete(HEX);
+
+            hex.Save(HEX, ImageFormat.Png);
         }
     }
 }
