@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using evoART.DAL.DbContexts;
-using evoART.DAL.Interfaces;
-using evoART.DAL.UnitOfWork;
+using evoART.DAL.Interfaces.UserAccounts;
 using evoART.Models.DbModels;
 
-namespace evoART.DAL.Repositories
+namespace evoART.DAL.Repositories.UserAccounts
 {
     public class OAuthLoginRepository : BaseRepository<AccountModels.OAuthLogin>, IOAuthLoginRepository
     {
@@ -70,7 +69,8 @@ namespace evoART.DAL.Repositories
             {
                 var item = new AccountModels.OAuthLogin()
                 {
-                    UserAccounts = _dbContext.UserAccounts.FirstOrDefault(t => t.UserName == userName),
+                    OAuthLoginId = Guid.NewGuid(),
+                    UserAccounts = _dbContext.UserAccounts.First(t => t.UserName == userName),
                     Provider = providerName,
                     Key = idFromProvider
                 };
