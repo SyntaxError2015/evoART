@@ -9,7 +9,9 @@ namespace PhotoManipulator
     {
         private const int MINIMUM_WIDTH = 1200;
         private const int MINIMUM_HEIGHT = 1000;
-        private const int THUMB_MIN_SIZE = 400;
+
+        private const int THUMB_MIN_SIZE_WIDTH = 400;
+        private const int THUMB_MIN_SIZE_HEIGTH = 400;
 
         private static Image ResizeImage(Image image, Size size)
         {
@@ -25,9 +27,8 @@ namespace PhotoManipulator
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
             var rect = new Rectangle(0, 0, size.Width, size.Height);
-            
+
             g.DrawImage(image, rect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
-            //g.FillPolygon(new SolidBrush(Color.Red), HexagonPoints(image), FillMode.Winding);
 
             image = bmpPhoto;
 
@@ -47,9 +48,9 @@ namespace PhotoManipulator
 
             if (image.Width > image.Height)
             {
-                
+
                 newSize.Width = MINIMUM_WIDTH;
-                newSize.Height = (int) ((image.Height)*((float) newSize.Width/image.Width));
+                newSize.Height = (int)((image.Height) * ((float)newSize.Width / image.Width));
             }
 
             else
@@ -72,39 +73,50 @@ namespace PhotoManipulator
 
             if (image.Width > image.Height)
             {
-                newSize.Height = THUMB_MIN_SIZE;
+                newSize.Height = THUMB_MIN_SIZE_HEIGTH;
                 newSize.Width = (int)((image.Width) * ((float)newSize.Height / image.Height));
             }
 
             else
             {
-                newSize.Width = THUMB_MIN_SIZE;
+                newSize.Width = THUMB_MIN_SIZE_WIDTH;
                 newSize.Height = (image.Height) * (newSize.Width / image.Width);
             }
 
-            return ResizeImage(image, new Size(300, 200));
+            return ResizeImage(image, newSize);
         }
 
-        public static Image CreateHexagonShapedImage(Image image)
+        public static Image CreateHexagonShapedImage(Bitmap image)
         {
-            return null; //return HexagonPoints(image);
+            var img = new Bitmap(radius + 100, radius + 100);
+            
+            var g = Graphics.FromImage(img);
+            var points = GenerateHexagonPointsForImage(image);
+
+            g.DrawPolygon(new Pen(Color.Pink), points);
+            g.DrawPolygon(new Pen(Color.Transparent), new PointF[] {new PointF(image.Width, 0), points[0], points[1]});
+
+            image = img;
+
+            return image;
         }
 
-        private static Point[] HexagonPoints(Image image)
+        private const int radius = 300;
+
+        private static PointF[] GenerateHexagonPointsForImage(Image image)
         {
-            var points = new Point[6];
+            var polygon = new PointF[6];
 
-            var half = image.Height/2;
-            var quart = image.Width/4;
+            for (var i = 0; i < polygon.Length; i++)
+            {
+                var x = (float) (((float)image.Width / 2) + radius * Math.Cos(2 * Math.PI * i / polygon.Length));
+                var y = (float) (((float)image.Height / 2) + radius * Math.Sin(2 * Math.PI * i / polygon.Length));
 
-            points[0] = new Point(quart, 0);
-            points[1] = new Point(image.Width - quart, 0);
-            points[2] = new Point(image.Width, half);
-            points[3] = new Point(image.Width - quart, image.Height);
-            points[4] = new Point(quart, image.Height);
-            points[5] = new Point(0, half);
+                polygon[i] = new PointF(x, y);
+            }
 
-            return points;
+            return polygon;
         }
+
     }
 }
