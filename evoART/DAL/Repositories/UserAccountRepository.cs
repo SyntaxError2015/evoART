@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Migrations;
+﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Security.Cryptography;
 using evoART.DAL.DbContexts;
@@ -8,14 +7,11 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class UserAccountRepository : BaseRepository, IUserAccountRepository
+    public class UserAccountRepository : BaseRepository<AccountModels.UserAccount>, IUserAccountRepository
     {
-        private readonly DbSet<AccountModels.UserAccount> _dbSet;
-
         public UserAccountRepository(DatabaseContext context)
             : base(context)
         {
-            _dbSet = context.UserAccounts;
         }
 
         /// <summary>
@@ -46,7 +42,9 @@ namespace evoART.DAL.Repositories
         {
             try
             {
-                return _dbSet.Count(u => u.UserName == userName && u.Password == MD5.Create(password).ToString()) > 0;
+                return _dbSet.Count(u => 
+                    u.UserName == userName && 
+                    u.Password == Special.TextWarping.EncryptMD5(password).ToString()) > 0;
             }
 
             catch
@@ -63,6 +61,7 @@ namespace evoART.DAL.Repositories
         {
             try
             {
+                userAccount.Password = Special.TextWarping.EncryptMD5(userAccount.Password);
                 _dbSet.Add(userAccount);
 
                 return Save();
@@ -78,11 +77,11 @@ namespace evoART.DAL.Repositories
         /// Delete a user from the database
         /// </summary>
         /// <returns>A bool value indicating if the operation was successful</returns>
-        public bool Delete(int userId)
+        public bool Delete(string userName)
         {
             try
             {
-                _dbSet.Remove(_dbSet.Find(userId));
+                _dbSet.Remove(_dbSet.First(u => u.UserName == userName));
 
                 return Save();
             }

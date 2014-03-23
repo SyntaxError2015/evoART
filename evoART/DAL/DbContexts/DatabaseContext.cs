@@ -18,6 +18,7 @@ namespace evoART.DAL.DbContexts
             InitializeAccountValidationsTable(modelBuilder);
             InitializeRolesTable(modelBuilder);
             InitializeSessionsTable(modelBuilder);
+            InitializeOAuthLoginsTable(modelBuilder);
         }
 
         protected virtual void InitializeUserAccountsTable(DbModelBuilder modelBuilder)
@@ -44,6 +45,13 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasRequired(t => t.Session)
                 .WithRequiredPrincipal(p => p.UserAccount)
+                .Map(m => m.MapKey("UserId"))
+                .WillCascadeOnDelete(true);
+
+            // Map foreign ket for the OAuthLogin table
+            modelBuilder.Entity<AccountModels.UserAccount>()
+                .HasRequired(t => t.OAuthLogins)
+                .WithRequiredPrincipal(t => t.UserAccounts)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 
@@ -106,6 +114,19 @@ namespace evoART.DAL.DbContexts
                 .Property(p => p.SessionKey).IsRequired();
         }
 
+        private static void InitializeOAuthLoginsTable(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountModels.OAuthLogin>()
+                .HasKey(k => k.OAuthLoginId)
+                .Property(p => p.OAuthLoginId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<AccountModels.OAuthLogin>()
+                .Property(p => p.Provider).IsRequired();
+
+            modelBuilder.Entity<AccountModels.OAuthLogin>()
+                .Property(p => p.Key).IsRequired();
+        }
+
         public DbSet<AccountModels.UserAccount> UserAccounts { get; set; }
 
         public DbSet<AccountModels.AccountValidation> AccountValidations { get; set; }
@@ -113,5 +134,7 @@ namespace evoART.DAL.DbContexts
         public DbSet<AccountModels.Role> Roles { get; set; }
 
         public DbSet<AccountModels.Session> Sessions { get; set; }
+
+        public DbSet<AccountModels.OAuthLogin> OAuthLogins { get; set; }
     }
 }

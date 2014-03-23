@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Migrations;
+﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces;
@@ -7,13 +6,10 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class RoleRepository : BaseRepository, IRoleRepository
+    public class RoleRepository : BaseRepository<AccountModels.Role>, IRoleRepository
     {
-        private readonly DbSet<AccountModels.Role> _dbSet;
-
         public RoleRepository(DatabaseContext context) : base(context)
         {
-            _dbSet = context.Roles;
         }
 
         /// <summary>

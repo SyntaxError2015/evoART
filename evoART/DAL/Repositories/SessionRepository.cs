@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,13 +8,28 @@ using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories
 {
-    public class SessionRepository : BaseRepository, ISessionRepository
+    public class SessionRepository : BaseRepository<AccountModels.Session>, ISessionRepository
     {
-        private readonly DbSet<AccountModels.Session> _dbSet;
-
         public SessionRepository(DatabaseContext context) : base(context)
         {
-            _dbSet = context.Sessions;
+        }
+
+        /// <summary>
+        /// Verify if a user is already logged in or not
+        /// </summary>
+        /// <param name="userName">The nickname of the user for which to verify</param>
+        /// <returns>A bool value</returns>
+        public bool IsLoggedIn(string userName)
+        {
+            try
+            {
+                return _dbSet.Count(u => u.UserAccount.UserName == userName) > 0;
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -30,10 +44,7 @@ namespace evoART.DAL.Repositories
                 var session = new AccountModels.Session
                 {
                     UserAccount = _dbContext.UserAccounts.FirstOrDefault(u => u.UserName == userName),
-                    SessionKey = MD5.Create(DateTime.Now.ToFileTime()
-                        .ToString(CultureInfo.InvariantCulture))
-                        .GetHashCode()
-                        .ToString(CultureInfo.InvariantCulture)
+                    SessionKey = Special.TextWarping.EncryptMD5(DateTime.Now.ToFileTime().ToString())
                 };
 
                 _dbSet.Add(session);
