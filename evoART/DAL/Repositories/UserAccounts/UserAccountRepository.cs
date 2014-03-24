@@ -18,6 +18,24 @@ namespace evoART.DAL.Repositories.UserAccounts
         }
 
         /// <summary>
+        /// Get the UserAccount entity associated to a certain username
+        /// </summary>
+        /// <param name="userName">The user's nickname for which to search</param>
+        /// <returns>Am UserAccount instance</returns>
+        public AccountModels.UserAccount GetUser(string userName)
+        {
+            try
+            {
+                return _dbSet.First(u => u.UserName == userName);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Verify if the entered user already exists in the database
         /// </summary>
         /// <param name="userName">The name of the user</param>
@@ -71,19 +89,9 @@ namespace evoART.DAL.Repositories.UserAccounts
                 
                 _dbSet.Add(userAccount);
 
-                //return Save() && 
-                //    DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName)
-                //    && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(DEFAULT_ALBUM_NAME);
-
-                bool ok = Save();
-
-                if (ok)
-                    ok = DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName);
-
-                if (ok)
-                    ok = DatabaseWorkUnit.Instance.AlbumsRepository.Insert(userAccount.UserId, DEFAULT_ALBUM_NAME);
-
-                return ok;
+                return Save() && 
+                    DatabaseWorkUnit.Instance.AccountValidationRepository.Insert(userAccount.UserName)
+                    && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(userAccount.UserId, DEFAULT_ALBUM_NAME);
             }
 
             catch

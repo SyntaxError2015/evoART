@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
@@ -16,11 +17,11 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
-        /// Get the photo that has the entered Id
+        /// Get the photo from the database
         /// </summary>
         /// <param name="photoId">The Id of the photo</param>
         /// <returns>A Photo entity</returns>
-        public PhotoModels.Photo GetPhoto(int photoId)
+        public PhotoModels.Photo GetPhoto(Guid photoId)
         {
             try
             {
@@ -34,17 +35,86 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
+        /// Get the photo from the database
+        /// </summary>
+        /// <param name="albumId">The Id of the album in which it is found</param>
+        /// <param name="photoName">The name of the photo</param>
+        /// <returns>A Photo entity</returns>
+        public PhotoModels.Photo GetPhoto(Guid albumId, string photoName)
+        {
+            try
+            {
+                return _dbSet.First(p => p.Album.AlbumId == albumId && p.PhotoName == photoName);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a certain number of photos that have been added to a hashtag
+        /// </summary>
+        /// <param name="hashTag">The HashTag entity from where to extract the photos</param>
+        /// <param name="startPosition">The 0-based index from where to select the photos</param>
+        /// <param name="number">The number of photos to select</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPhotosForHashTag(PhotoModels.HashTag hashTag, int startPosition, int number)
+        {
+            try
+            {
+                var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
+
+                // If there are fewer photos than the wanted number, then return the whole collection
+                if (photos.Count() < startPosition + number)
+                    return photos.ToArray();
+
+                var selection = new PhotoModels.Photo[number];
+
+                for (var i = startPosition; i < number + startPosition; i++)
+                    selection[i - startPosition] = photos.ElementAt(i);
+
+                return selection;
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a certain number of photos that have been added to a hashtag
+        /// </summary>
+        /// <param name="hashTagName">The name of the hashtag from where to extract the photos</param>
+        /// <param name="startPosition">The 0-based index from where to select the photos</param>
+        /// <param name="number">The number of photos to select</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number)
+        {
+            try
+            {
+                return GetPhotosForHashTag(DatabaseWorkUnit.Instance.HashTagsRepository.GetHashTag(hashTagName),
+                    startPosition, number);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Verify if a certain album already contains a photo with the entered name
         /// </summary>
-        /// <param name="userId">The Id of the user</param>
         /// <param name="albumId">The Id of the album</param>
         /// <param name="photoName">The name of the photo</param>
-        public bool VerifyExists(Guid userId, Guid albumId, string photoName)
+        public bool VerifyExists(Guid albumId, string photoName)
         {
             try
             {
                 return _dbSet.Count(p =>
-                    p.UserAccount.UserId == userId &&
                     p.Album.AlbumId == albumId &&
                     p.PhotoName == photoName) > 0;
             }
@@ -59,14 +129,13 @@ namespace evoART.DAL.Repositories.Photos
         /// Get all the photos from a certain user's album
         /// </summary>
         /// <param name="albumId">The Id of the user</param>
-        /// <param name="userId">The Id of the album</param>
         /// <returns>An array of Photo entites</returns>
-        public PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId, Guid userId)
+        public PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId)
         {
             try
             {
                 IEnumerable<PhotoModels.Photo> photos =
-                    _dbSet.Where(a => a.Album.AlbumId == albumId && a.UserAccount.UserId == userId);
+                    _dbSet.Where(a => a.Album.AlbumId == albumId);
 
                 return photos.ToArray();
             }
@@ -104,17 +173,19 @@ namespace evoART.DAL.Repositories.Photos
         /// </summary>
         /// <param name="photoName">The name of the photo</param>
         /// <param name="photoDescription">The description of the photo</param>
-        /// <param name="albumId">The Id of the album</param>
-        /// <param name="userId">The Id of the user</param>
+        /// <param name="album">The Album in which to place the photo</param>
         /// <returns>The Id of the photo that has been inserted in the database</returns>
-        public Guid Insert(string photoName, string photoDescription, Guid albumId, Guid userId)
+        public Guid Insert(string photoName, string photoDescription, PhotoModels.Album album)
         {
             try
             {
                 var photo = new PhotoModels.Photo
                 {
                     PhotoId = Guid.NewGuid(),
-                    PhotoName = photoName
+                    PhotoName = photoName,
+                    PhotoDescription = photoDescription,
+                    UploadDate = DateTime.Now,
+                    Album = album
                 };
 
                 _dbSet.Add(photo);
