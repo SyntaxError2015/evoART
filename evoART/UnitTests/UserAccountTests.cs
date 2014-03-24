@@ -6,31 +6,31 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace evoART.UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class UserAccountTests
     {
-        private static AccountModels.UserAccount user0 = new AccountModels.UserAccount
+        private static readonly AccountModels.UserAccount user0 = new AccountModels.UserAccount
         {
             UserName = "user0",
             Email = "user0@u.user",
             Password = "user0"
         };
 
-        private static AccountModels.UserAccount user1 = new AccountModels.UserAccount
+        private static readonly AccountModels.UserAccount user1 = new AccountModels.UserAccount
         {
             UserName = "user1",
             Email = "user1@u.user",
             Password = "user1"
         };
 
-        private static AccountModels.UserAccount user2 = new AccountModels.UserAccount
+        private static readonly AccountModels.UserAccount user2 = new AccountModels.UserAccount
         {
             UserName = "user2",
             Email = "user2@u.user",
             Password = "user2"
         };
 
-        private static AccountModels.UserAccount user3 = new AccountModels.UserAccount
+        private static readonly AccountModels.UserAccount user3 = new AccountModels.UserAccount
         {
             UserName = "user3",
             Email = "user3@u.user",

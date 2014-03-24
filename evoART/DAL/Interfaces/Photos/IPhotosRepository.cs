@@ -9,6 +9,10 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Photo GetPhoto(Guid albumId, string photoName);
 
+        PhotoModels.Photo[] GetPhotosForHashTag(PhotoModels.HashTag hashTag, int startPosition, int number);
+
+        PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number);
+
         bool VerifyExists(Guid albumId, string photoName);
 
         PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId);

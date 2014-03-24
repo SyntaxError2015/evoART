@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.Repositories.Photos
@@ -44,6 +45,58 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 return _dbSet.First(p => p.Album.AlbumId == albumId && p.PhotoName == photoName);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a certain number of photos that have been added to a hashtag
+        /// </summary>
+        /// <param name="hashTag">The HashTag entity from where to extract the photos</param>
+        /// <param name="startPosition">The 0-based index from where to select the photos</param>
+        /// <param name="number">The number of photos to select</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPhotosForHashTag(PhotoModels.HashTag hashTag, int startPosition, int number)
+        {
+            try
+            {
+                var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
+
+                // If there are fewer photos than the wanted number, then return the whole collection
+                if (photos.Count() < startPosition + number)
+                    return photos.ToArray();
+
+                var selection = new PhotoModels.Photo[number];
+
+                for (var i = startPosition; i < number + startPosition; i++)
+                    selection[i - startPosition] = photos.ElementAt(i);
+
+                return selection;
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a certain number of photos that have been added to a hashtag
+        /// </summary>
+        /// <param name="hashTagName">The name of the hashtag from where to extract the photos</param>
+        /// <param name="startPosition">The 0-based index from where to select the photos</param>
+        /// <param name="number">The number of photos to select</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number)
+        {
+            try
+            {
+                return GetPhotosForHashTag(DatabaseWorkUnit.Instance.HashTagsRepository.GetHashTag(hashTagName),
+                    startPosition, number);
             }
 
             catch
