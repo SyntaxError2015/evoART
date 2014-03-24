@@ -17,8 +17,6 @@ namespace evoART.Models.DbModels
 
             public DateTime UploadDate { get; set; }
 
-            public virtual AccountModels.UserAccount UserAccount { get; set; }
-
             public virtual Album Album { get; set; }
 
             public virtual ICollection<HashTag> HashTags { get; set; } 

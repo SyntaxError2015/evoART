@@ -34,8 +34,6 @@ namespace evoART.Models.DbModels
             public virtual OAuthLogin OAuthLogins { get; set; }
 
             public virtual ICollection<PhotoModels.Album> Albums { get; set; }
-
-            public virtual ICollection<PhotoModels.Photo> Photos { get; set; }
         }
 
         [TableName("AccountValidation")]
