@@ -174,8 +174,9 @@ namespace evoART.DAL.Repositories.Photos
         /// <param name="photoName">The name of the photo</param>
         /// <param name="photoDescription">The description of the photo</param>
         /// <param name="album">The Album in which to place the photo</param>
+        /// <param name="contentTag">The ContentTag which classifies the photo</param>
         /// <returns>The Id of the photo that has been inserted in the database</returns>
-        public Guid Insert(string photoName, string photoDescription, PhotoModels.Album album)
+        public Guid Insert(string photoName, string photoDescription, PhotoModels.Album album, PhotoModels.ContentTag contentTag)
         {
             try
             {
@@ -185,7 +186,8 @@ namespace evoART.DAL.Repositories.Photos
                     PhotoName = photoName,
                     PhotoDescription = photoDescription,
                     UploadDate = DateTime.Now,
-                    Album = album
+                    Album = album,
+                    ContentTag = contentTag
                 };
 
                 _dbSet.Add(photo);

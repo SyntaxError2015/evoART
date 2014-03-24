@@ -23,6 +23,8 @@ namespace evoART.DAL.DbContexts
 
                 db.Roles.Add(new AccountModels.Role {RoleId = Guid.NewGuid(), RoleName = "Simple user"});
                 db.Roles.Add(new AccountModels.Role {RoleId = Guid.NewGuid(), RoleName = "Photographer" });
+
+                db.SaveChanges();
             }
         }
 
@@ -52,6 +54,8 @@ namespace evoART.DAL.DbContexts
                     ContentTagName = "NSFW",
                     ContentTagDescription = "NOT safe for work - has explicit mature content (not appropriate for children)"
                 });
+
+                db.SaveChanges();
             }
         }
     }
