@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PhotoManipulator.UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class PhotomanipTests
     {
         private static readonly string FILE = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\test2.jpg";
