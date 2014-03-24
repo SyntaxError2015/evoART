@@ -5,17 +5,19 @@ namespace evoART.DAL.Interfaces.Photos
 {
     interface IPhotosRepository
     {
-        PhotoModels.Photo GetPhoto(int photoId);
+        PhotoModels.Photo GetPhoto(Guid photoId);
 
-        bool VerifyExists(Guid userId, Guid albumId, string photoName);
+        PhotoModels.Photo GetPhoto(Guid albumId, string photoName);
 
-        PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId, Guid userId);
+        bool VerifyExists(Guid albumId, string photoName);
+
+        PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId);
 
         // Returns the photo Id
         Guid Insert(PhotoModels.Photo photo);
 
         // Returns the photo Id
-        Guid Insert(string photoName, string photoDescription, Guid albumId, Guid userId);
+        Guid Insert(string photoName, string photoDescription, PhotoModels.Album album);
 
         bool Delete(Guid photoId);
 

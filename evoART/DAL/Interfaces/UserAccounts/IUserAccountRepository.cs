@@ -4,6 +4,8 @@ namespace evoART.DAL.Interfaces.UserAccounts
 {
     interface IUserAccountRepository
     {
+        AccountModels.UserAccount GetUser(string userName);
+
         bool VerifyExists(string userName);
 
         bool VerifyPassword(string userName, string password);
