@@ -19,6 +19,8 @@ namespace evoART.Models.DbModels
 
             public virtual Album Album { get; set; }
 
+            public virtual ContentTag ContentTag { get; set; }
+
             public virtual ICollection<HashTag> HashTags { get; set; }
 
             public virtual ICollection<SocialModels.Like> Likes { get; set; }
@@ -58,6 +60,8 @@ namespace evoART.Models.DbModels
             public string ContentTagName { get; set; }
 
             public string ContentTagDescription { get; set; }
+
+            public ICollection<Photo> Photos { get; set; } 
         }
     }
 }

@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
+    <Compile Include="DAL\DbContexts\SocialContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\Photos\IAlbumsRepository.cs" />
     <Compile Include="DAL\Interfaces\Photos\IHashTagsRepository.cs" />
