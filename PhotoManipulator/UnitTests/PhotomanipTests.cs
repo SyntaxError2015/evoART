@@ -3,11 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PhotoManipulator;
 
-namespace UnitTesting
+namespace PhotoManipulator.UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class PhotomanipTests
     {
         private static readonly string FILE = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\test.jpg";
