@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace evoART.UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class PhotoTests
     {
         [TestMethod]
