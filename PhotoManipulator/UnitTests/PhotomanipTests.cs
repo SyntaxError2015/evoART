@@ -3,19 +3,20 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PhotoManipulator;
 
-namespace UnitTesting
+namespace PhotoManipulator.UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class PhotomanipTests
     {
-        private static readonly string FILE = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\test.jpg";
+        private static readonly string FILE = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\test2.jpg";
+        //private static readonly string FILE2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\tes3.jpg";
+        //private static readonly string FILE3 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\tes5.jpg";
         private static readonly string RESIZED = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\resized.JPG";
         private static readonly string THUMB = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\thumb.JPG";
         private static readonly string HEX = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\hex.png";
-        private static readonly string WTMKTXT = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmktxt.png";
-        private static readonly string WTMKIMG = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmkimg.png";
+        private static readonly string WTMKTXT = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmktxt.jpg";
+        private static readonly string WTMKIMG = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\wtmkimg.jpg";
 
         [TestMethod]
         public void ResizeImage()
