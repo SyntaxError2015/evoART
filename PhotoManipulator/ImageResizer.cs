@@ -58,7 +58,7 @@ namespace PhotoManipulator
             else
             {
                 newSize.Width = HEXAGON_MIN_SIZE_UNIT;
-                newSize.Height = (image.Height) * (newSize.Width / image.Width);
+                newSize.Height = (int)((image.Height) * ((float)newSize.Width / image.Width));
             }
 
             return ResizeImage(image, newSize);
@@ -152,7 +152,7 @@ namespace PhotoManipulator
             else
             {
                 newSize.Width = THUMB_MIN_SIZE_WIDTH;
-                newSize.Height = (image.Height) * (newSize.Width / image.Width);
+                newSize.Height = (int)((image.Height) * ((float)newSize.Width / image.Width));
             }
 
             return ResizeImage(image, newSize);

@@ -25,7 +25,7 @@ namespace PhotoManipulator
             g.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height),
                 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
 
-            var font = new Font("Arial", (float)image.Width / 100, FontStyle.Bold);
+            var font = new Font("Arial", (float)image.Width / 75, FontStyle.Bold);
             var size = g.MeasureString(watermarkText, font);
 
             var strFormat = new StringFormat { Alignment = StringAlignment.Center };
