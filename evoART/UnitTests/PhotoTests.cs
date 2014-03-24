@@ -11,9 +11,10 @@ namespace evoART.UnitTests
         {
             var user = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser("coddo");
             var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId)[0];
+            var tag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW");
 
-            var photoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph", "descr", album);
-            DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph2", "", album);
+            var photoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph", "descr", album, tag);
+            DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph2", "", album, tag);
 
             DatabaseWorkUnit.Instance.PhotosRepository.Update(
                 DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(album.AlbumId, "testph"));
@@ -42,6 +43,14 @@ namespace evoART.UnitTests
 
             DatabaseWorkUnit.Instance.HashTagsRepository.Insert(new[] {"h1", "h2", "h3", "h4", "h5",},
                 photo.PhotoId);
+        }
+
+        [TestMethod]
+        public void ContentTagsFetchTest()
+        {
+            var tags = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags();
+
+            var tag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SEXY");
         }
     }
 }
