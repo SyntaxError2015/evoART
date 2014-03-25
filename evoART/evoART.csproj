@@ -119,8 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DAL\Interfaces\Social\" />
-    <Folder Include="DAL\Repositories\Social\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
@@ -131,11 +129,15 @@
     <Compile Include="DAL\Interfaces\Photos\IContentTagsRepository.cs" />
     <Compile Include="DAL\Interfaces\Photos\IHashTagsRepository.cs" />
     <Compile Include="DAL\Interfaces\Photos\IPhotosRepository.cs" />
+    <Compile Include="DAL\Interfaces\Social\ICommentsRepository.cs" />
+    <Compile Include="DAL\Interfaces\Social\ILikesRepository.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IOAuthLoginRepository.cs" />
     <Compile Include="DAL\Repositories\Photos\AlbumsRepository.cs" />
     <Compile Include="DAL\Repositories\Photos\ContentTagsRepository.cs" />
     <Compile Include="DAL\Repositories\Photos\HashTagsRepository.cs" />
     <Compile Include="DAL\Repositories\Photos\PhotosRepository.cs" />
+    <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
+    <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
     <Compile Include="Special\AuthConfig.cs" />
