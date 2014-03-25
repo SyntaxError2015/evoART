@@ -11,7 +11,7 @@ namespace evoART.UnitTests
     {
         private static readonly AccountModels.UserAccount user0 = new AccountModels.UserAccount
         {
-            UserName = "user0",
+            UserName = "coddo",
             Email = "user0@u.user",
             Password = "user0"
         };
@@ -54,7 +54,7 @@ namespace evoART.UnitTests
                     throw new Exception("User account creation failed");
             }
 
-            user0.UserName = "MOFO";
+            user1.UserName = "MOFO";
             user2.PhoneNumber = "666";
 
             if (users.Any(t => !DatabaseWorkUnit.Instance.UserAccountRepository.Update(t)))

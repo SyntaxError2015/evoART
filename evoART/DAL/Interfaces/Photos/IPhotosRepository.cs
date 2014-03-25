@@ -21,7 +21,7 @@ namespace evoART.DAL.Interfaces.Photos
         Guid Insert(PhotoModels.Photo photo);
 
         // Returns the photo Id
-        Guid Insert(string photoName, string photoDescription, PhotoModels.Album album);
+        Guid Insert(string photoName, string photoDescription, PhotoModels.Album album, PhotoModels.ContentTag contentTag);
 
         bool Delete(Guid photoId);
 
