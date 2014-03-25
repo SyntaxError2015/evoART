@@ -17,6 +17,8 @@ namespace evoART.Models.DbModels
 
             public DateTime UploadDate { get; set; }
 
+            public int Views { get; set; }
+
             public virtual Album Album { get; set; }
 
             public virtual ContentTag ContentTag { get; set; }

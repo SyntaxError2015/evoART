@@ -149,13 +149,20 @@ namespace evoART.DAL.Repositories.Photos
         /// <summary>
         /// Insert a photo into the database
         /// </summary>
-        /// <param name="photo">A Photo entity</param>
+        /// <param name="photo">A Photo entity that needs to have set the following things:
+        /// * Name,
+        /// * Description (optional),
+        /// * Album,
+        /// * ContentTag.
+        /// The rest of the fields are initialized with default values</param>
         /// <returns>The Id of the photo that has been inserted in the database</returns>
         public Guid Insert(PhotoModels.Photo photo)
         {
             try
             {
                 photo.PhotoId = Guid.NewGuid();
+                photo.Views = 0;
+                photo.UploadDate = DateTime.Now;
 
                 _dbSet.Add(photo);
 
@@ -186,6 +193,7 @@ namespace evoART.DAL.Repositories.Photos
                     PhotoName = photoName,
                     PhotoDescription = photoDescription,
                     UploadDate = DateTime.Now,
+                    Views = 0,
                     Album = album,
                     ContentTag = contentTag
                 };

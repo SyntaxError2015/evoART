@@ -27,6 +27,9 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<PhotoModels.Photo>()
                 .Property(p => p.UploadDate).IsRequired();
 
+            modelBuilder.Entity<PhotoModels.Photo>()
+                .Property(p => p.Views).IsRequired();
+
             // Map foreign key to the Albums table
             modelBuilder.Entity<PhotoModels.Photo>()
                 .HasRequired(a => a.Album)
