@@ -9,17 +9,19 @@ namespace evoART.DAL.Interfaces.Social
 
         SocialModels.Comment[] GetCommentsForPhoto(PhotoModels.Photo photo);
 
-        bool Insert(Guid photoId, Guid userId);
+        bool Insert(Guid photoId, Guid userId, string commentText);
 
-        bool Insert(Guid photoId, AccountModels.UserAccount user);
+        bool Insert(Guid photoId, AccountModels.UserAccount user, string commentText);
 
-        bool Insert(Guid photoId, string userName);
+        bool Insert(Guid photoId, string userName, string commentText);
 
-        bool Insert(PhotoModels.Photo photo, Guid userId);
+        bool Insert(PhotoModels.Photo photo, Guid userId, string commentText);
 
-        bool Insert(PhotoModels.Photo photo, AccountModels.UserAccount user);
+        bool Insert(PhotoModels.Photo photo, AccountModels.UserAccount user, string commentText);
 
-        bool Insert(PhotoModels.Photo photo, string userName);
+        bool Insert(PhotoModels.Photo photo, string userName, string commentText);
+
+        bool Insert(SocialModels.Comment comment);
 
         bool Delete(Guid photoId, Guid userId);
 
