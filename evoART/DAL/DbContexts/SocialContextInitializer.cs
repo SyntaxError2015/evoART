@@ -16,6 +16,9 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<SocialModels.Like>()
                 .HasKey(k => k.LikeId);
 
+            modelBuilder.Entity<SocialModels.Like>()
+                .Property(p => p.LikeDate).IsRequired();
+
             // Map foreign key to the Photos table
             modelBuilder.Entity<SocialModels.Like>()
                 .HasRequired(p => p.Photo)
@@ -38,6 +41,9 @@ namespace evoART.DAL.DbContexts
 
             modelBuilder.Entity<SocialModels.Comment>()
                 .Property(p => p.CommentText).IsRequired();
+
+            modelBuilder.Entity<SocialModels.Comment>()
+                .Property(p => p.CommentDate).IsRequired();
 
             // Map foreign key to the Photos table
             modelBuilder.Entity<SocialModels.Comment>()

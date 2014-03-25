@@ -10,6 +10,8 @@ namespace evoART.Models.DbModels
         {
             public Guid LikeId { get; set; }
 
+            public DateTime LikeDate { get; set; }
+
             public PhotoModels.Photo Photo { get; set; }
 
             public AccountModels.UserAccount UserAccount { get; set; }
@@ -21,6 +23,8 @@ namespace evoART.Models.DbModels
             public Guid CommentId { get; set; }
 
             public string CommentText { get; set; }
+
+            public DateTime CommentDate { get; set; }
 
             public PhotoModels.Photo Photo { get; set; }
 
