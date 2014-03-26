@@ -9,6 +9,12 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Photo GetPhoto(Guid albumId, string photoName);
 
+        PhotoModels.Photo[] GetPopularPhotos(int startPosition, int number);
+
+        PhotoModels.Photo[] GetPopularPhotosForUser(Guid userId, int startPosition, int number);
+
+        PhotoModels.Photo[] GetPopularPhotosForUser(string userName, int startPosition, int number);
+
         PhotoModels.Photo[] GetPhotosForHashTag(PhotoModels.HashTag hashTag, int startPosition, int number);
 
         PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number);
