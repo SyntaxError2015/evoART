@@ -54,6 +54,75 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
+        /// Get a portion of the most popular photos on the website
+        /// </summary>
+        /// <param name="startPosition">The position from where to start returning photos</param>
+        /// <param name="number">The number of photos to return</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPopularPhotos(int startPosition, int number)
+        {
+            try
+            {
+                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views);
+
+                return SelectPhotosByPositionAndNumber(photos, startPosition, number);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a portion of the most popular photos that a user has
+        /// </summary>
+        /// <param name="userId">The Id of the user</param>
+        /// <param name="startPosition">The position from where to start returning photos</param>
+        /// <param name="number">The number of photos to return</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPopularPhotosForUser(Guid userId, int startPosition, int number)
+        {
+            try
+            {
+                var photos =
+                    _dbSet.Where(u => u.Album.UserAccount.UserId == userId)
+                        .OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views);
+
+                return SelectPhotosByPositionAndNumber(photos, startPosition, number);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a portion of the most popular photos that a user has
+        /// </summary>
+        /// <param name="userName">The nickname of the user</param>
+        /// <param name="startPosition">The position from where to start returning photos</param>
+        /// <param name="number">The number of photos to return</param>
+        /// <returns>An array of Photo entities</returns>
+        public PhotoModels.Photo[] GetPopularPhotosForUser(string userName, int startPosition, int number)
+        {
+            try
+            {
+                var photos =
+                    _dbSet.Where(u => u.Album.UserAccount.UserName == userName)
+                        .OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views);
+
+                return SelectPhotosByPositionAndNumber(photos, startPosition, number);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Get a certain number of photos that have been added to a hashtag
         /// </summary>
         /// <param name="hashTag">The HashTag entity from where to extract the photos</param>
@@ -70,27 +139,7 @@ namespace evoART.DAL.Repositories.Photos
 
                 var count = photos.Count();
 
-                // If there are fewer photos than the wanted number, then return the whole collection
-                if (count < startPosition + number)
-                {
-                    if (startPosition >= count)
-                        return null;
-
-                    selection = new PhotoModels.Photo[count - startPosition];
-
-                    for (var i = startPosition; i < count; i++)
-                        selection[i - startPosition] = photos.ElementAt(i);
-                }
-
-                else
-                {
-                    selection = new PhotoModels.Photo[number];
-
-                    for (var i = startPosition; i < number + startPosition; i++)
-                        selection[i - startPosition] = photos.ElementAt(i);
-                }
-
-                return selection;
+                return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
 
             catch
@@ -261,5 +310,39 @@ namespace evoART.DAL.Repositories.Photos
                 return false;
             }
         }
+
+        #region Private auxiliary functions
+
+        private static PhotoModels.Photo[] SelectPhotosByPositionAndNumber(IEnumerable<PhotoModels.Photo> photos, int startPosition, int number)
+        {
+            PhotoModels.Photo[] selection = null;
+
+            var enumerable = photos as PhotoModels.Photo[] ?? photos.ToArray();
+            var count = enumerable.Count();
+
+            // If there are fewer photos than the wanted number, then return only what is possible
+            if (count < startPosition + number)
+            {
+                if (startPosition >= count)
+                    return null;
+
+                selection = new PhotoModels.Photo[count - startPosition];
+
+                for (var i = startPosition; i < count; i++)
+                    selection[i - startPosition] = enumerable.ElementAt(i);
+            }
+
+            else
+            {
+                selection = new PhotoModels.Photo[number];
+
+                for (var i = startPosition; i < number + startPosition; i++)
+                    selection[i - startPosition] = enumerable.ElementAt(i);
+            }
+
+            return selection;
+        }
+
+        #endregion
     }
 }
