@@ -66,14 +66,29 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
 
+                PhotoModels.Photo[] selection = null;
+
+                var count = photos.Count();
+
                 // If there are fewer photos than the wanted number, then return the whole collection
-                if (photos.Count() < startPosition + number)
-                    return photos.ToArray();
+                if (count < startPosition + number)
+                {
+                    if (startPosition >= count)
+                        return null;
 
-                var selection = new PhotoModels.Photo[number];
+                    selection = new PhotoModels.Photo[count - startPosition];
 
-                for (var i = startPosition; i < number + startPosition; i++)
-                    selection[i - startPosition] = photos.ElementAt(i);
+                    for (var i = startPosition; i < count; i++)
+                        selection[i - startPosition] = photos.ElementAt(i);
+                }
+
+                else
+                {
+                    selection = new PhotoModels.Photo[number];
+
+                    for (var i = startPosition; i < number + startPosition; i++)
+                        selection[i - startPosition] = photos.ElementAt(i);
+                }
 
                 return selection;
             }
