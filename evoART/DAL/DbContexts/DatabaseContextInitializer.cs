@@ -1,17 +1,18 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
-using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
 {
-    public class DatabaseContextInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
+    public class DatabaseContextInitializer : CreateDatabaseIfNotExists<DatabaseContext>
     {
         public override void InitializeDatabase(DatabaseContext context)
         {
             base.InitializeDatabase(context);
 
             PopulateRolesTable();
+            PopulateContentTagsTable();
         }
 
         private static void PopulateRolesTable()
@@ -20,8 +21,41 @@ namespace evoART.DAL.DbContexts
             {
                 if (db.Roles.Any()) return;
 
-                DatabaseWorkUnit.Instance.RoleRepository.Insert("Simple user" );
-                DatabaseWorkUnit.Instance.RoleRepository.Insert("Photographer" );
+                db.Roles.Add(new AccountModels.Role {RoleId = Guid.NewGuid(), RoleName = "Simple user"});
+                db.Roles.Add(new AccountModels.Role {RoleId = Guid.NewGuid(), RoleName = "Photographer" });
+
+                db.SaveChanges();
+            }
+        }
+
+        private static void PopulateContentTagsTable()
+        {
+            using (var db = new DatabaseContext())
+            {
+                if (db.ContentTags.Any()) return;
+
+                db.ContentTags.Add(new PhotoModels.ContentTag
+                {
+                    ContentTagId = Guid.NewGuid(),
+                    ContentTagName = "SFW",
+                    ContentTagDescription = "Safe for work - has no mature content"
+                });
+
+                db.ContentTags.Add(new PhotoModels.ContentTag
+                {
+                    ContentTagId = Guid.NewGuid(),
+                    ContentTagName = "SEXY",
+                    ContentTagDescription = "Has mild mature content which may not be appropriate for children"
+                });
+
+                db.ContentTags.Add(new PhotoModels.ContentTag
+                {
+                    ContentTagId = Guid.NewGuid(),
+                    ContentTagName = "NSFW",
+                    ContentTagDescription = "NOT safe for work - has explicit mature content (not appropriate for children)"
+                });
+
+                db.SaveChanges();
             }
         }
     }

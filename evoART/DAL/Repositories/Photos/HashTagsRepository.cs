@@ -35,10 +35,10 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
-        /// Get a the list with the most popular tags on the website
+        /// Get a the list with the most popular tags on the website. The user can specify what the hashtags name should contain.
         /// </summary>
         /// <param name="number">The number of tags to return</param>
-        /// <param name="name">The name part for the tags to search for</param>
+        /// <param name="name">(Optional) The substring that all the returned hashtag names should contain</param>
         /// <returns>A HashTag entity array</returns>
         public PhotoModels.HashTag[] GetPopularHashTags(int number, string name = "")
         {

@@ -34,6 +34,10 @@ namespace evoART.Models.DbModels
             public virtual OAuthLogin OAuthLogins { get; set; }
 
             public virtual ICollection<PhotoModels.Album> Albums { get; set; }
+
+            public virtual ICollection<SocialModels.Like> Likes { get; set; }
+
+            public virtual ICollection<SocialModels.Comment> Comments { get; set; }
         }
 
         [TableName("AccountValidation")]

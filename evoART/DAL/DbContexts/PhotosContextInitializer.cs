@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
@@ -11,6 +10,7 @@ namespace evoART.DAL.DbContexts
             InitializePhotosTable(modelBuilder);
             InitializeAlbumsTable(modelBuilder);
             InitializeHashTagsTable(modelBuilder);
+            InitializeContentTagsTable(modelBuilder);
         }
 
         private static void InitializePhotosTable(DbModelBuilder modelBuilder)
@@ -27,11 +27,21 @@ namespace evoART.DAL.DbContexts
             modelBuilder.Entity<PhotoModels.Photo>()
                 .Property(p => p.UploadDate).IsRequired();
 
+            modelBuilder.Entity<PhotoModels.Photo>()
+                .Property(p => p.Views).IsRequired();
+
             // Map foreign key to the Albums table
             modelBuilder.Entity<PhotoModels.Photo>()
                 .HasRequired(a => a.Album)
                 .WithMany(a => a.Photos)
                 .Map(m => m.MapKey("AlbumId"))
+                .WillCascadeOnDelete(false);
+
+            // Map foreign key to the ContentTag table
+            modelBuilder.Entity<PhotoModels.Photo>()
+                .HasRequired(t => t.ContentTag)
+                .WithMany(t => t.Photos)
+                .Map(m => m.MapKey("ContentTagId"))
                 .WillCascadeOnDelete(false);
 
             // Map the many-to-many relationship between the Photos table and the HashTags table
@@ -72,6 +82,18 @@ namespace evoART.DAL.DbContexts
 
             modelBuilder.Entity<PhotoModels.HashTag>()
                 .Property(p => p.HashTagName).IsRequired();
+        }
+
+        private static void InitializeContentTagsTable(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PhotoModels.ContentTag>()
+                .HasKey(k => k.ContentTagId);
+
+            modelBuilder.Entity<PhotoModels.ContentTag>()
+                .Property(p => p.ContentTagName).IsRequired();
+
+            modelBuilder.Entity<PhotoModels.ContentTag>()
+                .Property(p => p.ContentTagDescription).IsRequired();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using evoART.Models.DbModels;
 
 namespace evoART.DAL.DbContexts
@@ -18,6 +17,7 @@ namespace evoART.DAL.DbContexts
 
             UserAccountsContextInitializer.InitializeUserAccountsModels(modelBuilder);
             PhotosContextInitializer.InitializePhotosModels(modelBuilder);
+            SocialContextInitializer.InitializeSocialModels(modelBuilder);
         }
 
         #region User accounts
@@ -41,6 +41,16 @@ namespace evoART.DAL.DbContexts
         public DbSet<PhotoModels.Album> Albums { get; set; }
 
         public DbSet<PhotoModels.HashTag> HashTags { get; set; }
+
+        public DbSet<PhotoModels.ContentTag> ContentTags { get; set; }
+
+        #endregion
+
+        #region Social
+
+        public DbSet<SocialModels.Like> Likes { get; set; }
+
+        public DbSet<SocialModels.Comment> Comments { get; set; }
 
         #endregion
     }
