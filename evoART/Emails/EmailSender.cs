@@ -16,18 +16,18 @@ namespace evoART.Emails
         {
             get
             {
-                var xml = XDocument.Load("EmailSettings.xml");
+                var xml = XDocument.Load(@"Emails\EmailSettings.xml");
 
                 var credentials = xml.Root.Descendants("sender").Select(item => new
                 {
-                    username = item.Attribute("email").ToString(),
-                    password = item.Attribute("password").ToString(),
+                    username = item.Attribute("email").Value,
+                    password = item.Attribute("password").Value
                 });
 
                 return _emailClient ?? (_emailClient = new SmtpClient
                 {
                     EnableSsl = true,
-                    Port = 465,
+                    Port = 587,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
                     Host = "smtp.gmail.com",
@@ -75,30 +75,31 @@ namespace evoART.Emails
 
         private static MailMessage GeneratePasswordResetMessage(string validationToken, string emailTarget)
         {
-            return GenerateMailMessage("password_reset", validationToken, emailTarget);
+            return GenerateMailMessage("password", validationToken, emailTarget);
         }
 
         private static MailMessage GenerateMailMessage(string node, string innerBodyText, string emailTarget)
         {
-            var xml = XDocument.Load("EmailSettings.xml");
+            var xml = XDocument.Load(@"Emails\EmailSettings.xml");
 
             var query = xml.Descendants(node).Select(item => new
             {
-                subject = item.Element("subject").Attribute("title").ToString(),
+                subject = item.Element("subject").Attribute("title").Value,
                 bodyPart1 = item.Element("body1").Value,
                 bodyPart2 = item.Element("body2").Value
             });
 
             var details = query.ElementAt(0);
 
-            var sender = xml.Root.Descendants("sender").Attributes("email").ToString();
+            var sender = xml.Root.Descendants("sender").Attributes("email").ElementAt(0).Value;
 
-            var body = details.bodyPart1 + "\n\n" + innerBodyText + "\n\n" + details.bodyPart2;
+            var body = details.bodyPart1 + "<br/><br/><b>" + innerBodyText + "</b><br/><br/>\n\n" + details.bodyPart2;
 
             var email = new MailMessage(sender, emailTarget)
             {
                 Subject = details.subject,
-                Body = body
+                Body = body,
+                IsBodyHtml = true
             };
 
             return email;

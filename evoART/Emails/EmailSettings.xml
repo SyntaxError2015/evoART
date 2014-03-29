@@ -3,14 +3,14 @@
   <sender email="evoART.noreply@gmail.com" password="syntaxerror2014" />
   <register>
     <subject title="Welcome to evoART" />
-    <body1>Welcome to evoART, the location where ART evolves and revolutionizes everything !
+    <body1>Welcome to evoART, the location where ART evolves and changes the entire world !
     All that you need to do now is to use the following validation key to confirm your account:
     </body1>
     <body2>This is an automated message, please do not reply to it.</body2>
   </register>
-  <password_reset>
+  <password>
     <subject title="Reset your password" />
-    <body1>You have requested a password reset on evoART. In order to complete your request, access the following link:</body1>
+    <body1>You have requested a password reset on evoART. In order to complete your request, use the following key:</body1>
     <body2>This is an automated message, please do not reply to it.</body2>
-  </password_reset>
+  </password>
 </emails>
