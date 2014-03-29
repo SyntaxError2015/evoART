@@ -49,6 +49,7 @@ namespace evoART.DAL.UnitsOfWork
         private AlbumsRepository _albumsRepository;
         private HashTagsRepository _hashTagsRepository;
         private HashTagsRepository _keywordsRepository;
+        private ContentTagsRepository _contentTagsRepository;
 
         #endregion
 
@@ -143,6 +144,14 @@ namespace evoART.DAL.UnitsOfWork
             get
             {
                 return _keywordsRepository ?? (_keywordsRepository = new HashTagsRepository(_dbContext));
+            }
+        }
+
+        public ContentTagsRepository ContentTagsRepository
+        {
+            get
+            {
+                return _contentTagsRepository ?? (_contentTagsRepository = new ContentTagsRepository(_dbContext));
             }
         }
 

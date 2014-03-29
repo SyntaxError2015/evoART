@@ -9,6 +9,12 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Photo GetPhoto(Guid albumId, string photoName);
 
+        PhotoModels.Photo[] GetPopularPhotos(int startPosition, int number);
+
+        PhotoModels.Photo[] GetPopularPhotosForUser(Guid userId, int startPosition, int number);
+
+        PhotoModels.Photo[] GetPopularPhotosForUser(string userName, int startPosition, int number);
+
         PhotoModels.Photo[] GetPhotosForHashTag(PhotoModels.HashTag hashTag, int startPosition, int number);
 
         PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number);
@@ -21,7 +27,7 @@ namespace evoART.DAL.Interfaces.Photos
         Guid Insert(PhotoModels.Photo photo);
 
         // Returns the photo Id
-        Guid Insert(string photoName, string photoDescription, PhotoModels.Album album);
+        Guid Insert(string photoName, string photoDescription, PhotoModels.Album album, PhotoModels.ContentTag contentTag);
 
         bool Delete(Guid photoId);
 
