@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<emails>
+  <sender email="evoART.noreply@gmail.com" password="syntaxerror2014" />
+  <register>
+    <subject title="Welcome to evoART" />
+    <body1>Welcome to evoART, the location </body1>
+    <body2></body2>
+  </register>
+  <password_reset>
+    <subject title="Reset your password" />
+    <body1>Welcome to evoART, the location </body1>
+    <body2></body2>
+  </password_reset>
+</emails>
