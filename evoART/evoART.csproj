@@ -172,6 +172,7 @@
     <Compile Include="Special\Sorting.cs" />
     <Compile Include="Special\CookieHelper.cs" />
     <Compile Include="Special\TokenGenerator.cs" />
+    <Compile Include="UnitTests\EmailTests.cs" />
     <Compile Include="UnitTests\PhotoTests.cs" />
     <Compile Include="UnitTests\UserAccountTests.cs" />
   </ItemGroup>

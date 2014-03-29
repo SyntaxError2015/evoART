@@ -93,7 +93,7 @@ namespace evoART.Emails
 
             var sender = xml.Root.Descendants("sender").Attributes("email").ToString();
 
-            var body = details.bodyPart1 + innerBodyText + "\n\n" + details.bodyPart2;
+            var body = details.bodyPart1 + "\n\n" + innerBodyText + "\n\n" + details.bodyPart2;
 
             var email = new MailMessage(sender, emailTarget)
             {
