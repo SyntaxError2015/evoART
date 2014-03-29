@@ -77,13 +77,13 @@ namespace evoART.DAL.Repositories.Photos
         /// <summary>
         /// Detele an album from the database
         /// </summary>
-        /// <param name="albumName">The name of the album</param>
+        /// <param name="albumId">The Id of the album</param>
         /// <param name="userId">The Id of the user that owns the album</param>
-        public bool Delete(string albumName, Guid userId)
+        public bool Delete(Guid albumId, Guid userId)
         {
             try
             {
-                _dbSet.Remove(_dbSet.First(a => a.AlbumName == albumName && a.UserAccount.UserId == userId));
+                _dbSet.Remove(_dbSet.First(a => a.AlbumId == albumId && a.UserAccount.UserId == userId));
 
                 return Save();
             }
