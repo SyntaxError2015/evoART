@@ -34,6 +34,13 @@
     }
 }
 
+#content {
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    /*background: #1e1e1e url(/Content/Images/bg-home.gif) left 260px repeat-x;*/
+}
+
 .topbar {
     height: 50px;
     width: 100%;
@@ -50,6 +57,7 @@
     color: white;
     font-family: 'Segoe UI';
     font-size: 20px;
+    z-index: 9;
 }
 
 .topitem {
@@ -65,7 +73,7 @@
     right: 0px;
     top: 50px;
     width: auto;
-    height: 0;
+    height: 0px;
     background-color: #222222;
     cursor: default;
     position: fixed;
@@ -77,7 +85,7 @@
     transition: width 300ms ease-in-out, height 300ms ease-in-out;
     overflow: hidden;
     text-align: left;
-    padding: 4px;
+    padding: 0px;
 }
 
 #userform {
@@ -105,10 +113,20 @@
 .userlink {
     margin-right: 10px;
 }
-
+    
     .userlink:hover .userbox {
-        /*display:block;*/
-        height: auto;
+        height: 150px;
+        padding: 5px;
+    }
+
+    .userlink:hover .userbox1 {
+        height: 150px;
+        padding: 5px;
+    }
+
+    .userlink:hover .userbox2 {
+        height: 255px;
+        padding: 5px;
     }
 
 /*User's login and register'*/

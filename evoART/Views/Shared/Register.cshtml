@@ -38,6 +38,12 @@
         }
         
     }
+
+    /*Change the class to resize the div*/
+    $(document).ready(function () {
+        $("#userbox").addClass("userbox2");
+        $("#userbox").removeClass("userbox1");
+    });
 </script>
 
 @using (Ajax.BeginForm("Register", "Account", new AjaxOptions { OnSuccess = "testResponse(data)" }))

@@ -18,7 +18,8 @@ namespace evoART.Special
             var cookie = new HttpCookie(name)
             {
                 Value = value,
-                Expires = expires
+                Expires = expires,
+                Path = "/"
             };
             HttpContext.Current.Response.SetCookie(cookie);
         }
@@ -32,7 +33,8 @@ namespace evoART.Special
             var cookie = new HttpCookie(name)
             {
                 Value = null,
-                Expires = DateTime.Now.AddDays(-1)
+                Expires = DateTime.Now.AddDays(-1),
+                Path = "/"
             };
             HttpContext.Current.Response.SetCookie(cookie);
         }
