@@ -43,7 +43,7 @@ namespace evoART.Controllers
             if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id))
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id) || DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).Role.RoleName!=DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames()[0])
                 return View("Albums");
 
             var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;

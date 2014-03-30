@@ -118,13 +118,13 @@ namespace evoART.Controllers
             _myCookie.DeleteCookie("sessionId");
             _myCookie.DeleteCookie("sessionKey");
 
-            //Delete the session variable but remember the userName
-            var userName = MySession.Current.UserDetails.UserName;
-            MySession.Current.UserDetails = null;
-
             //Delete the session from the server
             try
             {
+                //Delete the session variable but remember the userName
+                var userName = MySession.Current.UserDetails.UserName;
+                MySession.Current.UserDetails = null;
+
                 return DatabaseWorkUnit.Instance.SessionRepository.Logout(userName) ? "K" : "F";
             }
             catch (Exception)

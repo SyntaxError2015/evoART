@@ -10,7 +10,9 @@
 @if (Model == null || Model.Albums == null)
 {
 
-    <h1>This user does not exist, so it doesn't have an album!</h1>
+    <h1>This user does not exist or it doesn't have an album!<br>
+        <a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">Go to the Home page!</a>
+    </h1>
 }
 else
 {
