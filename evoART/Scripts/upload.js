@@ -39,11 +39,12 @@ function drop(e) {
 
     var dt = e.dataTransfer;
     var files = dt.files;
-    
+
     //alert(files[0].file);
-    uploadImage(files,"");
+    uploadImage(files, "");
 }
 
+var frmData;
 function uploadImage(files, fData) {
 
     if (fData != "") {
@@ -53,26 +54,37 @@ function uploadImage(files, fData) {
         var formData = new FormData();
         formData.append('file', files[0]);
     }
-    
-    formData.append('photoId', photos[photoNumber]);
-    
+
+
+
     //Check if the file is an image
     var imageType = /image.*/;
     if (!files[0].type.match(imageType)) {
         showMessage("alert-warning", "You need to select an image file!");
         return;
     }
-    
+
+    frmData = formData;
+
     //Create the new album
     $.get('/Photos/CreateNewPhoto', function (result) {
-        $('#dropbox').append(result);
-        doAJAX(formData);
+
+
+        doAJAX(frmData, result);
     });
 
-    
+
 }
 
-function doAJAX(formData) {
+function doAJAX(formData, result) {
+
+    $("#dropbox").append(result);
+
+
+    formData.append('photoId', window.photos[window.photoNumber]);
+
+
+
     $.ajax({
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
@@ -81,7 +93,7 @@ function doAJAX(formData) {
                     var percentComplete = evt.loaded / evt.total;
                     //Do something with upload progress here
                     var percentVal = percentComplete * 100 + '%';
-                    $("#progress-" + photos[photoNumber]).width(percentVal);
+                    $("#progress-" + window.photos[window.photoNumber]).width(percentVal);
                     //$("#status").append(percentVal + "<br>");
                 }
             }, false);
@@ -95,14 +107,21 @@ function doAJAX(formData) {
         contentType: false,
         processData: false,
         success: function (data) {
-
-            alert(data);
+            $("#pic-" + data).attr('src', '/Content/Temp/' + data + '.jpg');
+            //alert(data);
         },
         error: function (response) {
 
             showMessage("alert-warning", "The upload failed!");
         }
     });
+}
+
+function savePhoto(data, photoId) {
+    if (data == "K") {
+        $("#" + photoId).html("");
+        $("#" + photoId).hide();
+    } else showMessage("alert-error", "The photo was not saved!");
 }
 
 $(document).ready(function (e) {
@@ -112,12 +131,10 @@ $(document).ready(function (e) {
 
         uploadImage('', formData);
     }));
-    
+
 
 });
 
-$(document).ready(function (e) {
 
-    var photoNumber = 0;
-    var photos = new Array();
-});
+var photoNumber = 0;
+var photos = new Array();

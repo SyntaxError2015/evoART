@@ -2,17 +2,19 @@
 @using System.Web.UI.WebControls
 
 
-@Html.TextBoxFor(m=>m.NewPhotoName, new {@placeholder = "Photo name"})
 
 
 
-<div class="row">
+
 
         <div id="@Model.PhotoId" class="col-sm-5 col-lg-3">
             <div class="thumbnail">
                 <script>
-                    photoNumber++;
-                    photo[photoNumber] = "@Model.PhotoId";
+                    $(function () {
+                        photoNumber++;
+                        photos[photoNumber] = "@Model.PhotoId";
+                    });
+                    
                 </script>
 
                 <img id="pic-@Model.PhotoId" src="/Content/Images/300x200&#46;svg" alt="..." />
@@ -24,7 +26,7 @@
                 <div class="caption">
                     @using (Ajax.BeginForm("SaveNewPhoto", "Photos", new AjaxOptions
                     {
-                        OnSuccess = "createAlbum(data)"
+                        OnSuccess = "savePhoto(data, '"+@Model.PhotoId+"')"
                     }))
                     {
                         @Html.HiddenFor(m=>m.PhotoId)
@@ -33,13 +35,16 @@
                         
                         @Html.LabelFor(m=>m.Album)
                         @Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])
+                        
+                        @Html.LabelFor(m=>m.ContentTag)
+                        @Html.DropDownListFor(m => m.ContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
                             
                         <div class="btn-group">
                             <input type="submit" class="btn btn-primary" role="button" value="Save photo"/>
+                            <a href="#" class="btn btn-danger">Delete photo</a>
                         </div>
                     }
                 </div>
             </div>
         </div>
 
-</div>

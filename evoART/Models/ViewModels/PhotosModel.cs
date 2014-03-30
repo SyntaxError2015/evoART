@@ -27,5 +27,8 @@ namespace evoART.Models.ViewModels
 
         [Display(Name = "Select an album")]
         public string Album { get; set; }
+
+        [Display(Name = "Select a content tag")]
+        public string ContentTag { get; set; }
     }
 }

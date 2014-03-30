@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Web.Mvc;
 using evoART.DAL.DbContexts;
@@ -9,6 +11,7 @@ using evoART.Special;
 using System.Collections.Generic;
 using System.Web;
 using System.IO;
+using PhotoManipulator;
 
 namespace evoART.Controllers
 {
@@ -57,16 +60,30 @@ namespace evoART.Controllers
             var t = userAlbums.Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString() }).ToList();
             ViewData["Albums"] = t;
 
-            return PartialView("NewPhoto", photo);
+            var y = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString() }).ToList();
+            ViewData["ContentTags"] = y;
+
+            return PartialView("NewPhoto", model);
         }
 
         public string SaveNewPhoto(PhotosModel model)
         {
-            DatabaseWorkUnit.Instance.PhotosRepository.Update(new PhotoModels.Photo()
-            {
-                Album=DatabaseWorkUnit.Instance.AlbumsRepository.
-            })
-            return "F";
+            Image img = Image.FromFile(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
+
+            ImageResizer.ResizeImage(img).Save(Path.Combine(Server.MapPath("~/Content/Photos"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
+            ImageResizer.CreateThumbnail(img).Save(Path.Combine(Server.MapPath("~/Content/Thumbnails"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
+            ImageResizer.CreateHexagonImage(img).Save(Path.Combine(Server.MapPath("~/Content/Hexagons"), model.PhotoId + ".png"), ImageFormat.Png);
+
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(model.PhotoId));
+
+            photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.Album));
+            photo.ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.ContentTag));
+            photo.PhotoName = model.NewPhotoName;
+            photo.PhotoDescription = model.NewPhotoDescription;
+
+            return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo)
+                ? "K"
+                : "F";
         }
 
     }

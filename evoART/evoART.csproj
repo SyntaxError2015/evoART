@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Hexagons\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Content\Photos\" />
     <Folder Include="Content\Temp\" />
