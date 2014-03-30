@@ -14,6 +14,19 @@ namespace evoART.DAL.Repositories.Photos
         {
         }
 
+        public PhotoModels.Album GetAlbum(Guid albumId)
+        {
+            try
+            {
+                return _dbSet.Find(albumId);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Get all the albums that a user has
         /// </summary>

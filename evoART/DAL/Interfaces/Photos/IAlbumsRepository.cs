@@ -5,6 +5,8 @@ namespace evoART.DAL.Interfaces.Photos
 {
     interface IAlbumsRepository
     {
+        PhotoModels.Album GetAlbum(Guid albumId);
+
         PhotoModels.Album[] GetAlbumsForUser(Guid userId);
 
         bool Insert(PhotoModels.Album album, Guid userId);
