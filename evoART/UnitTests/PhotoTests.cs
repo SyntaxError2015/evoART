@@ -1,4 +1,6 @@
-﻿using evoART.DAL.UnitsOfWork;
+﻿using System;
+using evoART.DAL.UnitsOfWork;
+using evoART.Models.DbModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace evoART.UnitTests
@@ -16,10 +18,15 @@ namespace evoART.UnitTests
             var photoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph", "descr", album, tag);
             DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph2", "", album, tag);
 
-            DatabaseWorkUnit.Instance.PhotosRepository.Update(
-                DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(album.AlbumId, "testph"));
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(album.AlbumId, "testph2");
+            photo.PhotoName = "ICNERCARE ADSAFASFAS";
 
-            DatabaseWorkUnit.Instance.PhotosRepository.Delete(photoId);
+            DatabaseWorkUnit.Instance.PhotosRepository.Update(photo);
+
+            //DatabaseWorkUnit.Instance.PhotosRepository.Delete(photoId);
+            //*/
+            //DatabaseWorkUnit.Instance.AlbumsRepository.Delete(album.AlbumId);
+            //DatabaseWorkUnit.Instance.UserAccountRepository.Delete(user.UserName);
         }
 
         [TestMethod]
