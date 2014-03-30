@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using evoART.DAL.DbContexts;
+using evoART.Models.DbModels;
 using evoART.Special;
 
 namespace evoART.Controllers
@@ -16,11 +17,13 @@ namespace evoART.Controllers
                 db.UserAccounts.Count();
             }
 
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
-            Session["UserDetails"] = ViewBag.UserDetails;
-
             if (asPartial == 1) return PartialView();
-            else return View();
+            else
+            {
+                if (MySession.Current.UserDetails == null)
+                    MySession.Current.UserDetails = new AccountController().GetUserDetails();
+                return View();
+            }
         }
 
         public ActionResult About()

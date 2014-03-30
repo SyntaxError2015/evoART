@@ -42,25 +42,6 @@ namespace evoART.Controllers
         }
 
         
-
-        public string GetStatus()
-        {
-            return "Totul e OK la " + DateTime.Now.ToLongTimeString();
-        }
-
-
-        public string UpdateForm(string textBox1)
-        {
-            if (textBox1 != "Enter text")
-            {
-                return "Ai scris: \"" + textBox1 + "\" at " +
-                    DateTime.Now.ToLongTimeString();
-            }
-
-            return String.Empty;
-        }
-
-        
         /// <summary>
         /// Log the user in
         /// </summary>
@@ -127,9 +108,29 @@ namespace evoART.Controllers
             return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
         }
 
-        public string GetUserName()
+        /// <summary>
+        /// Log out the currently logged in user
+        /// </summary>
+        /// <returns></returns>
+        public string LogOut()
         {
-            return "";
+            //Delete the cookies
+            _myCookie.DeleteCookie("sessionId");
+            _myCookie.DeleteCookie("sessionKey");
+
+            //Delete the session variable but remember the userName
+            var userName = MySession.Current.UserDetails.UserName;
+            MySession.Current.UserDetails = null;
+
+            //Delete the session from the server
+            try
+            {
+                return DatabaseWorkUnit.Instance.SessionRepository.Logout(userName) ? "K" : "F";
+            }
+            catch (Exception)
+            {
+                return "F";
+            } 
         }
 
         public AccountModels.UserAccount GetUserDetails()
@@ -149,6 +150,7 @@ namespace evoART.Controllers
             return user;
         }
 
+        /*The partialviews for login/register*/
         public PartialViewResult RegisterTab()
         {
             var t = DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
@@ -164,6 +166,23 @@ namespace evoART.Controllers
         }
 
 
-       
+        /*Prostii care vin sterse*/
+        public string GetStatus()
+        {
+            return "Totul e OK la " + DateTime.Now.ToLongTimeString();
+        }
+
+
+        public string UpdateForm(string textBox1)
+        {
+            if (textBox1 != "Enter text")
+            {
+                return "Ai scris: \"" + textBox1 + "\" at " +
+                    DateTime.Now.ToLongTimeString();
+            }
+
+            return String.Empty;
+        }
+
     }
 }

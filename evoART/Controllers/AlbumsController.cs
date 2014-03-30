@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
+using evoART.Special;
 
 namespace evoART.Controllers
 {
@@ -16,11 +17,12 @@ namespace evoART.Controllers
         // GET: /Albums/
         public ActionResult MyAlbums(int asPartial=0)
         {
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
-            
-            if (ViewBag.UserDetails != null)
+            if (asPartial==0 && MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
+
+            if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName==DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames()[0])
             {
-                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(ViewBag.UserDetails.UserId);
+                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
                 var model = new AlbumsModel()
                 {
                     Albums = userAlbums
@@ -33,39 +35,13 @@ namespace evoART.Controllers
             else return View();
         }
 
-        public ActionResult MyAlbums_p()
+
+        
+
+        public ActionResult Albums(string id, int asPartial = 0)
         {
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
-            if (ViewBag.UserDetails != null)
-            {
-                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(ViewBag.UserDetails.UserId);
-                var model = new AlbumsModel()
-                {
-                    Albums = userAlbums
-                };
-                return PartialView("MyAlbums",model);
-            }
-
-            return PartialView("MyAlbums");
-        }
-
-        public string Create(AlbumsModel model)
-        {
-            var userDetails = new AccountController().GetUserDetails();
-
-            if (model.NewAlbumName == null || model.NewAlbumName.Length < 3)
-                return "N";
-
-            return DatabaseWorkUnit.Instance.AlbumsRepository.Insert(
-                new PhotoModels.Album() { AlbumName = model.NewAlbumName, AlbumDescription = model.NewAlbumDescription },
-                userDetails.UserId)
-                ? "K"
-                : "F";
-        }
-
-        public ActionResult Albums(string id)
-        {
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
+            if (asPartial == 0 && MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
             if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id))
                 return View("Albums");
@@ -76,9 +52,9 @@ namespace evoART.Controllers
             {
                 Albums = userAlbums
             };
-            
-            return View("Albums",model);
 
+            if (asPartial == 1) return PartialView("Albums", model);
+            else return View("Albums", model);
         }
 
         public ActionResult Album(string id)
@@ -97,6 +73,35 @@ namespace evoART.Controllers
 
             return View("Album", model);
 
+        }
+
+        /// <summary>
+        /// Create a new album
+        /// </summary>
+        /// <param name="model">The model for the new album</param>
+        /// <returns></returns>
+        public string Create(AlbumsModel model)
+        {
+            if (model.NewAlbumName == null || model.NewAlbumName.Length < 3)
+                return "N";
+
+            return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(
+                new PhotoModels.Album() { AlbumName = model.NewAlbumName, AlbumDescription = model.NewAlbumDescription },
+                MySession.Current.UserDetails.UserId)
+                ? "K"
+                : "F";
+        }
+
+        /// <summary>
+        /// Delete an album
+        /// </summary>
+        /// <param name="id">The id of the album to be deleted</param>
+        /// <returns></returns>
+        public string Delete(string id)
+        {
+            return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Delete(new Guid(id), MySession.Current.UserDetails.UserId)
+                ? "K"
+                : "F";
         }
     }
 }

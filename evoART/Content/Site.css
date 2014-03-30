@@ -68,6 +68,15 @@
     padding: 5px;
 }
 
+.topitemleft {
+    float: left;
+    margin-left: 5px;
+    color: white;
+    cursor: pointer;
+    height: 50px;
+    padding: 5px;
+}
+
 .userbox {
     display: block;
     right: 0px;

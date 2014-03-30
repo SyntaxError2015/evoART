@@ -1,0 +1,21 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<script>
+    function testLogOutResponse(data)
+    {
+        if (data == "K") document.location.reload(true);
+        else if (data == "F") {
+            $("#logoutStatus").html("The logout process failed!");
+            }
+    }
+</script>
+
+@using (Ajax.BeginForm("LogOut", "Account", new AjaxOptions {OnSuccess="testLogOutResponse(data)"}))
+{
+    <input class="btn" type="submit" value="Logout" />
+    <div id="logoutStatus"></div>
+}
