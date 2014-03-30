@@ -121,6 +121,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Content\Photos\" />
+    <Folder Include="Content\Temp\" />
     <Folder Include="Content\Thumbnails\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\PhotosModel.cs" />
     <Compile Include="Models\ViewModels\AlbumsModel.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
     <Compile Include="Special\AuthConfig.cs" />
@@ -213,6 +215,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\upload.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -235,6 +238,7 @@
     <Content Include="Views\Albums\Albums.cshtml" />
     <Content Include="Views\Shared\Logged.cshtml" />
     <Content Include="Views\Photos\AddPhoto.cshtml" />
+    <Content Include="Views\Photos\NewPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

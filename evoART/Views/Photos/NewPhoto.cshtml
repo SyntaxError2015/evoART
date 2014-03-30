@@ -1,0 +1,45 @@
+﻿@model evoART.Models.ViewModels.PhotosModel
+@using System.Web.UI.WebControls
+
+
+@Html.TextBoxFor(m=>m.NewPhotoName, new {@placeholder = "Photo name"})
+
+
+
+<div class="row">
+
+        <div id="@Model.PhotoId" class="col-sm-5 col-lg-3">
+            <div class="thumbnail">
+                <script>
+                    photoNumber++;
+                    photo[photoNumber] = "@Model.PhotoId";
+                </script>
+
+                <img id="pic-@Model.PhotoId" src="/Content/Images/300x200&#46;svg" alt="..." />
+                <div class="progress" style="height: 5px;">
+                    <div id="progress-@Model.PhotoId" class="progress-bar" role="progressbar" style="width: 0%;">
+                    </div>
+                </div>
+
+                <div class="caption">
+                    @using (Ajax.BeginForm("SaveNewPhoto", "Photos", new AjaxOptions
+                    {
+                        OnSuccess = "createAlbum(data)"
+                    }))
+                    {
+                        @Html.HiddenFor(m=>m.PhotoId)
+                        @Html.TextBoxFor(m => m.NewPhotoName, new {@placeholder = "Photo name", @style = "width:100%;"})
+                        @Html.TextAreaFor(m => m.NewPhotoDescription, new {@placeholder = "Enter a description", @style = "width:100%;"})
+                        
+                        @Html.LabelFor(m=>m.Album)
+                        @Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])
+                            
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-primary" role="button" value="Save photo"/>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+</div>

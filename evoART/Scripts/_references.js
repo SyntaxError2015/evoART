@@ -6,3 +6,4 @@
 /// <reference path="jquery.unobtrusive-ajax.js" />
 /// <reference path="respond.matchmedia.addlistener.js" />
 /// <reference path="albums.js" />
+/// <reference path="upload.js" />
