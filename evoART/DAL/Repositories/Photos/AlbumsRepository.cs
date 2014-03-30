@@ -14,6 +14,11 @@ namespace evoART.DAL.Repositories.Photos
         {
         }
 
+        /// <summary>
+        /// Get a specific album
+        /// </summary>
+        /// <param name="albumId">The Id of the album to get</param>
+        /// <returns>An Album entity</returns>
         public PhotoModels.Album GetAlbum(Guid albumId)
         {
             try
@@ -31,7 +36,7 @@ namespace evoART.DAL.Repositories.Photos
         /// Get all the albums that a user has
         /// </summary>
         /// <param name="userId">The Id of the user</param>
-        /// <returns></returns>
+        /// <returns>An array of Album entities</returns>
         public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             try
