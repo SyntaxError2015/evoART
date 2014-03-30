@@ -17,6 +17,12 @@
         if (data == "P") document.getElementById("Password").style.border = "2px solid red";
         if (data == "E") document.getElementById("loginStatus").innerHTML = "You exceeded the number of login attempts!";
     }
+
+    /*Change the class to resize the div*/
+    $(document).ready(function () {
+        $("#userbox").addClass("userbox1");
+        $("#userbox").removeClass("userbox2");
+    });
 </script>
 
 @using (Ajax.BeginForm("Login", "Account", new AjaxOptions {OnSuccess="testLoginResponse(data)"}))

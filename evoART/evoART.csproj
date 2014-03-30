@@ -119,9 +119,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Hexagons\" />
+    <Folder Include="Content\Images\" />
+    <Folder Include="Content\Photos\" />
+    <Folder Include="Content\Temp\" />
+    <Folder Include="Content\Thumbnails\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\SocialContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\UserAccountsContextInitializer.cs" />
@@ -139,6 +146,8 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\PhotosModel.cs" />
+    <Compile Include="Models\ViewModels\AlbumsModel.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
     <Compile Include="Special\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -169,6 +178,7 @@
     <Compile Include="Models\ViewModels\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emails\EmailSender.cs" />
+    <Compile Include="Special\MySession.cs" />
     <Compile Include="Special\Sorting.cs" />
     <Compile Include="Special\CookieHelper.cs" />
     <Compile Include="Special\TokenGenerator.cs" />
@@ -194,6 +204,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
@@ -205,6 +216,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\upload.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -223,6 +235,11 @@
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Views\Shared\Login.cshtml" />
     <Content Include="Views\Shared\Register.cshtml" />
+    <Content Include="Views\Albums\MyAlbums.cshtml" />
+    <Content Include="Views\Albums\Albums.cshtml" />
+    <Content Include="Views\Shared\Logged.cshtml" />
+    <Content Include="Views\Photos\AddPhoto.cshtml" />
+    <Content Include="Views\Photos\NewPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

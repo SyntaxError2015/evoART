@@ -14,16 +14,12 @@ namespace evoART.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly HttpContext context;
-        private readonly CookieHelper myCookie;
+
+        private readonly CookieHelper _myCookie;
 
         public AccountController()
         {
-            context = System.Web.HttpContext.Current;
-            myCookie=new CookieHelper();
-            
-            //FormsAuthentication.SetAuthCookie();
-            //FormsAuthentication.CookieMode
+            _myCookie=new CookieHelper();
         }
 
         /// <summary>
@@ -43,25 +39,6 @@ namespace evoART.Controllers
             {
                 return false;
             }
-        }
-
-        
-
-        public string GetStatus()
-        {
-            return "Totul e OK la " + DateTime.Now.ToLongTimeString();
-        }
-
-
-        public string UpdateForm(string textBox1)
-        {
-            if (textBox1 != "Enter text")
-            {
-                return "Ai scris: \"" + textBox1 + "\" at " +
-                    DateTime.Now.ToLongTimeString();
-            }
-
-            return String.Empty;
         }
 
         
@@ -93,8 +70,8 @@ namespace evoART.Controllers
             AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
 
             //Create the cookies for the session
-            myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
-            myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+            _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+            _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
 
             return "K";
         }
@@ -131,22 +108,49 @@ namespace evoART.Controllers
             return DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser) ? "K" : "F";
         }
 
-        public string GetUserName()
+        /// <summary>
+        /// Log out the currently logged in user
+        /// </summary>
+        /// <returns></returns>
+        public string LogOut()
         {
-            return "";
+            //Delete the cookies
+            _myCookie.DeleteCookie("sessionId");
+            _myCookie.DeleteCookie("sessionKey");
+
+            //Delete the session from the server
+            try
+            {
+                //Delete the session variable but remember the userName
+                var userName = MySession.Current.UserDetails.UserName;
+                MySession.Current.UserDetails = null;
+
+                return DatabaseWorkUnit.Instance.SessionRepository.Logout(userName) ? "K" : "F";
+            }
+            catch (Exception)
+            {
+                return "F";
+            } 
         }
 
         public AccountModels.UserAccount GetUserDetails()
         {
-            if (myCookie.GetCookie("sessionId") == "" || myCookie.GetCookie("sessionKey") == "")
+            if (_myCookie.GetCookie("sessionId") == "" || _myCookie.GetCookie("sessionKey") == "")
                 return null;
 
-            AccountModels.UserAccount user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
-                new Guid(myCookie.GetCookie("sessionId")), myCookie.GetCookie("sessionKey"));
+            var user = DatabaseWorkUnit.Instance.SessionRepository.GetUser(
+                new Guid(_myCookie.GetCookie("sessionId")), _myCookie.GetCookie("sessionKey"));
 
+            if (user == null)
+            {
+                _myCookie.DeleteCookie("sessionId");
+                _myCookie.DeleteCookie("sessionKey");
+            }
+                
             return user;
         }
 
+        /*The partialviews for login/register*/
         public PartialViewResult RegisterTab()
         {
             var t = DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames().Select(r => new SelectListItem {Text = r, Value = r}).ToList();
@@ -162,6 +166,23 @@ namespace evoART.Controllers
         }
 
 
-       
+        /*Prostii care vin sterse*/
+        public string GetStatus()
+        {
+            return "Totul e OK la " + DateTime.Now.ToLongTimeString();
+        }
+
+
+        public string UpdateForm(string textBox1)
+        {
+            if (textBox1 != "Enter text")
+            {
+                return "Ai scris: \"" + textBox1 + "\" at " +
+                    DateTime.Now.ToLongTimeString();
+            }
+
+            return String.Empty;
+        }
+
     }
 }

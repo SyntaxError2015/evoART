@@ -1,0 +1,112 @@
+﻿@model evoART.Models.ViewModels.AlbumsModel
+@using System.Activities.Statements
+@using System.Data.Entity.Core.Common.EntitySql
+@using System.Web.UI.WebControls
+@using evoART.Special
+@using Microsoft.Ajax.Utilities
+
+
+
+@if (Model == null || Model.Albums == null)
+{
+
+    <h1>This user does not exist or it doesn't have an album!<br>
+        <a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">Go to the Home page!</a>
+    </h1>
+}
+else
+{
+    if ((MySession.Current.UserDetails == null) || Model.AlbumsUser != MySession.Current.UserDetails.UserName)
+    {
+        ViewBag.Title = Model.Albums[0].UserAccount.UserName + "'s albums";
+        ViewBag.IsMyAlbum = 0;
+    }
+    else
+    {
+        ViewBag.Title = "My Albums";
+        ViewBag.IsMyAlbum = 1;
+    }
+
+
+    <h1>@ViewBag.Title</h1>
+
+    if (ViewBag.IsMyAlbum == 1)
+    {
+        <div class="btn-group">
+            <button type="button" class="btn btn-lg btn-default" onclick='$("#addAlbum").toggle(200)'>Add a new album</button>
+        </div>
+        <br><br>
+        <div id="addAlbum" class="panel panel-primary" style="display:none;max-width:400px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add new album</h3>
+            </div>
+            <div class="panel-body">
+                @using (Ajax.BeginForm("Create", "Albums", new AjaxOptions
+                {
+                    OnSuccess = "createAlbum(data)"
+                }))
+                {
+                    <table style="text-align: left;">
+                        <tr>
+                            <td>@Html.LabelFor(m => m.NewAlbumName)</td>
+                            <td>@Html.TextBoxFor(m => m.NewAlbumName)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.NewAlbumDescription)</td>
+                            <td>@Html.TextAreaFor(m => m.NewAlbumDescription)</td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btn btn-default" value="Create album" />
+                }
+            </div>
+        </div>
+    }
+
+
+    <hr>
+    <!-- Model.Albums[0].Photos.ToArray()[0].PhotoId;  asta e id-ul unei poze-->
+
+
+    <div class="row">
+        @for (var i = 0; i < Model.Albums.Length; i++)
+        {
+            <div id="@Model.Albums[i].AlbumId" class="col-sm-5 col-lg-3">
+                <div class="thumbnail">
+                    <a href="/Albums/Album/@Model.Albums[i].AlbumId">
+
+                        @try
+                        {
+                            if (Model.Albums[i].Photos.Count > 0)
+                            {
+                                <img src="/Content/Thumbnails/@Model.Albums[i].Photos.ToArray()[0].PhotoId&#46;jpg" alt="..." />
+                            }
+                            else
+                            {
+                                <img src="/Content/Images/300x200&#46;svg" alt="..." />
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            <img src="/Content/Images/300x200&#46;svg" alt="..." />
+                        }
+                    </a>
+                    <div class="caption">
+                        <h3>@Model.Albums[i].AlbumName</h3>
+                        <p>
+                            @Model.Albums[i].AlbumDescription
+                        </p>
+
+
+                        <div class="btn-group">
+                            <a href="/Albums/Album/@Model.Albums[i].AlbumId" class="btn btn-primary" role="button">View album</a>
+                            @if (ViewBag.IsMyAlbum == 1)
+                            {
+                                <a href="javascript:deleteAlbum('@Model.Albums[i].AlbumId');" class="btn btn-danger" role="button">Delete album</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

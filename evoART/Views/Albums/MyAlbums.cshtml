@@ -1,0 +1,101 @@
+﻿@model evoART.Models.ViewModels.AlbumsModel
+@using System.Data.Entity.Core.Common.EntitySql
+@using System.Web.UI.WebControls
+@{
+    ViewBag.Title = "My Albums";
+}
+
+<script>
+    function createAlbum(data) {
+        if (data == "K") {
+            $("#message").addClass("alert-success");
+            $("#message").html("The new album was added successfully!");
+            $("#addAlbum").toggle(200);
+            $("#message").toggle(200);
+            setTimeout(function () { $("#message").toggle(200); }, 1400);
+            setupPage(document.location.pathname);
+        }
+        
+        if (data == "N") {
+            $("#message").addClass("alert-danger");
+            $("#message").html("Insert a name for the new album!");
+            $("#message").toggle(200);
+            setTimeout(function () { $("#message").toggle(200); $("#message").removeClass("alert-danger"); }, 1400);
+        }
+        
+        if (data == "F") {
+            $("#message").addClass("alert-danger");
+            $("#message").html("Something went wrong! Reload the page and try again!");
+            $("#addAlbum").toggle(200);
+            $("#message").toggle(200);
+            setTimeout(function () { $("#message").toggle(200); $("#message").removeClass("alert-danger"); }, 1400);
+        }
+            
+    }
+</script>
+
+
+
+
+
+
+
+@if (Model == null || Model.Albums == null)
+{
+    
+    <h1>You are not logged in!</h1>
+}
+else
+{
+    <h1>@ViewBag.Title</h1>
+    <div class="btn-group">
+        <button type="button" class="btn btn-lg btn-default" onclick='$("#addAlbum").toggle(200)'>Add a new album</button>
+    </div>
+    <br><br>
+        <div id="addAlbum" class="panel panel-primary" style="display:none;max-width:400px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add new album</h3>
+            </div>
+            <div class="panel-body">
+                @using (Ajax.BeginForm("Create", "Albums", new AjaxOptions
+                {
+                    OnSuccess = "createAlbum(data)"
+                }))
+                {
+                    <table style="text-align: left;">
+                        <tr>
+                            <td>@Html.LabelFor(m => m.NewAlbumName)</td>
+                            <td>@Html.TextBoxFor(m => m.NewAlbumName)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.NewAlbumDescription)</td>
+                            <td>@Html.TextAreaFor(m => m.NewAlbumDescription)</td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btn btn-default" value="Create album"/>
+                }
+            </div>
+        </div>
+    <hr>
+    <!-- Model.Albums[0].Photos.ToArray()[0].PhotoId;  asta e id-ul unei poze--> 
+    
+
+    <div class="row">
+        @for (var i = 0; i < Model.Albums.Length; i++)
+        {
+            <div class="col-sm-4 col-md-3">
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x200" alt="...">
+                    <div class="caption">
+                        <h3>@Model.Albums[i].AlbumName</h3>
+                        <p>
+                            @Model.Albums[i].AlbumDescription
+                        </p>
+                        <p><a href="/Albums/Album/@Model.Albums[i].AlbumId" class="btn btn-primary" role="button">Go to the album</a>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+}
