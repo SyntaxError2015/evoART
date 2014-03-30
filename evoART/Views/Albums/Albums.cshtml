@@ -16,7 +16,7 @@
 }
 else
 {
-    if ((MySession.Current.UserDetails == null) || Model.Albums[0].UserAccount.UserName != MySession.Current.UserDetails.UserName)
+    if ((MySession.Current.UserDetails == null) || Model.AlbumsUser != MySession.Current.UserDetails.UserName)
     {
         ViewBag.Title = Model.Albums[0].UserAccount.UserName + "'s albums";
         ViewBag.IsMyAlbum = 0;

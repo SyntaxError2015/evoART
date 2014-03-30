@@ -20,5 +20,7 @@ namespace evoART.Models.ViewModels
         [Display(Name = "Album description")]
         public string NewAlbumDescription { get; set; }
 
+        public string AlbumsUser { get; set; }
+
     }
 }

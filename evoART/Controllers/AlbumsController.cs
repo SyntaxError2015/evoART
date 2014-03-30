@@ -15,42 +15,43 @@ namespace evoART.Controllers
     {
         //
         // GET: /Albums/
-        public ActionResult MyAlbums(int asPartial=0)
+        public ActionResult MyAlbums(int asPartial = 0)
         {
-            if (asPartial==0 && MySession.Current.UserDetails == null)
+            if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName==DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames()[0])
+            if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer").RoleName)
             {
                 PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
                 var model = new AlbumsModel()
                 {
                     Albums = userAlbums
                 };
-                if (asPartial==1) return PartialView(model);
+                if (asPartial == 1) return PartialView(model);
                 else return View(model);
             }
 
-            if (asPartial==1) return PartialView();
+            if (asPartial == 1) return PartialView();
             else return View();
         }
 
 
-        
+
 
         public ActionResult Albums(string id, int asPartial = 0)
         {
             if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id) || DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).Role.RoleName!=DatabaseWorkUnit.Instance.RoleRepository.GetRoleNames()[0])
+            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id) || DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).Role.RoleName != DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer").RoleName)
                 return View("Albums");
 
             var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;
             var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
             var model = new AlbumsModel()
             {
-                Albums = userAlbums
+                Albums = userAlbums,
+                AlbumsUser = id
             };
 
             if (asPartial == 1) return PartialView("Albums", model);
@@ -68,7 +69,8 @@ namespace evoART.Controllers
             var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
             var model = new AlbumsModel()
             {
-                Albums = userAlbums
+                Albums = userAlbums,
+                AlbumsUser = id
             };
 
             return View("Album", model);
@@ -99,7 +101,10 @@ namespace evoART.Controllers
         /// <returns></returns>
         public string Delete(string id)
         {
-            return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Delete(new Guid(id), MySession.Current.UserDetails.UserId)
+            if (MySession.Current.UserDetails.UserId !=
+                DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(id)).UserAccount.UserId)
+                return "F";
+            return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Delete(new Guid(id))
                 ? "K"
                 : "F";
         }

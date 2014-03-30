@@ -28,6 +28,7 @@
         $.getScript('@Url.Content("~/Scripts/bootstrap.js")');
         $.getScript('@Url.Content("~/Scripts/upload.js")');
         var current = document.location.pathname;
+        var initial = 1;
 
         function go(a, b, c) {
             var page = '/' + a + '/' + b;
@@ -47,6 +48,10 @@
         };
 
         function setupPage(page) {
+            if (initial == 1) {
+                initial = 0;
+                return false;
+            }
             $("#loading").toggle();
             $("#dropbox").hide();
             $.ajax({
