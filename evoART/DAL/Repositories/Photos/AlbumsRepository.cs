@@ -15,10 +15,28 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
+        /// Get a specific album
+        /// </summary>
+        /// <param name="albumId">The Id of the album to get</param>
+        /// <returns>An Album entity</returns>
+        public PhotoModels.Album GetAlbum(Guid albumId)
+        {
+            try
+            {
+                return _dbSet.Find(albumId);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Get all the albums that a user has
         /// </summary>
         /// <param name="userId">The Id of the user</param>
-        /// <returns></returns>
+        /// <returns>An array of Album entities</returns>
         public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
         {
             try
@@ -78,12 +96,11 @@ namespace evoART.DAL.Repositories.Photos
         /// Detele an album from the database
         /// </summary>
         /// <param name="albumId">The Id of the album</param>
-        /// <param name="userId">The Id of the user that owns the album</param>
-        public bool Delete(Guid albumId, Guid userId)
+        public bool Delete(Guid albumId)
         {
             try
             {
-                _dbSet.Remove(_dbSet.First(a => a.AlbumId == albumId && a.UserAccount.UserId == userId));
+                _dbSet.Remove(_dbSet.Find(albumId));
 
                 return Save();
             }
