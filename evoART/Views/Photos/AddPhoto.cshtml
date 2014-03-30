@@ -1,0 +1,99 @@
+﻿<form  id="formul" >
+    @Html.AntiForgeryToken()
+    <input type="file" id="ImageBrowse" name="file"><br>
+    <input type="submit" value="Upload File to Server">
+</form>
+
+<div class="progress" style="height: 5px;">
+    <div id="progress1" class="progress-bar" role="progressbar"  style="width: 10%;">
+    </div>
+</div>    
+
+<div id="status"></div>
+    <script>
+        var bar = $('#progress1');
+        var status = $('#status');
+        bar.width("1%");
+        function ssend(f) {
+            alert(f);
+            $.ajax({
+                type: "POST",
+                url: "/Photos/Upload",
+                data: { file: f },
+                beforeSend: function() {
+                    status.html("incepe");
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal);
+                },
+                success: function (data) {
+                    alert(data);
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                },
+                complete: function(xhr) {
+                    status.html(xhr.responseText);
+                }
+            });
+        }
+
+        function send(f) {
+            alert(f);
+            $.ajax({
+                type: "POST",
+                url: "/Photos/Upload",
+                data: { file: f },
+                success: function (response) {
+                    alert(response);
+                }
+            });
+        }
+        
+        
+    </script>  
+
+<script>
+    $(document).ready(function (e) {
+        $('#formul').on('submit', (function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                //Do something with upload progress here
+                                var percentVal = percentComplete*100 + '%';
+                                bar.width(percentVal);
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
+                type: 'POST',
+                url: "/Photos/Upload",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+
+                    //alert(bar.width());
+                },
+                error: function (data) {
+
+                    alert(data);
+                }
+            });
+        }));
+
+        $("#ImageBrowse").on("change", function () {
+            $("#formul").submit();
+        });
+    });
+</script>  
