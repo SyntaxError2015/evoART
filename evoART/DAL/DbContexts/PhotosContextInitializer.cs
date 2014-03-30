@@ -35,7 +35,7 @@ namespace evoART.DAL.DbContexts
                 .HasRequired(a => a.Album)
                 .WithMany(a => a.Photos)
                 .Map(m => m.MapKey("AlbumId"))
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             // Map foreign key to the ContentTag table
             modelBuilder.Entity<PhotoModels.Photo>()

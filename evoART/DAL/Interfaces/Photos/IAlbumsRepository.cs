@@ -13,7 +13,7 @@ namespace evoART.DAL.Interfaces.Photos
 
         bool Insert(Guid userId, string albumName, string albumDescription = "");
 
-        bool Delete(Guid albumId, Guid userId);
+        bool Delete(Guid albumId);
 
         bool Update(PhotoModels.Album album);
     }
