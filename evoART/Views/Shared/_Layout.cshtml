@@ -75,9 +75,6 @@
             setTimeout(function () { $("#message").toggle(200); $("#message").removeClass(className); }, 1400);
         }
 
-
-
-
     </script>
 
 </head>
@@ -136,7 +133,7 @@
 
     @if (MySession.Current.UserDetails != null)
     {
-        <div id="dropbox" style="display: none; position: absolute; z-index: 23; width: 100%; top:50px; height: 100%; border: mediumblue dashed 5px; background-color: white;" ;>
+        <div id="dropbox" style="display: none; position: absolute; z-index: 23; width: 100%; top:50px; min-height: 100%; border: mediumblue dashed 5px; background-color: white;" ;>
             <div id="close" style="cursor: pointer; float: right; position: absolute; right: 5px; font-size: 18px;" onclick=" $('#dropbox').toggle(); ">Close upload [X]</div>
             <form id="uploadImageForm" method="POST">
                 <table>
@@ -155,9 +152,6 @@
     <div id="content">
         @RenderBody()
     </div>
-
-
-
 
 
     @Scripts.Render("~/bundles/jquery")

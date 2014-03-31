@@ -1,8 +1,91 @@
-﻿@model evoART.Models.ViewModels.LoginModel
+﻿@using evoART.Special
+@model evoART.Models.ViewModels.LoginModel
 @{
     Layout = null;
 }
 
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '@AuthConfig.FacebookMyClient.AppId',
+            status: true, // check login status
+            cookie: true, // enable cookies to allow the server to access the session
+            xfbml: true  // parse XFBML
+        });
+
+       
+        
+        /*FB.getLoginStatus(function (response) {
+            if (response.status == 'connected') {
+                getCurrentUserInfo(response)
+            } else {
+                FB.login(function (response) {
+                    if (response.authResponse) {
+                        getCurrentUserInfo(response)
+                    } else {
+                        console.log('Auth cancelled.')
+                    }
+                }, { scope: 'email' });
+            }
+        });
+        */
+
+
+    };
+
+    function loginFacebook() {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                getCurrentUserInfo(response.authResponse.accessToken);
+            } else {
+                showMessage("alert-danger", "Failed to login using Facebook!");
+            }
+        }, { scope: 'email' });
+    }
+
+    // Load the SDK asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+
+    function getCurrentUserInfo(token) {
+        FB.api('/me', function (userInfo) {
+            $.ajax({
+                type: 'POST',
+                url: '/Account/AuthExternal',
+                data: { providerName: 'Facebook', userName: userInfo.name, id: userInfo.id, userEmail: userInfo.email, token: token },
+                success: function (response) {
+                    alert(response);
+                    if (response == "K") document.location.reload(true);
+                    else showMessage("alert-danger", "Failed to login using Facebook!");
+                }
+            });
+        });
+    }
+
+    // Here we run a very simple test of the Graph API after login is successful.
+    // This testAPI() function is only called in those cases.
+    function testAPI() {
+        
+        FB.api('/me', function (response) {
+            alert(response.mail);
+            $.ajax({
+                url: '/Account/AuthExternal',
+                data: { providerName: 'Facebook', userName: response.name, id: response.id },
+                success: function (response) {
+                    if (response == "K") document.location.reload(true);
+                    else showMessage("alert-danger", "Failed to login using Facebook!");
+                }
+            });
+        });
+    }
+</script>
 
 <script>
     function testLoginResponse(data)
@@ -40,6 +123,8 @@
         <tr>
             <td></td>
             <td>
+                <!--fb:login-button class="btn" type="button" show-faces="false" width="200" max-rows="1"></!--fb:login-button-->
+                <a class="btn btn-default" href="#" onclick='loginFacebook(); routeEvent.cancel();'>Login Facebook</a>
                 <input class="btn" type="submit" value="Log in" />
             </td>
         </tr>
