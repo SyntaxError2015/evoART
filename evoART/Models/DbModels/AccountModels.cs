@@ -84,7 +84,7 @@ namespace evoART.Models.DbModels
 
             public string Key { get; set; }
 
-            public virtual UserAccount UserAccounts { get; set; }
+            public virtual UserAccount UserAccount { get; set; }
         }
     }
 }
