@@ -9,6 +9,8 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Album[] GetAlbumsForUser(Guid userId);
 
+        bool VerifyExists(Guid albumId);
+
         bool Insert(PhotoModels.Album album, Guid userId);
 
         bool Insert(Guid userId, string albumName, string albumDescription = "");

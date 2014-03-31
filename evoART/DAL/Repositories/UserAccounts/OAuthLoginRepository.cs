@@ -56,6 +56,12 @@ namespace evoART.DAL.Repositories.UserAccounts
             }
         }
 
+        /// <summary>
+        /// Get the nickname of the user that has the specified external login details
+        /// </summary>
+        /// <param name="providerName">The name of the provider</param>
+        /// <param name="idFromProvider">The Id that the user has for that provider</param>
+        /// <returns>A String value</returns>
         public string GetUserNameForOAuth(string providerName, string idFromProvider)
         {
             try

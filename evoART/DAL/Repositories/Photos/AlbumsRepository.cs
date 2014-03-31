@@ -53,6 +53,24 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
+        /// Verify if an album exists or not
+        /// </summary>
+        /// <param name="albumId">The GUID of the album to check</param>
+        /// <returns>A logical value indicating the existence of the album</returns>
+        public bool VerifyExists(Guid albumId)
+        {
+            try
+            {
+                return _dbSet.Count(a => a.AlbumId == albumId) > 0;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Insert a new album in the database
         /// </summary>
         /// <param name="album">An Album entity containing all the album details</param>
