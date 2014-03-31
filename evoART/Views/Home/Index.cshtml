@@ -1,4 +1,5 @@
-﻿@{
+﻿@model evoART.Models.ViewModels.IndexModel
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -17,7 +18,7 @@
 
 
 
-    #hexagon {
+    .hexagon {
         width: 100px;
         height: 60px;
         background: red;
@@ -30,6 +31,24 @@
         animation: myfirst 2s;
         
     }
+
+    .trileft {
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 500px 0 0 500px;
+        border-color: transparent transparent transparent transparent;
+        position: fixed;
+        left: -40px;
+        bottom: 0px;
+    }
+
+        .trileft img {
+            margin-left: -500px;
+            margin-top: -500px;
+            float: left;
+        }
+
         #hexagon:before {
             content: "";
             position: absolute;
@@ -60,13 +79,10 @@
             overflow: hidden;
         }
 </style>
-<div id="big">
-    <div id="hexagon">
-        <img src="file:///C:/Users/Bogdan/Desktop/poza.jpg" style="z-index:40;">
-    </div>
-    <div id="hexagon"></div>
-    <div id="hexagon"></div>
-    <div id="hexagon"></div>
+<div class="trileft">
+    <img src="/Content/Hexagons/@Model.TopPhotos[0].PhotoId&#46;png" style="float:left;" />
+    <img src="/Content/Hexagons/@Model.TopPhotos[1].PhotoId&#46;png" style="float:left;margin-top:-428px;margin-left:-376px;" />
+    <img src="/Content/Hexagons/@Model.TopPhotos[2].PhotoId&#46;png" style="float:left;margin-top:-358px;" />
 </div>
 
 

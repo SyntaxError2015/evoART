@@ -146,6 +146,7 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\IndexModel.cs" />
     <Compile Include="Models\ViewModels\PhotosModel.cs" />
     <Compile Include="Models\ViewModels\AlbumsModel.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />

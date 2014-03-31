@@ -80,10 +80,7 @@ function doAJAX(formData, result) {
 
     $("#dropbox").append(result);
 
-
     formData.append('photoId', window.photos[window.photoNumber]);
-
-
 
     $.ajax({
         xhr: function () {
@@ -121,7 +118,14 @@ function savePhoto(data, photoId) {
     if (data == "K") {
         $("#" + photoId).html("");
         $("#" + photoId).hide();
-    } else showMessage("alert-error", "The photo was not saved!");
+    } else showMessage("alert-danger", "The photo was not saved!");
+}
+
+function deleteNewPhoto(data, photoId) {
+    if (data == "K") {
+        $("#" + photoId).html("");
+        $("#" + photoId).hide();
+    } else showMessage("alert-danger", "The photo was not deleted!");
 }
 
 $(document).ready(function (e) {

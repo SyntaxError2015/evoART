@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Web.Mvc;
 using evoART.DAL.DbContexts;
+using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Special;
+using evoART.Models.ViewModels;
 
 namespace evoART.Controllers
 {
@@ -17,12 +19,17 @@ namespace evoART.Controllers
                 db.UserAccounts.Count();
             }
 
-            if (asPartial == 1) return PartialView();
+            var model = new IndexModel()
+            {
+                TopPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPopularPhotos(0, 16)
+            };
+
+            if (asPartial == 1) return PartialView(model);
             else
             {
                 if (MySession.Current.UserDetails == null)
                     MySession.Current.UserDetails = new AccountController().GetUserDetails();
-                return View();
+                return View(model);
             }
         }
 

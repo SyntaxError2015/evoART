@@ -58,9 +58,10 @@ namespace evoART.Controllers
             else return View("Albums", model);
         }
 
-        public ActionResult Album(string id)
+        public ActionResult Album(string id, int asPartial = 0 )
         {
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
+            if (asPartial == 0 && MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
             if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id))
                 return View("Album");
@@ -69,8 +70,10 @@ namespace evoART.Controllers
             var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
             var model = new AlbumsModel()
             {
+
                 Albums = userAlbums,
-                AlbumsUser = id
+                AlbumsUser = id,
+
             };
 
             return View("Album", model);
