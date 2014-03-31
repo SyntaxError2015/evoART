@@ -153,6 +153,15 @@ namespace evoART.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Login using external autentification
+        /// </summary>
+        /// <param name="providerName">Provider's name</param>
+        /// <param name="userName">User name</param>
+        /// <param name="id">The userId from the provider</param>
+        /// <param name="userEmail">The email</param>
+        /// <param name="token">The provider's token</param>
+        /// <returns></returns>
         [HttpPost]
         public string AuthExternal(string providerName, string userName, string id, string userEmail, string token)
         {
@@ -162,38 +171,50 @@ namespace evoART.Controllers
                     new WebClient().DownloadString("https://graph.facebook.com/me?fields=id&access_token=" + token);
                 string userId = fbpage.Substring(fbpage.IndexOf("id") + 5, 15);
 
-                return userId;
+                if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, id))
+                {
+                    //get username from the oauth
+                    userName = DatabaseWorkUnit.Instance.OAuthLoginRepository.GetUserNameForOAuth(providerName,id);
 
-                if (id != userId) return "F";
+                    //Make a new session for the user
+                    AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
 
-                //get username from the oauth
+                    //Create the cookies for the session
+                    _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+                    _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
+                    return "K";
+                }
+                else
+                {
+                    var newUser = new AccountModels.UserAccount
+                    {
+                        UserName = userName,
+                        Email = userEmail,
+                        Password = DateTime.Now.ToString(),
+                        Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole("Simple User")
+                    };
+
+                    if (!DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser))
+                        return "F";
+
+                    //Create the external auth id
+                    DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(userName, providerName, id);
+
+                    //Make a new session for the user
+                    AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
+
+                    //Create the cookies for the session
+                    _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+                    _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
+                    return "K";
+                }
             }
             catch 
             {
                 return "F";
             }
-
-           /* if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, id))
-            {
-
-
-                //When login succeeds reset the failed logins
-                DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
-
-                //Make a new session for the user
-                AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
-
-                //Create the cookies for the session
-                _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
-                _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
-
-                return "K";
-            }
-            else
-            {
-                
-            }
-            return "F";*/
         }
 
         /*The partialviews for login/register*/
