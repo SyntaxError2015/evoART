@@ -1,31 +1,95 @@
-﻿@{
+﻿@model evoART.Models.ViewModels.IndexModel
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+<span id="status">No Status</span>
+
+@Ajax.ActionLink("Update Status", "GetStatus", "Account", new AjaxOptions { UpdateTargetId = "status" })
+
+
+<br>
+
+<style type="text/css">
+    #big{
+        width:500px;
+        height:500px;
+    }
+
+
+
+    .hexagon {
+        width: 100px;
+        height: 60px;
+        background: red;
+        position: relative;
+        float: left;
+        margin: 5px;
+        /*-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+        /* transform: rotate(90deg);*/
+        -webkit-animation: myfirst 2s; /* Chrome, Safari, Opera */
+        animation: myfirst 2s;
+        
+    }
+
+    .trileft {
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 500px 0 0 500px;
+        border-color: transparent transparent transparent transparent;
+        position: fixed;
+        left: -40px;
+        bottom: 0px;
+    }
+
+        .trileft img {
+            margin-left: -500px;
+            margin-top: -500px;
+            float: left;
+        }
+
+        #hexagon:before {
+            content: "";
+            position: absolute;
+            top: -25px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 25px solid red;
+            -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+            animation: myfirst 1s;
+            overflow: hidden;
+        }
+
+        #hexagon:after {
+            content: "";
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-top: 25px solid red;
+            -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+            animation: myfirst 1s;
+            overflow: hidden;
+        }
+</style>
+<div class="trileft">
+    <img src="/Content/Hexagons/@Model.TopPhotos[0].PhotoId&#46;png" style="float:left;" />
+    <img src="/Content/Hexagons/@Model.TopPhotos[1].PhotoId&#46;png" style="float:left;margin-top:-428px;margin-left:-376px;" />
+    <img src="/Content/Hexagons/@Model.TopPhotos[2].PhotoId&#46;png" style="float:left;margin-top:-358px;" />
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+@using (Ajax.BeginForm("UpdateForm", "Account", new AjaxOptions { UpdateTargetId = "textEntered" }))
+{
+    @Html.TextBox("textBox1", "Enter text")
+    <input type="submit" value="Submit" /><br />
+    <span id="textEntered">Nothing Entered</span>
+}
+

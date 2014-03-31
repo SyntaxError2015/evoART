@@ -1,0 +1,178 @@
+﻿<div id="dropbox" style="width:300px;height:200px;background-color: pink;">
+
+</div>
+
+<form id="uploadImageForm">
+    <input type="file" id="ImageBrowse" name="file">
+    <input type="submit" value="Upload Image">
+</form>
+
+<div class="progress" style="height: 5px;">
+    <div id="progress1" class="progress-bar" role="progressbar" style="width: 10%;">
+    </div>
+</div>
+
+<div id="status"></div>
+<script>
+    var bar = $('#progress1');
+    var status = $('#status');
+    bar.width("1%");
+    function ssend(f) {
+        alert(f);
+        $.ajax({
+            type: "POST",
+            url: "/Photos/Upload",
+            data: { file: f },
+            beforeSend: function () {
+                status.html("incepe");
+                var percentVal = '0%';
+                bar.width(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+            },
+            success: function (data) {
+                alert(data);
+                var percentVal = '100%';
+                bar.width(percentVal);
+            },
+            complete: function (xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+    }
+
+    function send(f) {
+        alert(f);
+        $.ajax({
+            type: "POST",
+            url: "/Photos/Upload",
+            data: { file: f },
+            success: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+
+</script>
+
+<script>
+    $(document).ready(function (e) {
+        $('#uploadImageForm').on('submit', (function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            //Do something with upload progress here
+                            var percentVal = percentComplete * 100 + '%';
+                            bar.width(percentVal);
+                            $("#status").append(percentVal + "<br>");
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                type: 'POST',
+                url: "/Photos/Upload",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+
+                    //alert(bar.width());
+                },
+                error: function (data) {
+                    showMessage("alert-warning", "The upload failed!");
+                }
+            });
+        }));
+
+    });
+</script>
+
+<script>
+    var dropbox;
+
+    dropbox = document.getElementById("dropbox");
+    dropbox.addEventListener("dragenter", dragenter, false);
+    dropbox.addEventListener("dragleave", dragleave, false);
+    dropbox.addEventListener("dragover", dragover, false);
+    dropbox.addEventListener("drop", drop, false);
+
+    function dragenter(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $("#dropbox").css("background-color", "red");
+    }
+
+    function dragleave(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $("#dropbox").css("background-color", "pink");
+    }
+
+    function dragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    function drop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var dt = e.dataTransfer;
+        var files = dt.files;
+
+        alert(files[0].file);
+        uploadImage(files);
+    }
+
+    function uploadImage(files) {
+
+        var formData = new FormData();
+
+        formData.append('file', files[0]);
+
+
+
+
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        //Do something with upload progress here
+                        var percentVal = percentComplete * 100 + '%';
+                        bar.width(percentVal);
+                        $("#status").append(percentVal + "<br>");
+                    }
+                }, false);
+
+                return xhr;
+            },
+            type: 'POST',
+            url: "/Photos/Upload",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                //alert(bar.width());
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+        });
+    }
+</script>
