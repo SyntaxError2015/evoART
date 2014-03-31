@@ -2,10 +2,11 @@
 {
     public static class AuthConfig
     {
-        public static class FacebookClient
+        public static class FacebookMyClient
         {
             private const string _appId = "1476654745881710";
             private const string _appSecret = "e08f6c51bdf46e7d281c56a2143685a0";
+            public static readonly string PROVIDER_NAME = "Facebook";
 
             public static string AppId
             {
