@@ -24,7 +24,7 @@ namespace evoART.DAL.Repositories.UserAccounts
             try
             {
                 return _dbSet.Count(p =>
-                    p.UserAccounts.UserName == userName &&
+                    p.UserAccount.UserName == userName &&
                     p.Provider == providerName &&
                     p.Key == idFromProvider) > 0;
             }
@@ -56,6 +56,19 @@ namespace evoART.DAL.Repositories.UserAccounts
             }
         }
 
+        public string GetUserNameForOAuth(string providerName, string idFromProvider)
+        {
+            try
+            {
+                return _dbSet.First(o => o.Provider == providerName && o.Key == idFromProvider).UserAccount.UserName;
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Insert a new entry for a certain user
         /// </summary>
@@ -70,7 +83,7 @@ namespace evoART.DAL.Repositories.UserAccounts
                 var item = new AccountModels.OAuthLogin()
                 {
                     OAuthLoginId = Guid.NewGuid(),
-                    UserAccounts = _dbContext.UserAccounts.First(t => t.UserName == userName),
+                    UserAccount = _dbContext.UserAccounts.First(t => t.UserName == userName),
                     Provider = providerName,
                     Key = idFromProvider
                 };
@@ -97,7 +110,7 @@ namespace evoART.DAL.Repositories.UserAccounts
         {
             try
             {
-                _dbSet.Remove(_dbSet.First(u => u.UserAccounts.UserName == userName && u.Provider == providerName));
+                _dbSet.Remove(_dbSet.First(u => u.UserAccount.UserName == userName && u.Provider == providerName));
 
                 return Save();
             }
