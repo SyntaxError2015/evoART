@@ -86,5 +86,20 @@ namespace evoART.Controllers
                 : "F";
         }
 
+        public string DeletePhoto(string id)
+        {
+            try
+            {
+                if (MySession.Current.UserDetails.UserId !=
+                DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id)).Album.UserAccount.UserId)
+                    return "F";
+                return DatabaseWorkUnit.Instance.PhotosRepository.Delete(new Guid(id)) ? "K" : "F";
+            }
+            catch (Exception)
+            {
+                return "F";
+            }
+        }
+
     }
 }
