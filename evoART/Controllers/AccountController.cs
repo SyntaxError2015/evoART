@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using evoART.DAL.UnitsOfWork;
@@ -9,6 +11,7 @@ using evoART.Models.ViewModels;
 using System.Collections.Generic;
 using System.Web.Security;
 using evoART.Special;
+
 
 namespace evoART.Controllers
 {
@@ -148,6 +151,49 @@ namespace evoART.Controllers
             }
                 
             return user;
+        }
+
+        [HttpPost]
+        public string AuthExternal(string providerName, string userName, string id, string userEmail, string token)
+        {
+            try
+            {
+                string fbpage =
+                    new WebClient().DownloadString("https://graph.facebook.com/me?fields=id&access_token=" + token);
+                string userId = fbpage.Substring(fbpage.IndexOf("id") + 5, 15);
+
+                return userId;
+
+                if (id != userId) return "F";
+
+                //get username from the oauth
+            }
+            catch 
+            {
+                return "F";
+            }
+
+           /* if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, id))
+            {
+
+
+                //When login succeeds reset the failed logins
+                DatabaseWorkUnit.Instance.AccountValidationRepository.ResetLoginFailAttempts(model.UserName);
+
+                //Make a new session for the user
+                AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(model.UserName);
+
+                //Create the cookies for the session
+                _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+                _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
+                return "K";
+            }
+            else
+            {
+                
+            }
+            return "F";*/
         }
 
         /*The partialviews for login/register*/

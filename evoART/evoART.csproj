@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\FacebookOAuthException.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\SocialContextInitializer.cs" />
