@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\FacebookOAuthException.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\SocialContextInitializer.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\AlbumModel.cs" />
     <Compile Include="Models\ViewModels\IndexModel.cs" />
     <Compile Include="Models\ViewModels\PhotosModel.cs" />
     <Compile Include="Models\ViewModels\AlbumsModel.cs" />
@@ -242,6 +244,8 @@
     <Content Include="Views\Shared\Logged.cshtml" />
     <Content Include="Views\Photos\AddPhoto.cshtml" />
     <Content Include="Views\Photos\NewPhoto.cshtml" />
+    <Content Include="Views\Albums\Album.cshtml" />
+    <Content Include="Views\Users\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

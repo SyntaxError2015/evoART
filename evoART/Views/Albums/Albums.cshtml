@@ -62,16 +62,14 @@ else
         </div>
     }
 
-
     <hr>
-
-
+    
     <div class="row">
         @for (var i = 0; i < Model.Albums.Length; i++)
         {
             <div id="@Model.Albums[i].AlbumId" class="col-sm-5 col-lg-3">
                 <div class="thumbnail">
-                    <a href="/Albums/Album/@Model.Albums[i].AlbumId">
+                    <a href="/Albums/Album/@Model.Albums[i].AlbumId" onclick="go('Albums', 'Album', '@Model.Albums[i].AlbumId'); event.preventDefault();">
 
                         @try
                         {
@@ -97,7 +95,7 @@ else
 
 
                         <div class="btn-group">
-                            <a href="/Albums/Album/@Model.Albums[i].AlbumId" class="btn btn-primary" role="button">View album</a>
+                            <a href="/Albums/Album/@Model.Albums[i].AlbumId" onclick="go('Albums', 'Album', '@Model.Albums[i].AlbumId'); event.preventDefault();" class="btn btn-primary" role="button">View album</a>
                             @if (ViewBag.IsMyAlbum == 1)
                             {
                                 <a href="javascript:deleteAlbum('@Model.Albums[i].AlbumId');" class="btn btn-danger" role="button">Delete album</a>
