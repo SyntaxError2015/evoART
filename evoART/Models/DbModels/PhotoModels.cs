@@ -39,6 +39,8 @@ namespace evoART.Models.DbModels
 
             public string AlbumDescription { get; set; }
 
+            public bool IsPrivate { get; set; }
+
             public virtual ICollection<Photo> Photos { get; set; }
 
             public virtual AccountModels.UserAccount UserAccount { get; set; }

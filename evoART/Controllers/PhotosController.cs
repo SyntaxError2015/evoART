@@ -3,12 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Web.Mvc;
-using evoART.DAL.DbContexts;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
 using evoART.Special;
-using System.Collections.Generic;
 using System.Web;
 using System.IO;
 using PhotoManipulator;
@@ -39,8 +37,8 @@ namespace evoART.Controllers
         public ActionResult CreateNewPhoto()
         {
             var userAlbums =
-                DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
-            var photo = new PhotoModels.Photo()
+                DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId);
+            var photo = new PhotoModels.Photo
             {
                 Album = userAlbums[0],
                 ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW")
@@ -126,7 +124,8 @@ namespace evoART.Controllers
             catch
             {
                 if (asPartial == 1) return PartialView("photo");
-                else return View("Photo");
+                
+                return View("Photo");
             }
 
             //Increment views number 
@@ -137,20 +136,22 @@ namespace evoART.Controllers
             {
                 Photo = photo,
                 MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
-                Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId), 
-                HasLiked = DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId,photo.PhotoId),
+
+                Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId),
+                HasLiked = DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
                 NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
                 PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
 
-            
-
             //Prepare some things if it is my photo
-            ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId).Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId==photo.Album.AlbumId?true:false}).ToList();
-            ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId==photo.ContentTag.ContentTagId}).ToList();
+            ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository
+                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId)
+                .Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId == photo.Album.AlbumId }).ToList();
+            ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
 
             if (asPartial == 1) return PartialView("Photo", model);
-            else return View("Photo", model);
+            
+            return View("Photo", model);
         }
 
     }
