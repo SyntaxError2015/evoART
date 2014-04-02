@@ -206,6 +206,7 @@
     <Content Include="Content\Images\300x200.svg" />
     <Content Include="Content\Images\bg-home.gif" />
     <Content Include="Content\Images\error404.jpg" />
+    <Content Include="Content\Images\evoart.png" />
     <Content Include="Content\Images\loading.gif" />
     <Content Include="Emails\EmailSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
