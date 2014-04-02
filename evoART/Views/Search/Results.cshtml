@@ -1,0 +1,32 @@
+﻿
+@model evoART.Models.ViewModels.SearchModel
+@using System.Activities.Statements
+@using System.Data.Entity.Core.Common.EntitySql
+@using System.Web.UI.WebControls
+@using evoART.Special
+@using Microsoft.Ajax.Utilities
+
+
+
+@if (Model == null || Model.Photos == null)
+{
+    <h1>
+        The search returned no results! <br>
+        <small><a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">Go to the Home page!</a></small>
+    </h1>
+}
+else
+{
+
+
+    <div class="row">
+        @foreach (var photo in @Model.Photos)
+        {
+            <div class="col-sm-6 col-md-4">
+                <a href="/Photos/Photo/@photo.PhotoId" onclick="go('Photos', 'Photo', '@photo.PhotoId'); event.preventDefault();" class="thumbnail" title="@photo.PhotoName">
+                    <img src="/Content/Thumbnails/@photo.PhotoId&#46;jpg" alt="@photo.PhotoName">
+                </a>
+            </div>
+        }
+    </div>
+}
