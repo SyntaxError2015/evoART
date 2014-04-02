@@ -6,6 +6,7 @@ using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
 using evoART.Models.DbModels;
 using evoART.Special;
+using Microsoft.Ajax.Utilities;
 
 namespace evoART.DAL.Repositories.Photos
 {
@@ -112,6 +113,27 @@ namespace evoART.DAL.Repositories.Photos
             var photo = _dbContext.Photos.Find(photoId);
 
             return DeleteHashTagForPhoto(hashTagId, photo);
+        }
+
+        /// <summary>
+        /// Delete a an association between a hashtag and a photo
+        /// </summary>
+        /// <param name="hashTagName">The name of the hashtag to delete</param>
+        /// <param name="photo">The Photo entity for which to delete the hashtag</param>
+        /// <returns></returns>
+        public bool DeleteHashTagForPhoto(string hashTagName, PhotoModels.Photo photo)
+        {
+            try
+            {
+                var hashtagId = _dbSet.First(h => h.HashTagName == hashTagName).HashTagId;
+
+                return DeleteHashTagForPhoto(hashtagId, photo.PhotoId);
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

@@ -38,19 +38,11 @@ namespace evoART.DAL.Repositories.Social
         /// <returns>An array of Comment entities</returns>
         public SocialModels.Comment[] GetCommentsForPhoto(Guid photoId)
         {
-            return GetCommentsForPhoto(_dbContext.Photos.Find(photoId));
-        }
-
-        /// <summary>
-        /// Get all the comments that a certain photo has
-        /// </summary>
-        /// <param name="photo">The Photo entity representing the photo for which to fetch the comments</param>
-        /// <returns>An array of Comment entities</returns>
-        public SocialModels.Comment[] GetCommentsForPhoto(PhotoModels.Photo photo)
-        {
             try
             {
-                return _dbSet.Where(c => c.Photo == photo).ToArray();
+                return _dbSet.Where(c => c.Photo.PhotoId == photoId)
+                    .OrderBy(c => c.CommentDate)
+                    .ToArray();
             }
 
             catch

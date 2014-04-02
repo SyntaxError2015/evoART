@@ -6,9 +6,8 @@ namespace evoART.DAL.Interfaces.Social
     interface ICommentsRepository
     {
         SocialModels.Comment GetComment(Guid commentId);
-        SocialModels.Comment[] GetCommentsForPhoto(Guid photoId);
 
-        SocialModels.Comment[] GetCommentsForPhoto(PhotoModels.Photo photo);
+        SocialModels.Comment[] GetCommentsForPhoto(Guid photoId);
 
         bool Insert(Guid photoId, Guid userId, string commentText);
 

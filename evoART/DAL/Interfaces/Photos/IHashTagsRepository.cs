@@ -15,6 +15,8 @@ namespace evoART.DAL.Interfaces.Photos
 
         bool DeleteHashTagForPhoto(Guid hashTagId, Guid keywordId);
 
+        bool DeleteHashTagForPhoto(string hashTagName, PhotoModels.Photo photo);
+
         bool DeleteAllHasheTagsForPhoto(Guid photoId);
 
         bool Insert(string hashTagName, PhotoModels.Photo photo);
