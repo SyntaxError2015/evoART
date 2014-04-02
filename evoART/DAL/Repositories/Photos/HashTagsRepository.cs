@@ -45,7 +45,7 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                IEnumerable<PhotoModels.HashTag> hashTags = _dbSet.Where(h => h.HashTagName.Contains(name));
+                IEnumerable<PhotoModels.HashTag> hashTags = _dbSet.Where(h => h.HashTagName.IndexOf(name, System.StringComparison.Ordinal) >= 0);
                 var popularity = new int[hashTags.Count()];
 
                 for (var i = 0; i < popularity.Length; i++)
