@@ -170,17 +170,37 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
-        /// Verify if a certain album already contains a photo with the entered name
+        /// Increment the number of views that a photo has
         /// </summary>
-        /// <param name="albumId">The Id of the album</param>
-        /// <param name="photoName">The name of the photo</param>
-        public bool VerifyExists(Guid albumId, string photoName)
+        /// <param name="photoId"></param>
+        public bool IncrementViews(Guid photoId)
         {
             try
             {
-                return _dbSet.Count(p =>
-                    p.Album.AlbumId == albumId &&
-                    p.PhotoName == photoName) > 0;
+                var photo = _dbSet.Find(photoId);
+
+                photo.Views++;
+
+                _dbSet.AddOrUpdate(photo);
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Verify if a certain album already contains a photo with the entered name
+        /// </summary>
+        /// <param name="photoId">The Id of the photo</param>
+        public bool VerifyExists(Guid photoId)
+        {
+            try
+            {
+                return _dbSet.Count(p => p.PhotoId == photoId) > 0;
             }
 
             catch
