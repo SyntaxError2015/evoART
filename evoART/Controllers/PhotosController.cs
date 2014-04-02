@@ -48,8 +48,8 @@ namespace evoART.Controllers
         public ActionResult CreateNewPhoto()
         {
             var userAlbums =
-                DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
-            var photo = new PhotoModels.Photo()
+                DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId);
+            var photo = new PhotoModels.Photo
             {
                 Album = userAlbums[0],
                 ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW")
@@ -130,7 +130,7 @@ namespace evoART.Controllers
                 Photo = photo,
                 MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
 
-                Comments=null, //sa iau din unit
+                Comments = null, //sa iau din unit
 
                 HasLiked = false, //AICIC SA IAU DIN UNIT,
                 MyLike = null //SA iau din unit

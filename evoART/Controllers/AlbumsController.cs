@@ -22,7 +22,8 @@ namespace evoART.Controllers
 
             if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer").RoleName)
             {
-                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
+                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository
+                    .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId);
                 var model = new AlbumsModel()
                 {
                     Albums = userAlbums
@@ -47,7 +48,7 @@ namespace evoART.Controllers
                 return View("Albums");
 
             var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;
-            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
+            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId, MySession.Current.UserDetails.UserId);
             var model = new AlbumsModel()
             {
                 Albums = userAlbums,
