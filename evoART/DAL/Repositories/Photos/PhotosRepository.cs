@@ -219,9 +219,49 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 IEnumerable<PhotoModels.Photo> photos =
-                    _dbSet.Where(a => a.Album.AlbumId == albumId);
+                    _dbSet.Where(a => a.Album.AlbumId == albumId).OrderBy(d => d.UploadDate);
 
                 return photos.ToArray();
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the previous photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public PhotoModels.Photo GetPreviousPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderBy(d => d.UploadDate)
+                    .Last(d => d.UploadDate < currentPhoto.UploadDate);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the next photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public PhotoModels.Photo GetNextPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderBy(d => d.UploadDate)
+                    .First(d => d.UploadDate > currentPhoto.UploadDate);
             }
 
             catch
@@ -234,7 +274,7 @@ namespace evoART.DAL.Repositories.Photos
         /// Insert a photo into the database
         /// </summary>
         /// <param name="photo">A Photo entity that needs to have set the following things:
-        /// * Name,
+        /// * Name (optional),
         /// * Description (optional),
         /// * Album,
         /// * ContentTag.
