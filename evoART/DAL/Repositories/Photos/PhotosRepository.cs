@@ -173,14 +173,11 @@ namespace evoART.DAL.Repositories.Photos
         /// Verify if a certain album already contains a photo with the entered name
         /// </summary>
         /// <param name="albumId">The Id of the album</param>
-        /// <param name="photoName">The name of the photo</param>
-        public bool VerifyExists(Guid albumId, string photoName)
+        public bool VerifyExists(Guid albumId)
         {
             try
             {
-                return _dbSet.Count(p =>
-                    p.Album.AlbumId == albumId &&
-                    p.PhotoName == photoName) > 0;
+                return _dbSet.Count(p => p.Album.AlbumId == albumId) > 0;
             }
 
             catch

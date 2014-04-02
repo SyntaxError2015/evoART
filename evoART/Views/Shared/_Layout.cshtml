@@ -63,7 +63,12 @@
                     $("#content").html(response);
                     $("#loading").toggle();
                     //alert(response);
+                },
+                error: function() {
+                    $("#loading").toggle();
+                    showMessage("alert-danger", "The page failed to load!");
                 }
+                
             });
             return false;
         }
@@ -131,7 +136,7 @@
 
     <div id="message" class="alert" style="display:none;position: fixed;z-index: 123;width:100%;"></div>
 
-    @if (MySession.Current.UserDetails != null)
+    @if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == "Photographer")
     {
         <div id="dropbox" style="display: none; position: absolute; z-index: 23; width: 100%; top:50px; min-height: 100%; border: mediumblue dashed 5px; background-color: white;" ;>
             <div id="close" style="cursor: pointer; float: right; position: absolute; right: 5px; font-size: 18px;" onclick=" $('#dropbox').toggle(); ">Close upload [X]</div>
