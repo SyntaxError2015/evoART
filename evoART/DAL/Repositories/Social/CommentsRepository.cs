@@ -14,6 +14,24 @@ namespace evoART.DAL.Repositories.Social
         }
 
         /// <summary>
+        /// Get a certain comment
+        /// </summary>
+        /// <param name="commentId">The Id of the comment</param>
+        /// <returns>A Comment entity</returns>
+        public SocialModels.Comment GetComment(Guid commentId)
+        {
+            try
+            {
+                return _dbSet.Find(commentId);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Get all the comments that a certain photo has
         /// </summary>
         /// <param name="photoId">The Id of the photo for which to fetch the comments</param>
