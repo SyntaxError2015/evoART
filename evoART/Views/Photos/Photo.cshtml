@@ -17,7 +17,7 @@ else
     <script>
         var nrLikes = @(Model.Photo.Likes!=null?Model.Photo.Likes.Count:0);
         var myLikeId = '@(Model.HasLiked?Model.MyLike.LikeId.ToString():"0")';
-        
+
         function leaveComment() {
             var photoId = '@Model.Photo.PhotoId';
             var comment = $("#commentbox").val();
@@ -32,7 +32,7 @@ else
             return false;
         }
     </script>
-    
+
     <style>
         #photo {
             background-image: url("/Content/Photos/@(Model.Photo.PhotoId.ToString()).jpg");
@@ -71,9 +71,12 @@ else
                 </h3>
 
                 Hashtags:
-                @foreach (var hashtag in Model.Photo.HashTags)
+                @if (Model.Photo.HashTags != null)
                 {
-                    <a href="/Search/Hasgtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                    foreach (var hashtag in Model.Photo.HashTags)
+                    {
+                        <a href="/Search/Hasgtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                    }
                 }
             </div>
             @if (Model.MyPhoto)
@@ -117,18 +120,18 @@ else
                 <!--Posting a comment-->
                 @if (MySession.Current.UserDetails != null)
                 {
-                            <div class="panel panel-primary">
-                        
-                                <div class="panel-heading">
-                                    Leave a comment
-                                    <a href="#" class="label label-success postcomment" onclick="leaveComment(); event.preventDefault();" >Post comment</a>
-                                </div>
-                                <div class="panelcontent" style="overflow: hidden; height: 70px;">
-                                    <input type="hidden" name="photoId" value="@Model.Photo.PhotoId" />
-                                    <textarea name="comment" id="commentbox" class="commentbox" placeholder="Write your comment here..."></textarea>
-                                </div>
-                        
-                            </div>
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            Leave a comment
+                            <a href="#" class="label label-success postcomment" onclick="leaveComment(); event.preventDefault();">Post comment</a>
+                        </div>
+                        <div class="panelcontent" style="overflow: hidden; height: 70px;">
+                            <input type="hidden" name="photoId" value="@Model.Photo.PhotoId" />
+                            <textarea name="comment" id="commentbox" class="commentbox" placeholder="Write your comment here..."></textarea>
+                        </div>
+
+                    </div>
                 }
                 else
                 {
@@ -180,5 +183,5 @@ else
             }
         });
     }
-        
+
 </script>
