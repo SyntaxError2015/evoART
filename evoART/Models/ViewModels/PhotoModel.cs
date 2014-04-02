@@ -15,24 +15,19 @@ namespace evoART.Models.ViewModels
 
         public SocialModels.Comment[] Comments { get; set; }
 
-
-        public SocialModels.Like MyLike { get; set; }
         public bool HasLiked { get; set; }
 
         public bool MyPhoto { get; set; }
+
+        public Guid NextPhotoId { get; set; }
+        public Guid PreviousPhotoId { get; set; }
         
-        [Required]
-        [DataType(DataType.Text)]
-        [Display(Name = "Photo name")]
-        public string NewPhotoName { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Photo description")]
-        public string NewPhotoDescription { get; set; }
+        [Display(Name = "Album")]
+        public string NewAlbum { get; set; }
 
-
-        [Display(Name = "Select an album")]
-        public string Album { get; set; }
+        [Display(Name = "Content tag")]
+        public string NewContentTag { get; set; }
 
 
 

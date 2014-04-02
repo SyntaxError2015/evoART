@@ -36,9 +36,6 @@ namespace evoART.Controllers
             else return View();
         }
 
-
-
-
         public ActionResult Albums(string id, int asPartial = 0)
         {
             if (asPartial == 0 && MySession.Current.UserDetails == null)

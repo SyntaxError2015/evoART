@@ -3,12 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Web.Mvc;
-using evoART.DAL.DbContexts;
 using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Models.ViewModels;
 using evoART.Special;
-using System.Collections.Generic;
 using System.Web;
 using System.IO;
 using PhotoManipulator;
@@ -19,23 +17,14 @@ namespace evoART.Controllers
     {
         public ActionResult NewPhoto()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         [HttpPost]
         public string Upload(HttpPostedFileBase file, string photoId)
         {
-            //string photoId = new Guid().ToString();
-
             if (file != null && file.ContentLength > 0 && MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == "Photographer")
             {
-                // extract only the fielname
-                var fileName = Path.GetFileName(file.FileName);
-
-
-                // the destination
                 var path = Path.Combine(Server.MapPath("~/Content/Temp"), photoId + ".jpg");
                 file.SaveAs(path);
 
@@ -55,7 +44,6 @@ namespace evoART.Controllers
                 ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW")
             };
 
-
             var model = new PhotosModel { PhotoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert(photo).ToString() };
             var t = userAlbums.Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString() }).ToList();
             ViewData["Albums"] = t;
@@ -68,13 +56,17 @@ namespace evoART.Controllers
 
         public string SaveNewPhoto(PhotosModel model)
         {
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(model.PhotoId));
+
+            if (MySession.Current.UserDetails == null ||
+                MySession.Current.UserDetails.UserId != photo.Album.UserAccount.UserId)
+                return "F";
+
             Image img = Image.FromFile(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
 
             ImageResizer.ResizeImage(img).Save(Path.Combine(Server.MapPath("~/Content/Photos"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateThumbnail(img).Save(Path.Combine(Server.MapPath("~/Content/Thumbnails"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateHexagonImage(img).Save(Path.Combine(Server.MapPath("~/Content/Hexagons"), model.PhotoId + ".png"), ImageFormat.Png);
-
-            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(model.PhotoId));
 
             photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.Album));
             photo.ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.ContentTag));
@@ -84,6 +76,23 @@ namespace evoART.Controllers
             return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo)
                 ? "K"
                 : "F";
+        }
+
+        public string EditPhoto(PhotoModel model)
+        {
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(model.Photo.PhotoId);
+
+            if (MySession.Current.UserDetails == null ||
+               MySession.Current.UserDetails.UserId != photo.Album.UserAccount.UserId)
+                return "F";
+
+            photo.PhotoName = model.Photo.PhotoName;
+            photo.PhotoDescription = model.Photo.PhotoDescription;
+            photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.NewAlbum));
+            photo.ContentTag =
+                DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.NewContentTag));
+
+            return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo) ? "K" : "F";
         }
 
         public string DeletePhoto(string id)
@@ -106,7 +115,7 @@ namespace evoART.Controllers
             if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            /*try
+            try
             {
                 if (id == null || !DatabaseWorkUnit.Instance.PhotosRepository.VerifyExists(new Guid(id)))
                     if (asPartial == 1) return PartialView("photo");
@@ -115,30 +124,34 @@ namespace evoART.Controllers
             catch
             {
                 if (asPartial == 1) return PartialView("photo");
-                else return View("Photo");
-            }*/
+                
+                return View("Photo");
+            }
+
+            //Increment views number 
+            DatabaseWorkUnit.Instance.PhotosRepository.IncrementViews(new Guid(id));
 
             var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id));
-
-            //Increment views number ------  USE THE NEW FUNCTION
-            photo.Views++;
-            DatabaseWorkUnit.Instance.PhotosRepository.Update(photo);
-
-            //photo.HashTags.ToArray()[0].
             var model = new PhotoModel
             {
                 Photo = photo,
                 MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
 
-                Comments = null, //sa iau din unit
-
-                HasLiked = false, //AICIC SA IAU DIN UNIT,
-                MyLike = null //SA iau din unit
+                Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId),
+                HasLiked = DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
+                NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
+                PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
 
+            //Prepare some things if it is my photo
+            ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository
+                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId)
+                .Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId == photo.Album.AlbumId }).ToList();
+            ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
 
             if (asPartial == 1) return PartialView("Photo", model);
-            else return View("Photo", model);
+            
+            return View("Photo", model);
         }
 
     }

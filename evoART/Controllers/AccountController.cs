@@ -192,7 +192,7 @@ namespace evoART.Controllers
                         UserName = userName,
                         Email = userEmail,
                         Password = DateTime.Now.ToString(),
-                        Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole("Simple User")
+                        Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer")
                     };
 
                     if (!DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser))
