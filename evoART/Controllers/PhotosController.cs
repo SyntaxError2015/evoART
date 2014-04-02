@@ -106,7 +106,7 @@ namespace evoART.Controllers
             if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            /*try
+            try
             {
                 if (id == null || !DatabaseWorkUnit.Instance.PhotosRepository.VerifyExists(new Guid(id)))
                     if (asPartial == 1) return PartialView("photo");
@@ -116,26 +116,21 @@ namespace evoART.Controllers
             {
                 if (asPartial == 1) return PartialView("photo");
                 else return View("Photo");
-            }*/
+            }
+
+            //Increment views number 
+            DatabaseWorkUnit.Instance.PhotosRepository.IncrementViews(new Guid(id));
 
             var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id));
-
-            //Increment views number ------  USE THE NEW FUNCTION
-            photo.Views++;
-            DatabaseWorkUnit.Instance.PhotosRepository.Update(photo);
-
-            //photo.HashTags.ToArray()[0].
             var model = new PhotoModel
             {
                 Photo = photo,
                 MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
-
-                Comments=null, //sa iau din unit
-
-                HasLiked = false, //AICIC SA IAU DIN UNIT,
-                MyLike = null //SA iau din unit
+                Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId), 
+                HasLiked = DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId,photo.PhotoId),
+                NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
+                PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
-
 
             if (asPartial == 1) return PartialView("Photo", model);
             else return View("Photo", model);

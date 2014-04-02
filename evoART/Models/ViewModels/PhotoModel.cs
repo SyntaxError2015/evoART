@@ -15,11 +15,12 @@ namespace evoART.Models.ViewModels
 
         public SocialModels.Comment[] Comments { get; set; }
 
-
-        public SocialModels.Like MyLike { get; set; }
         public bool HasLiked { get; set; }
 
         public bool MyPhoto { get; set; }
+
+        public Guid NextPhotoId { get; set; }
+        public Guid PreviousPhotoId { get; set; }
         
         [Required]
         [DataType(DataType.Text)]

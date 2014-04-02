@@ -16,7 +16,6 @@ else
 {
     <script>
         var nrLikes = @(Model.Photo.Likes!=null?Model.Photo.Likes.Count:0);
-        var myLikeId = '@(Model.HasLiked?Model.MyLike.LikeId.ToString():"0")';
 
         function leaveComment() {
             var photoId = '@Model.Photo.PhotoId';
@@ -31,6 +30,15 @@ else
             });
             return false;
         }
+        
+        function createComment(data) {
+            if (data == "K") {
+                $("#commentbox").val("");
+                go('Photos', 'Photo', '@Model.Photo.PhotoId');
+            } else {
+                showMessage('alert-danger', 'Comment too short or something went wrong!');
+            }
+        }
     </script>
 
     <style>
@@ -42,7 +50,8 @@ else
     <div id="leftbar">
         <h3>
             @Model.Photo.Views <span class="glyphicon glyphicon-eye-open"></span>
-            <span id="likebox" onclick="like('@Model.Photo.PhotoId.ToString()');" @(Model.HasLiked ? "class='liked'" : "")><span id="numberlikes">@(Model.Photo.Likes != null ? Model.Photo.Likes.Count : 0)</span> <span class="glyphicon glyphicon-thumbs-up"></span></span>
+            @Model.Photo.UploadDate.ToString() <span class="glyphicon glyphicon-calendar"></span>
+            <span id="likebox" onclick="like('@Model.Photo.PhotoId.ToString()');" @(Model.HasLiked ? "class=liked" : "")><span id="numberlikes">@(Model.Photo.Likes != null ? Model.Photo.Likes.Count : 0)</span> <span class="glyphicon glyphicon-thumbs-up"></span></span>
         </h3>
         <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#details" data-toggle="tab">Photo details</a></li>
@@ -98,17 +107,18 @@ else
                 {
                     foreach (var comm in Model.Comments)
                     {
-                        <div class="panel panel-info">
+                        <div id="@comm.CommentId" class="panel panel-info">
                             <div class="panel-heading">
                                 <a href="/Users/Profile/@comm.UserAccount.UserName" title="View user's profile" onclick="go('Users', 'Profile', '@comm.UserAccount.UserName'); event.preventDefault();" class="label label-default">@comm.UserAccount.UserName</a> says:
+                                @if (comm.UserAccount.UserName == MySession.Current.UserDetails.UserName)
+                                {
+                                    <a href="#" style="float:right;margin-left: 5px;" class="label label-danger" onclick="deleteComment('@comm.CommentId.ToString()'); return false;" title="Delete comment!">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                }
                                 <span style="float: right;">
                                     @comm.CommentDate.ToString()
-                                    @if (comm.UserAccount.UserName == MySession.Current.UserDetails.UserName)
-                                    {
-                                        <a href="#" class="label label-danger" onclick="deleteComment('@comm.CommentId.ToString()'); return false;">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </a>
-                                    }
+
                                 </span>
                             </div>
                             <div class="panelcontent" style="white-space: pre-line">@comm.CommentText</div>
@@ -144,21 +154,29 @@ else
 
     <div id="photocontainer">
         <div id="photo">
-            <div id="moveleft"><span class="glyphicon glyphicon-chevron-left"></span></div>
-            <div id="moveright"><span class="glyphicon glyphicon-chevron-right"></span></div>
+            <div id="moveleft" onclick="@(Model.PreviousPhotoId!=Guid.Empty?"go('Photos','Photo','"+@Model.PreviousPhotoId.ToString()+"')":"")"><span class="glyphicon glyphicon-chevron-left"></span></div>
+            <div id="moveright" onclick="@(Model.NextPhotoId != Guid.Empty ? "go('Photos','Photo','" + @Model.NextPhotoId.ToString() + "')" : "")"><span class="glyphicon glyphicon-chevron-right"></span></div>
         </div>
     </div>
 
 }
 
 <script>
-    function createComment(data) {
-        if (data == "K") {
-            $("#commentbox").val("");
-            //Some redirect
-        } else {
-            showMessage('alert-danger', 'Comment too short!');
-        }
+    
+    function deleteComment(commentId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Comments/DeleteComment',
+            data: { id: commentId },
+            success: function(response) {
+                if (response == "K") {
+                    $("#" + commentId).hide();
+                } else {
+                    showMessage('alert-danger', 'The comment was not deleted!');
+                }
+            }
+        });
+        return false;
     }
 
     function likePhoto(data) {
