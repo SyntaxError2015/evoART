@@ -24,19 +24,7 @@ namespace evoART.DAL.Interfaces.Social
 
         bool Insert(SocialModels.Comment comment);
 
-        bool Delete(Guid photoId, Guid userId);
-
-        bool Delete(Guid photoId, AccountModels.UserAccount user);
-
-        bool Delete(Guid photoId, string userName);
-
-        bool Delete(PhotoModels.Photo photo, Guid userId);
-
-        bool Delete(PhotoModels.Photo photo, AccountModels.UserAccount user);
-
-        bool Delete(PhotoModels.Photo photo, string userName);
-
-        bool Delete(SocialModels.Comment comment);
+        bool Delete(Guid commentId);
 
         bool Update(SocialModels.Comment comment);
     }
