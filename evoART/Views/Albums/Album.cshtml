@@ -62,9 +62,7 @@ else
         </a>'s <a href="/Albums/Albums/@Model.UserName" title="See the other albums" onclick="go('Albums', 'Albums', '@Model.UserName'); event.preventDefault();" class="label label-info">
             @Model.AlbumName
         </a> <br>
-        <small>
-            @Model.AlbumDescription
-        </small>
+        <small style="white-space: pre-line">@(Model.AlbumDescription ?? "")</small>
     </h1>
     <hr>
 

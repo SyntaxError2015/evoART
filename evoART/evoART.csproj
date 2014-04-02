@@ -122,13 +122,16 @@
     <Folder Include="Content\Hexagons\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Content\Photos\" />
+    <Folder Include="Content\ProfilePictures\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Content\Thumbnails\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\FacebookOAuthException.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
     <Compile Include="Models\ViewModels\AlbumModel.cs" />
     <Compile Include="Models\ViewModels\IndexModel.cs" />
+    <Compile Include="Models\ViewModels\PhotoModel.cs" />
     <Compile Include="Models\ViewModels\PhotosModel.cs" />
     <Compile Include="Models\ViewModels\AlbumsModel.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
@@ -158,7 +162,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="DAL\UnitsOfWork\DatabaseWorkUnit.cs" />
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
@@ -246,6 +250,7 @@
     <Content Include="Views\Photos\NewPhoto.cshtml" />
     <Content Include="Views\Albums\Album.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />
+    <Content Include="Views\Photos\Photo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

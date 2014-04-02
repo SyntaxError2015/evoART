@@ -63,7 +63,12 @@
                     $("#content").html(response);
                     $("#loading").toggle();
                     //alert(response);
+                },
+                error: function() {
+                    $("#loading").toggle();
+                    showMessage("alert-danger", "The page failed to load!");
                 }
+                
             });
             return false;
         }

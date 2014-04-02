@@ -66,7 +66,8 @@ namespace evoART.Controllers
             try
             {
                 if (id == null || !DatabaseWorkUnit.Instance.AlbumsRepository.VerifyExists(new Guid(id)))
-                    return View("Album");
+                    if (asPartial == 1) return PartialView("Album");
+                    else return View("Album");
             }
             catch
             {
@@ -94,7 +95,6 @@ namespace evoART.Controllers
 
             if (asPartial == 1) return PartialView("Album", model);
             else return View("Album", model);
-
         }
 
         /// <summary>

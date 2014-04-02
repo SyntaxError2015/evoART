@@ -140,7 +140,7 @@
 
 /*Modify the bootstrap classes*/
 .thumbnail img {
-    max-height: 250px;
+    height: 260px;
 }
 
 /*User's login and register'*/
@@ -166,6 +166,124 @@ textarea {
     max-width: 280px;
 }
 
+/*Photo page styles*/
+#leftbar {
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    background: white;
+    border-right: gray 1px solid;
+    position: fixed;
+    height: 100%;
+    z-index: 2;
+    transition: all 0.4s ease 0s;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 50px;
+    overflow-y: scroll;
+}
+
+#photocontainer {
+    position: absolute;
+    left: 0px;
+    padding-top: 50px;
+    padding-left: 400px;
+    background-color: #222222;
+    color: white;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+#photo {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+#moveleft {
+    position: absolute;
+    height: 150px;
+    font-size: 80px;
+    text-align: center;
+    top: 50%;
+    left: 0px;
+    margin-top: -75px;
+    -ms-opacity: 0.15;
+    opacity: 0.15;
+    cursor: pointer;
+}
+
+    #moveleft:hover {
+        -ms-opacity: 1;
+        opacity: 1;
+    }
+
+#moveright {
+    position: absolute;
+    height: 150px;
+    font-size: 80px;
+    text-align: center;
+    top: 50%;
+    right: 0px;
+    margin-top: -75px;
+    -ms-opacity: 0.15;
+    opacity: 0.15;
+    cursor: pointer;
+}
+
+    #moveright:hover {
+        -ms-opacity: 1;
+        opacity: 1;
+    }
+
+.userpic {
+    height: 60px;
+    width: 60px;
+}
+
+.userdetails {
+    vertical-align: top;
+    text-align: left;
+    font-size: 18px;
+}
+
+
+.panelcontent {
+    padding: 5px;
+}
+
+.commentbox {
+    max-width: 400px;
+    width: 105%;
+    height: 100px;
+    margin: -10px;
+    padding: 10px;
+}
+
+.postcomment {
+    float: right;
+    font-size: 14px;
+}
+
+#likebox {
+    cursor: pointer;
+    float: right;
+}
+
+    #likebox:hover {
+        color: blue;
+    }
+
+.liked {
+        color: green;
+    }
+
+
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #b94a48;
@@ -189,4 +307,27 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+
+@media (max-width:767px) {
+
+    #wrapper {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        left: 0;
+    }
+
+    #wrapper.active {
+        position: relative;
+        left: 250px;
+    }
+
+        #wrapper.active #sidebar-wrapper {
+            left: 250px;
+            width: 250px;
+            transition: all 0.4s ease 0s;
+        }
 }

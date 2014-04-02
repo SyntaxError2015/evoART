@@ -10,7 +10,8 @@
 @if (Model == null || Model.Albums == null)
 {
 
-    <h1>This user does not exist or it doesn't have an album!<br>
+    <h1>
+        This user does not exist or it doesn't have an album!<br>
         <a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">Go to the Home page!</a>
     </h1>
 }
@@ -63,7 +64,7 @@ else
     }
 
     <hr>
-    
+
     <div class="row">
         @for (var i = 0; i < Model.Albums.Length; i++)
         {
@@ -89,10 +90,7 @@ else
                     </a>
                     <div class="caption">
                         <h3>@Model.Albums[i].AlbumName</h3>
-                        <p>
-                            @Model.Albums[i].AlbumDescription
-                        </p>
-
+                        <p style="white-space: pre-line">@(Model.Albums[i].AlbumDescription ?? "")</p>
 
                         <div class="btn-group">
                             <a href="/Albums/Album/@Model.Albums[i].AlbumId" onclick="go('Albums', 'Album', '@Model.Albums[i].AlbumId'); event.preventDefault();" class="btn btn-primary" role="button">View album</a>

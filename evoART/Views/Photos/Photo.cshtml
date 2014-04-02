@@ -1,0 +1,184 @@
+﻿@model evoART.Models.ViewModels.PhotoModel
+@using System.Web.UI.WebControls
+@using evoART.Special
+
+
+
+@if ((Model == null || Model.Photo == null))
+{
+
+    <h1>
+        This photo does not exist!<br>
+        <a href="/" onclick=" go('Home', 'Index', ''); event.preventDefault(); ">Go to the Home page!</a>
+    </h1>
+}
+else
+{
+    <script>
+        var nrLikes = @(Model.Photo.Likes!=null?Model.Photo.Likes.Count:0);
+        var myLikeId = '@(Model.HasLiked?Model.MyLike.LikeId.ToString():"0")';
+        
+        function leaveComment() {
+            var photoId = '@Model.Photo.PhotoId';
+            var comment = $("#commentbox").val();
+            $.ajax({
+                type: 'POST',
+                url: '/Comments/AddComment',
+                data: { photoId: photoId, comment: comment },
+                success: function(response) {
+                    createComment(response);
+                }
+            });
+            return false;
+        }
+    </script>
+    
+    <style>
+        #photo {
+            background-image: url("/Content/Photos/@(Model.Photo.PhotoId.ToString()).jpg");
+        }
+    </style>
+
+    <div id="leftbar">
+        <h3>
+            @Model.Photo.Views <span class="glyphicon glyphicon-eye-open"></span>
+            <span id="likebox" onclick="like('@Model.Photo.PhotoId.ToString()');" @(Model.HasLiked ? "class='liked'" : "")><span id="numberlikes">@(Model.Photo.Likes != null ? Model.Photo.Likes.Count : 0)</span> <span class="glyphicon glyphicon-thumbs-up"></span></span>
+        </h3>
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#details" data-toggle="tab">Photo details</a></li>
+            @if (Model.MyPhoto)
+            {
+                <li><a href="#edit" data-toggle="tab">Edit photo</a></li>
+            }
+            <li><a href="#share" data-toggle="tab">Share photo</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="details">
+                <table class="userdetails">
+                    <tr>
+                        <td class="userpic"><img class="userpic" src="/Content/ProfilePictures/@Model.Photo.Album.UserAccount.UserId.ToString()" /></td>
+                        <td class="userdetails">
+                            <a href="/Users/Profile/@Model.Photo.Album.UserAccount.UserName" title="See the user's profile" onclick="go('Users', 'Profile', '@Model.Photo.Album.UserAccount.UserName'); event.preventDefault();" class="label label-default">@Model.Photo.Album.UserAccount.UserName</a><br>
+                            <a href="/Albums/Album/@Model.Photo.Album.AlbumId" title="See the other photos" onclick="go('Albums', 'Album', '@Model.Photo.Album.AlbumId'); event.preventDefault();" class="label label-info">@Model.Photo.Album.AlbumName</a>
+                        </td>
+                    </tr>
+                </table>
+                <h3>
+                    @Model.Photo.PhotoName <span class="label label-warning">@Model.Photo.ContentTag.ContentTagName</span>
+                    <br>
+                    <small style="white-space: pre-line">@(Model.Photo.PhotoDescription ?? "")</small>
+                </h3>
+
+                Hashtags:
+                @foreach (var hashtag in Model.Photo.HashTags)
+                {
+                    <a href="/Search/Hasgtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                }
+            </div>
+            @if (Model.MyPhoto)
+            {
+                <div class="tab-pane fade" id="edit">..Profile.</div>
+            }
+            <div class="tab-pane fade" id="share">Share the photo somehow...</div>
+        </div>
+
+        <br>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">@(Model.Comments != null ? Model.Comments.Length : 0) comments</h3>
+            </div>
+            <div class="panelcontent">
+
+                @if (Model.Comments != null)
+                {
+                    foreach (var comm in Model.Comments)
+                    {
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <a href="/Users/Profile/@comm.UserAccount.UserName" title="View user's profile" onclick="go('Users', 'Profile', '@comm.UserAccount.UserName'); event.preventDefault();" class="label label-default">@comm.UserAccount.UserName</a> says:
+                                <span style="float: right;">
+                                    @comm.CommentDate.ToString()
+                                    @if (comm.UserAccount.UserName == MySession.Current.UserDetails.UserName)
+                                    {
+                                        <a href="#" class="label label-danger" onclick="deleteComment('@comm.CommentId.ToString()'); return false;">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    }
+                                </span>
+                            </div>
+                            <div class="panelcontent" style="white-space: pre-line">@comm.CommentText</div>
+                        </div>
+                    }
+                }
+
+
+                <!--Posting a comment-->
+                @if (MySession.Current.UserDetails != null)
+                {
+                            <div class="panel panel-primary">
+                        
+                                <div class="panel-heading">
+                                    Leave a comment
+                                    <a href="#" class="label label-success postcomment" onclick="leaveComment(); event.preventDefault();" >Post comment</a>
+                                </div>
+                                <div class="panelcontent" style="overflow: hidden; height: 70px;">
+                                    <input type="hidden" name="photoId" value="@Model.Photo.PhotoId" />
+                                    <textarea name="comment" id="commentbox" class="commentbox" placeholder="Write your comment here..."></textarea>
+                                </div>
+                        
+                            </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">You need to log in before posting comments!</div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div id="photocontainer">
+        <div id="photo">
+            <div id="moveleft"><span class="glyphicon glyphicon-chevron-left"></span></div>
+            <div id="moveright"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
+    </div>
+
+}
+
+<script>
+    function createComment(data) {
+        if (data == "K") {
+            $("#commentbox").val("");
+            //Some redirect
+        } else {
+            showMessage('alert-danger', 'Comment too short!');
+        }
+    }
+
+    function likePhoto(data) {
+        if (data == "F") {
+            showMessage("alert-danger", "Failed to like/unlike photo!");
+        } else if (data == "A") {
+            $("#likebox").addClass("liked");
+            $("#numberlikes").html(++nrLikes);
+        } else if (data == "R") {
+            $("#likebox").removeClass("liked");
+            $("#numberlikes").html(--nrLikes);
+        }
+    }
+
+    function like(photoId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Likes/ToggleLike',
+            data: { photoId: photoId },
+            success: function(response) {
+                likePhoto(response);
+            }
+        });
+    }
+        
+</script>
