@@ -135,10 +135,6 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
 
-                PhotoModels.Photo[] selection = null;
-
-                var count = photos.Count();
-
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
 
@@ -375,7 +371,7 @@ namespace evoART.DAL.Repositories.Photos
 
         private static PhotoModels.Photo[] SelectPhotosByPositionAndNumber(IEnumerable<PhotoModels.Photo> photos, int startPosition, int number)
         {
-            PhotoModels.Photo[] selection = null;
+            PhotoModels.Photo[] selection;
 
             var enumerable = photos as PhotoModels.Photo[] ?? photos.ToArray();
             var count = enumerable.Count();
