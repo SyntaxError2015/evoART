@@ -12,8 +12,6 @@
         height:500px;
     }
 
-
-
     .hexagon {
         width: 100px;
         height: 60px;
@@ -25,7 +23,6 @@
         /* transform: rotate(90deg);*/
         -webkit-animation: myfirst 2s; /* Chrome, Safari, Opera */
         animation: myfirst 2s;
-        
     }
 
     .trileft {
@@ -39,53 +36,100 @@
         bottom: 0px;
     }
 
-        .trileft img {
-            margin-left: -500px;
-            margin-top: -500px;
-            float: left;
-        }
+    .trileft img {
+        margin-left: -500px;
+        margin-top: -500px;
+        float: left;
+        height: 144px;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+    }
+    .triright {
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 500px  500px 0 0;
+        border-color: transparent transparent transparent transparent;
+        position: fixed;
+        right: -40px;
+        bottom: 0px;
+    }
 
-        #hexagon:before {
-            content: "";
-            position: absolute;
-            top: -25px;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 25px solid red;
-            -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
-            animation: myfirst 1s;
-            overflow: hidden;
-        }
+    .triright img {
+        margin-right: -500px;
+        margin-top: -500px;
+        float: right;
+        height: 144px;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+    }
 
-        #hexagon:after {
-            content: "";
-            position: absolute;
-            bottom: -25px;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-top: 25px solid red;
-            -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
-            animation: myfirst 1s;
-            overflow: hidden;
-        }
+   
+
+    #hexagon:before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 25px solid red;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+        overflow: hidden;
+    }
+
+    #hexagon:after {
+        content: "";
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-top: 25px solid red;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+        overflow: hidden;
+    }
 </style>
-<div class="trileft">
-    <img src="/Content/Hexagons/Model.TopPhotos[0].PhotoId&#46;png" style="float:left;" />
-    <img src="/Content/Hexagons/Model.TopPhotos[1].PhotoId&#46;png" style="float:left;margin-top:-428px;margin-left:-376px;" />
-    <img src="/Content/Hexagons/Model.TopPhotos[2].PhotoId&#46;png" style="float:left;margin-top:-358px;" />
+
+@try
+{
+    <div class="triright">
+        <a href="/Photos/Photo/@Model.TopPhotos[0].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[0].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[0].PhotoId&#46;png" style="float:right;" />
+        </a>
+            <a href="/Photos/Photo/@Model.TopPhotos[1].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[1].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[1].PhotoId&#46;png" style="float:right;margin-top:-428px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[2].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[2].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[2].PhotoId&#46;png" style="float:right;margin-top:-358px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[3].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[3].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[3].PhotoId&#46;png" style="float:right;margin-top:-288px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[4].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[4].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[4].PhotoId&#46;png" style="float:right;margin-top:-216px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[5].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[5].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[5].PhotoId&#46;png" style="float:right;margin-top:-146px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[6].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[6].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[6].PhotoId&#46;png" style="float:right;margin-top:-216px;margin-right:-252px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[7].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[7].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[7].PhotoId&#46;png" style="float:right;margin-top:-74px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[8].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[8].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[8].PhotoId&#46;png" style="float:right;margin-top:-74px;margin-right:-252px;" /></a>
+
 </div>
 
+<div class="trileft">
+    <a href="/Photos/Photo/@Model.TopPhotos[9].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[9].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[9].PhotoId&#46;png" style="float:left;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[10].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[10].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[10].PhotoId&#46;png" style="float:left;margin-top:-428px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[11].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[11].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[11].PhotoId&#46;png" style="float:left;margin-top:-358px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[12].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[12].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[12].PhotoId&#46;png" style="float:left;margin-top:-288px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[13].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[13].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[13].PhotoId&#46;png" style="float:left;margin-top:-216px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[14].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[14].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[14].PhotoId&#46;png" style="float:left;margin-top:-146px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[15].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[15].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[15].PhotoId&#46;png" style="float:left;margin-top:-216px;margin-left:-252px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[16].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[16].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[16].PhotoId&#46;png" style="float:left;margin-top:-74px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[17].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[17].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[17].PhotoId&#46;png" style="float:left;margin-top:-74px;margin-left:-252px;" /></a>
 
-@using (Ajax.BeginForm("UpdateForm", "Account", new AjaxOptions { UpdateTargetId = "textEntered" }))
-{
-    @Html.TextBox("textBox1", "Enter text")
-    <input type="submit" value="Submit" /><br />
-    <span id="textEntered">Nothing Entered</span>
+</div>
 }
+catch 
+{
+  
+
+}
+
 

@@ -18,16 +18,22 @@ namespace evoART.Controllers
                 return "F";
 
             //Check if has liked
-            if (true==false)
+            if (DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId,new Guid(photoId)))
             {
                 //Delete the like
 
-                return "R";
+                return DatabaseWorkUnit.Instance.LikesRepository.Delete(new Guid(photoId),
+                    MySession.Current.UserDetails.UserId)
+                    ? "R"
+                    : "F";
             }
             else
             {
                 //Add the like
-                return "A";
+                return DatabaseWorkUnit.Instance.LikesRepository.Insert(new Guid(photoId),
+                    MySession.Current.UserDetails.UserId)
+                    ? "A"
+                    : "F";
             }
         }
 
