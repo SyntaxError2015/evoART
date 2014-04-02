@@ -1,0 +1,11 @@
+﻿@model evoART.Models.ViewModels.HashTagsModel
+
+@if (Model != null && Model.HashTags != null)
+{
+    <h3>
+        @foreach (var hashtag in Model.HashTags)
+{
+    <a href="#" onclick="addNewHashTag('@Model.PhotoId', '@hashtag.HashTagName');event.preventDefault();" class="label label-default">@hashtag.HashTagName<span class="glyphicon glyphicon-plus"></span></a>
+}
+    </h3>
+}

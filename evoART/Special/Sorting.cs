@@ -25,7 +25,7 @@ namespace evoART.Special
                 }
 
                 array[maxp] = -1;
-                newArray[k] = max;
+                newArray[k] = maxp;
             }
 
             return newArray;

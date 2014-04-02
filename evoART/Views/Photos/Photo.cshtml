@@ -30,7 +30,7 @@ else
             });
             return false;
         }
-        
+
         function createComment(data) {
             if (data == "K") {
                 $("#commentbox").val("");
@@ -38,6 +38,24 @@ else
             } else {
                 showMessage('alert-danger', 'Comment too short or something went wrong!');
             }
+        }
+        
+        function addNewHashTag(photoId, hashName) {
+            $.ajax({
+                type: 'POST',
+                url: '/HashTags/AddHashTag',
+                data: { photoId: photoId, hashName: hashName },
+                success: function(response) {
+                    if (response == "K") {
+                        var toAdd = '<span style="padding:3px;" id="hash-'+hashName+'" class="label label-primary">'+hashName+'<a href="#" style="color:white;" onclick="deleteHashTag(\'@Model.Photo.PhotoId\', \''+hashName+'\', \'hash-'+hashName+'\');event.preventDefault();" class="glyphicon glyphicon-remove"></a></span>';
+                        $("#hashspan-"+photoId).append(toAdd);
+                    } else {
+                        showMessage("alert-danger", "The hashtag cannot be added!");
+                    }
+                }
+            });
+        
+            $("#searchhash").val("");
         }
     </script>
 
@@ -84,14 +102,59 @@ else
                 {
                     foreach (var hashtag in Model.Photo.HashTags)
                     {
-                        <a href="/Search/Hasgtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                        <a href="/Search/Hashtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
                     }
                 }
             </div>
-            @if (Model.MyPhoto)
-            {
-                <div class="tab-pane fade" id="edit">..Profile.</div>
-            }
+
+            @if (Model.MyPhoto == true)
+{
+    <div class="tab-pane fade" id="edit">
+        @using (Ajax.BeginForm("EditPhoto", "Photos", new AjaxOptions
+                    {
+                        OnSuccess = "editPhoto(data, '" + @Model.Photo.PhotoId + "')"
+                    }))
+        {
+            @Html.HiddenFor(m => m.Photo.PhotoId)
+            @Html.TextBoxFor(m => m.Photo.PhotoName, new { @placeholder = "Photo name", @style = "width:390px;" })
+            @Html.TextAreaFor(m => m.Photo.PhotoDescription, new { @placeholder = "Enter a description", @style = "width:390px;" })
+            <br />
+            @Html.LabelFor(m => m.NewAlbum)
+            @Html.DropDownListFor(m => m.NewAlbum, (IEnumerable<SelectListItem>)ViewData["Albums"])
+            <br />
+            @Html.LabelFor(m => m.NewContentTag)
+            @Html.DropDownListFor(m => m.NewContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
+            <br />
+
+            <span style="font-size: 14px;">
+                Hashtags:
+                <span id="hashspan-@Model.Photo.PhotoId">
+                    @if (Model.Photo.HashTags != null)
+                    {
+                    foreach (var hashtag in Model.Photo.HashTags)
+                    {
+                    <span id="hash-@hashtag.HashTagId" style="padding:3px;" class="label label-primary">@hashtag.HashTagName<a href="#" class="glyphicon glyphicon-remove" style="color:white;" onclick="deleteHashTag('@Model.Photo.PhotoId', '@hashtag.HashTagName', '@hashtag.HashTagId');event.preventDefault();"></a></span>
+                    }
+
+                    }
+                </span>
+            </span>
+            <br />
+            <div class="input-group">
+                <span class="input-group-addon">#</span>
+                <textarea id="searchhash" style="height: 30px; width:390px;" class="form-control" onkeyup="addHashTag(event, '@Model.Photo.PhotoId');getHashTags('@Model.Photo.PhotoId', this.value);" placeholder="Add hashtag"></textarea>
+            </div>
+            <div id="hashresponse"></div>
+            
+            <br/><br/>
+            
+            <div class="btn-group">
+                <input type="submit" class="btn btn-primary" role="button" value="Update photo" />
+                @Ajax.ActionLink("Delete photo", "DeletePhoto/" + Model.Photo.PhotoId, "Photos", new AjaxOptions { OnSuccess = "go('Albums','Album','" + Model.Photo.Album.AlbumId + "')" }, new { @class = "btn btn-danger" })
+            </div>
+        }
+    </div>
+}
             <div class="tab-pane fade" id="share">Share the photo somehow...</div>
         </div>
 
@@ -118,7 +181,6 @@ else
                                 }
                                 <span style="float: right;">
                                     @comm.CommentDate.ToString()
-
                                 </span>
                             </div>
                             <div class="panelcontent" style="white-space: pre-line">@comm.CommentText</div>
@@ -162,7 +224,7 @@ else
 }
 
 <script>
-    
+
     function deleteComment(commentId) {
         $.ajax({
             type: 'POST',
@@ -202,4 +264,48 @@ else
         });
     }
 
+    function editPhoto(data, photoId) {
+        if (data == "K") {
+            showMessage('alert-success', 'The photo was successfully updated!');
+            go('Photos', 'Photo', photoId);
+        } else {
+            showMessage('alert-danger', 'The photo was not updated!');
+        }
+    }
+
+    function getHashTags(photoId, textHash) {
+        $.ajax({
+            type: 'POST',
+            url: '/HashTags/SuggestedHashTags',
+            data: { photoId: photoId, name:textHash },
+            success: function(response) {
+                $("#hashresponse").html(response);
+            }
+        });
+    }
+
+    function addHashTag(e, photoId) {
+        if (e.which == 13 || e.which == 32) {
+            if ($("#searchhash").val() != "") {
+                addNewHashTag(photoId, $("#searchhash").val());
+            }
+            $("#searchhash").val("");
+        }
+    }
+    
+
+    function deleteHashTag(photoId, textHash, hashId) {
+        $.ajax({
+            type: 'POST',
+            url: '/HashTags/DeleteHashTag',
+            data: { photoId: photoId, hashName:textHash },
+            success: function(response) {
+                if (response == "K") {
+                    $("#hash-" + hashId).hide();
+                } else {
+                    showMessage("alert-danger", "The hashtag was not removed!");
+                }
+            }
+        });
+    }
 </script>

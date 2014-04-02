@@ -22,18 +22,12 @@ namespace evoART.Models.ViewModels
         public Guid NextPhotoId { get; set; }
         public Guid PreviousPhotoId { get; set; }
         
-        [Required]
-        [DataType(DataType.Text)]
-        [Display(Name = "Photo name")]
-        public string NewPhotoName { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Photo description")]
-        public string NewPhotoDescription { get; set; }
+        [Display(Name = "Album")]
+        public string NewAlbum { get; set; }
 
-
-        [Display(Name = "Select an album")]
-        public string Album { get; set; }
+        [Display(Name = "Content tag")]
+        public string NewContentTag { get; set; }
 
 
 

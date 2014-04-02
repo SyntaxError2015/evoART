@@ -19,23 +19,14 @@ namespace evoART.Controllers
     {
         public ActionResult NewPhoto()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         [HttpPost]
         public string Upload(HttpPostedFileBase file, string photoId)
         {
-            //string photoId = new Guid().ToString();
-
             if (file != null && file.ContentLength > 0 && MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == "Photographer")
             {
-                // extract only the fielname
-                var fileName = Path.GetFileName(file.FileName);
-
-
-                // the destination
                 var path = Path.Combine(Server.MapPath("~/Content/Temp"), photoId + ".jpg");
                 file.SaveAs(path);
 
@@ -55,7 +46,6 @@ namespace evoART.Controllers
                 ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW")
             };
 
-
             var model = new PhotosModel { PhotoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert(photo).ToString() };
             var t = userAlbums.Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString() }).ToList();
             ViewData["Albums"] = t;
@@ -68,13 +58,17 @@ namespace evoART.Controllers
 
         public string SaveNewPhoto(PhotosModel model)
         {
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(model.PhotoId));
+
+            if (MySession.Current.UserDetails == null ||
+                MySession.Current.UserDetails.UserId != photo.Album.UserAccount.UserId)
+                return "F";
+
             Image img = Image.FromFile(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
 
             ImageResizer.ResizeImage(img).Save(Path.Combine(Server.MapPath("~/Content/Photos"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateThumbnail(img).Save(Path.Combine(Server.MapPath("~/Content/Thumbnails"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateHexagonImage(img).Save(Path.Combine(Server.MapPath("~/Content/Hexagons"), model.PhotoId + ".png"), ImageFormat.Png);
-
-            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(model.PhotoId));
 
             photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.Album));
             photo.ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.ContentTag));
@@ -84,6 +78,23 @@ namespace evoART.Controllers
             return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo)
                 ? "K"
                 : "F";
+        }
+
+        public string EditPhoto(PhotoModel model)
+        {
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(model.Photo.PhotoId);
+
+            if (MySession.Current.UserDetails == null ||
+               MySession.Current.UserDetails.UserId != photo.Album.UserAccount.UserId)
+                return "F";
+
+            photo.PhotoName = model.Photo.PhotoName;
+            photo.PhotoDescription = model.Photo.PhotoDescription;
+            photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.NewAlbum));
+            photo.ContentTag =
+                DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.NewContentTag));
+
+            return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo) ? "K" : "F";
         }
 
         public string DeletePhoto(string id)
@@ -131,6 +142,12 @@ namespace evoART.Controllers
                 NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
                 PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
+
+            
+
+            //Prepare some things if it is my photo
+            ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId).Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId==photo.Album.AlbumId?true:false}).ToList();
+            ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId==photo.ContentTag.ContentTagId}).ToList();
 
             if (asPartial == 1) return PartialView("Photo", model);
             else return View("Photo", model);
