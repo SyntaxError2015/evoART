@@ -236,8 +236,8 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
-                    .OrderBy(d => d.UploadDate)
-                    .Last(d => d.UploadDate < currentPhoto.UploadDate).PhotoId;
+                    .OrderByDescending(d => d.UploadDate)
+                    .First(d => d.UploadDate < currentPhoto.UploadDate).PhotoId;
             }
 
             catch
