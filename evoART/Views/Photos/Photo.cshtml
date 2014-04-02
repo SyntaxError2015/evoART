@@ -1,0 +1,311 @@
+﻿@model evoART.Models.ViewModels.PhotoModel
+@using System.Web.UI.WebControls
+@using evoART.Special
+
+
+
+@if ((Model == null || Model.Photo == null))
+{
+
+    <h1>
+        This photo does not exist!<br>
+        <a href="/" onclick=" go('Home', 'Index', ''); event.preventDefault(); ">Go to the Home page!</a>
+    </h1>
+}
+else
+{
+    <script>
+        var nrLikes = @(Model.Photo.Likes!=null?Model.Photo.Likes.Count:0);
+
+        function leaveComment() {
+            var photoId = '@Model.Photo.PhotoId';
+            var comment = $("#commentbox").val();
+            $.ajax({
+                type: 'POST',
+                url: '/Comments/AddComment',
+                data: { photoId: photoId, comment: comment },
+                success: function(response) {
+                    createComment(response);
+                }
+            });
+            return false;
+        }
+
+        function createComment(data) {
+            if (data == "K") {
+                $("#commentbox").val("");
+                go('Photos', 'Photo', '@Model.Photo.PhotoId');
+            } else {
+                showMessage('alert-danger', 'Comment too short or something went wrong!');
+            }
+        }
+        
+        function addNewHashTag(photoId, hashName) {
+            $.ajax({
+                type: 'POST',
+                url: '/HashTags/AddHashTag',
+                data: { photoId: photoId, hashName: hashName },
+                success: function(response) {
+                    if (response == "K") {
+                        var toAdd = '<span style="padding:3px;" id="hash-'+hashName+'" class="label label-primary">'+hashName+'<a href="#" style="color:white;" onclick="deleteHashTag(\'@Model.Photo.PhotoId\', \''+hashName+'\', \'hash-'+hashName+'\');event.preventDefault();" class="glyphicon glyphicon-remove"></a></span>';
+                        $("#hashspan-"+photoId).append(toAdd);
+                    } else {
+                        showMessage("alert-danger", "The hashtag cannot be added!");
+                    }
+                }
+            });
+        
+            $("#searchhash").val("");
+        }
+    </script>
+
+    <style>
+        #photo {
+            background-image: url("/Content/Photos/@(Model.Photo.PhotoId.ToString()).jpg");
+        }
+    </style>
+
+    <div id="leftbar">
+        <h3>
+            @Model.Photo.Views <span class="glyphicon glyphicon-eye-open"></span>
+            @Model.Photo.UploadDate.ToString() <span class="glyphicon glyphicon-calendar"></span>
+            <span id="likebox" onclick="like('@Model.Photo.PhotoId.ToString()');" @(Model.HasLiked ? "class=liked" : "")><span id="numberlikes">@(Model.Photo.Likes != null ? Model.Photo.Likes.Count : 0)</span> <span class="glyphicon glyphicon-thumbs-up"></span></span>
+        </h3>
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#details" data-toggle="tab">Photo details</a></li>
+            @if (Model.MyPhoto)
+            {
+                <li><a href="#edit" data-toggle="tab">Edit photo</a></li>
+            }
+            <li><a href="#share" data-toggle="tab">Share photo</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="details">
+                <table class="userdetails">
+                    <tr>
+                        <td class="userpic"><img class="userpic" src="/Content/ProfilePictures/@Model.Photo.Album.UserAccount.UserId.ToString()" /></td>
+                        <td class="userdetails">
+                            <a href="/Users/Profile/@Model.Photo.Album.UserAccount.UserName" title="See the user's profile" onclick="go('Users', 'Profile', '@Model.Photo.Album.UserAccount.UserName'); event.preventDefault();" class="label label-default">@Model.Photo.Album.UserAccount.UserName</a><br>
+                            <a href="/Albums/Album/@Model.Photo.Album.AlbumId" title="See the other photos" onclick="go('Albums', 'Album', '@Model.Photo.Album.AlbumId'); event.preventDefault();" class="label label-info">@Model.Photo.Album.AlbumName</a>
+                        </td>
+                    </tr>
+                </table>
+                <h3>
+                    @Model.Photo.PhotoName <span class="label label-warning">@Model.Photo.ContentTag.ContentTagName</span>
+                    <br>
+                    <small style="white-space: pre-line">@(Model.Photo.PhotoDescription ?? "")</small>
+                </h3>
+
+                Hashtags:
+                @if (Model.Photo.HashTags != null)
+                {
+                    foreach (var hashtag in Model.Photo.HashTags)
+                    {
+                        <a href="/Search/Hashtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                    }
+                }
+            </div>
+
+            @if (Model.MyPhoto == true)
+{
+    <div class="tab-pane fade" id="edit">
+        @using (Ajax.BeginForm("EditPhoto", "Photos", new AjaxOptions
+                    {
+                        OnSuccess = "editPhoto(data, '" + @Model.Photo.PhotoId + "')"
+                    }))
+        {
+            @Html.HiddenFor(m => m.Photo.PhotoId)
+            @Html.TextBoxFor(m => m.Photo.PhotoName, new { @placeholder = "Photo name", @style = "width:390px;" })
+            @Html.TextAreaFor(m => m.Photo.PhotoDescription, new { @placeholder = "Enter a description", @style = "width:390px;" })
+            <br />
+            @Html.LabelFor(m => m.NewAlbum)
+            @Html.DropDownListFor(m => m.NewAlbum, (IEnumerable<SelectListItem>)ViewData["Albums"])
+            <br />
+            @Html.LabelFor(m => m.NewContentTag)
+            @Html.DropDownListFor(m => m.NewContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
+            <br />
+
+            <span style="font-size: 14px;">
+                Hashtags:
+                <span id="hashspan-@Model.Photo.PhotoId">
+                    @if (Model.Photo.HashTags != null)
+                    {
+                    foreach (var hashtag in Model.Photo.HashTags)
+                    {
+                    <span id="hash-@hashtag.HashTagId" style="padding:3px;" class="label label-primary">@hashtag.HashTagName<a href="#" class="glyphicon glyphicon-remove" style="color:white;" onclick="deleteHashTag('@Model.Photo.PhotoId', '@hashtag.HashTagName', '@hashtag.HashTagId');event.preventDefault();"></a></span>
+                    }
+
+                    }
+                </span>
+            </span>
+            <br />
+            <div class="input-group">
+                <span class="input-group-addon">#</span>
+                <textarea id="searchhash" style="height: 30px; width:390px;" class="form-control" onkeyup="addHashTag(event, '@Model.Photo.PhotoId');getHashTags('@Model.Photo.PhotoId', this.value);" placeholder="Add hashtag"></textarea>
+            </div>
+            <div id="hashresponse"></div>
+            
+            <br/><br/>
+            
+            <div class="btn-group">
+                <input type="submit" class="btn btn-primary" role="button" value="Update photo" />
+                @Ajax.ActionLink("Delete photo", "DeletePhoto/" + Model.Photo.PhotoId, "Photos", new AjaxOptions { OnSuccess = "go('Albums','Album','" + Model.Photo.Album.AlbumId + "')" }, new { @class = "btn btn-danger" })
+            </div>
+        }
+    </div>
+}
+            <div class="tab-pane fade" id="share">Share the photo somehow...</div>
+        </div>
+
+        <br>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">@(Model.Comments != null ? Model.Comments.Length : 0) comments</h3>
+            </div>
+            <div class="panelcontent">
+
+                @if (Model.Comments != null)
+                {
+                    foreach (var comm in Model.Comments)
+                    {
+                        <div id="@comm.CommentId" class="panel panel-info">
+                            <div class="panel-heading">
+                                <a href="/Users/Profile/@comm.UserAccount.UserName" title="View user's profile" onclick="go('Users', 'Profile', '@comm.UserAccount.UserName'); event.preventDefault();" class="label label-default">@comm.UserAccount.UserName</a> says:
+                                @if (comm.UserAccount.UserName == MySession.Current.UserDetails.UserName)
+                                {
+                                    <a href="#" style="float:right;margin-left: 5px;" class="label label-danger" onclick="deleteComment('@comm.CommentId.ToString()'); return false;" title="Delete comment!">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                }
+                                <span style="float: right;">
+                                    @comm.CommentDate.ToString()
+                                </span>
+                            </div>
+                            <div class="panelcontent" style="white-space: pre-line">@comm.CommentText</div>
+                        </div>
+                    }
+                }
+
+
+                <!--Posting a comment-->
+                @if (MySession.Current.UserDetails != null)
+                {
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            Leave a comment
+                            <a href="#" class="label label-success postcomment" onclick="leaveComment(); event.preventDefault();">Post comment</a>
+                        </div>
+                        <div class="panelcontent" style="overflow: hidden; height: 70px;">
+                            <input type="hidden" name="photoId" value="@Model.Photo.PhotoId" />
+                            <textarea name="comment" id="commentbox" class="commentbox" placeholder="Write your comment here..."></textarea>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">You need to log in before posting comments!</div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div id="photocontainer">
+        <div id="photo">
+            <div id="moveleft" onclick="@(Model.PreviousPhotoId!=Guid.Empty?"go('Photos','Photo','"+@Model.PreviousPhotoId.ToString()+"')":"")"><span class="glyphicon glyphicon-chevron-left"></span></div>
+            <div id="moveright" onclick="@(Model.NextPhotoId != Guid.Empty ? "go('Photos','Photo','" + @Model.NextPhotoId.ToString() + "')" : "")"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
+    </div>
+
+}
+
+<script>
+
+    function deleteComment(commentId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Comments/DeleteComment',
+            data: { id: commentId },
+            success: function(response) {
+                if (response == "K") {
+                    $("#" + commentId).hide();
+                } else {
+                    showMessage('alert-danger', 'The comment was not deleted!');
+                }
+            }
+        });
+        return false;
+    }
+
+    function likePhoto(data) {
+        if (data == "F") {
+            showMessage("alert-danger", "Failed to like/unlike photo!");
+        } else if (data == "A") {
+            $("#likebox").addClass("liked");
+            $("#numberlikes").html(++nrLikes);
+        } else if (data == "R") {
+            $("#likebox").removeClass("liked");
+            $("#numberlikes").html(--nrLikes);
+        }
+    }
+
+    function like(photoId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Likes/ToggleLike',
+            data: { photoId: photoId },
+            success: function(response) {
+                likePhoto(response);
+            }
+        });
+    }
+
+    function editPhoto(data, photoId) {
+        if (data == "K") {
+            showMessage('alert-success', 'The photo was successfully updated!');
+            go('Photos', 'Photo', photoId);
+        } else {
+            showMessage('alert-danger', 'The photo was not updated!');
+        }
+    }
+
+    function getHashTags(photoId, textHash) {
+        $.ajax({
+            type: 'POST',
+            url: '/HashTags/SuggestedHashTags',
+            data: { photoId: photoId, name:textHash },
+            success: function(response) {
+                $("#hashresponse").html(response);
+            }
+        });
+    }
+
+    function addHashTag(e, photoId) {
+        if (e.which == 13 || e.which == 32) {
+            if ($("#searchhash").val() != "") {
+                addNewHashTag(photoId, $("#searchhash").val());
+            }
+            $("#searchhash").val("");
+        }
+    }
+    
+
+    function deleteHashTag(photoId, textHash, hashId) {
+        $.ajax({
+            type: 'POST',
+            url: '/HashTags/DeleteHashTag',
+            data: { photoId: photoId, hashName:textHash },
+            success: function(response) {
+                if (response == "K") {
+                    $("#hash-" + hashId).hide();
+                } else {
+                    showMessage("alert-danger", "The hashtag was not removed!");
+                }
+            }
+        });
+    }
+</script>

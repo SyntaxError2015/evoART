@@ -1,31 +1,135 @@
-﻿@{
+﻿@model evoART.Models.ViewModels.IndexModel
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+
+<br>
+
+<style type="text/css">
+    #big{
+        width:500px;
+        height:500px;
+    }
+
+    .hexagon {
+        width: 100px;
+        height: 60px;
+        background: red;
+        position: relative;
+        float: left;
+        margin: 5px;
+        /*-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+        /* transform: rotate(90deg);*/
+        -webkit-animation: myfirst 2s; /* Chrome, Safari, Opera */
+        animation: myfirst 2s;
+    }
+
+    .trileft {
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 500px 0 0 500px;
+        border-color: transparent transparent transparent transparent;
+        position: fixed;
+        left: -40px;
+        bottom: 0px;
+    }
+
+    .trileft img {
+        margin-left: -500px;
+        margin-top: -500px;
+        float: left;
+        height: 144px;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+    }
+    .triright {
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 500px  500px 0 0;
+        border-color: transparent transparent transparent transparent;
+        position: fixed;
+        right: -40px;
+        bottom: 0px;
+    }
+
+    .triright img {
+        margin-right: -500px;
+        margin-top: -500px;
+        float: right;
+        height: 144px;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+    }
+
+   
+
+    #hexagon:before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 25px solid red;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+        overflow: hidden;
+    }
+
+    #hexagon:after {
+        content: "";
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-top: 25px solid red;
+        -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+        animation: myfirst 1s;
+        overflow: hidden;
+    }
+</style>
+
+@try
+{
+    <div class="triright">
+        <a href="/Photos/Photo/@Model.TopPhotos[0].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[0].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[0].PhotoId&#46;png" style="float:right;" />
+        </a>
+            <a href="/Photos/Photo/@Model.TopPhotos[1].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[1].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[1].PhotoId&#46;png" style="float:right;margin-top:-428px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[2].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[2].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[2].PhotoId&#46;png" style="float:right;margin-top:-358px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[3].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[3].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[3].PhotoId&#46;png" style="float:right;margin-top:-288px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[4].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[4].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[4].PhotoId&#46;png" style="float:right;margin-top:-216px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[5].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[5].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[5].PhotoId&#46;png" style="float:right;margin-top:-146px;margin-right:-376px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[6].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[6].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[6].PhotoId&#46;png" style="float:right;margin-top:-216px;margin-right:-252px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[7].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[7].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[7].PhotoId&#46;png" style="float:right;margin-top:-74px;" /></a>
+            <a href="/Photos/Photo/@Model.TopPhotos[8].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[8].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[8].PhotoId&#46;png" style="float:right;margin-top:-74px;margin-right:-252px;" /></a>
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+<div class="trileft">
+    <a href="/Photos/Photo/@Model.TopPhotos[9].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[9].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[9].PhotoId&#46;png" style="float:left;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[10].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[10].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[10].PhotoId&#46;png" style="float:left;margin-top:-428px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[11].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[11].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[11].PhotoId&#46;png" style="float:left;margin-top:-358px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[12].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[12].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[12].PhotoId&#46;png" style="float:left;margin-top:-288px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[13].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[13].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[13].PhotoId&#46;png" style="float:left;margin-top:-216px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[14].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[14].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[14].PhotoId&#46;png" style="float:left;margin-top:-146px;margin-left:-376px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[15].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[15].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[15].PhotoId&#46;png" style="float:left;margin-top:-216px;margin-left:-252px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[16].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[16].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[16].PhotoId&#46;png" style="float:left;margin-top:-74px;" /></a>
+    <a href="/Photos/Photo/@Model.TopPhotos[17].PhotoId" onclick="go('Photos', 'Photo', '@Model.TopPhotos[17].PhotoId'); event.preventDefault();"><img src="/Content/Hexagons/@Model.TopPhotos[17].PhotoId&#46;png" style="float:left;margin-top:-74px;margin-left:-252px;" /></a>
+
 </div>
+}
+catch 
+{
+  
+
+}
+
+

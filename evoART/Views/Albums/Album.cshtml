@@ -1,0 +1,79 @@
+﻿@model evoART.Models.ViewModels.AlbumModel
+@using System.Activities.Statements
+@using System.Data.Entity.Core.Common.EntitySql
+@using System.Web.UI.WebControls
+@using evoART.Special
+@using Microsoft.Ajax.Utilities
+
+
+
+@if (Model == null || Model.Photos == null)
+{
+    <h1>
+        This album does not exist! <br>
+        <small><a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">Go to the Home page!</a></small>
+    </h1>
+}
+else
+{
+    <script>
+        function editAlbum(data) {
+            $('#editAlbum').toggle(100);
+            if (data == "K") {
+                showMessage("alert-success", "Album updated successfully!");
+                go('Albums', 'Album', '@Model.AlbumId');
+            } else {
+                showMessage("alert-danger", "Cannot update!");
+            }
+        }
+    </script>
+
+    if (@Model.MyAlbum == 1)
+    {
+        <div style="right:5px; margin-top: 20px; text-align: right; z-index: 2;position: absolute; background-color: white;">
+            <input type="button" class="btn btn-lg btn-warning" onclick="$('#editAlbum').toggle(100)" value="Edit album" />
+            <br />
+            <div id="editAlbum" style="text-align: right; border: blue 1px solid; border-radius: 5px; display:none;padding: 3px;">
+                @using (Ajax.BeginForm("EditAlbum", "Albums", new AjaxOptions
+                {
+                    OnSuccess = "editAlbum(data)"
+                }))
+                {
+                    @Html.HiddenFor(m => m.AlbumId)
+                    <table>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.AlbumName)</td>
+                            <td>@Html.TextBoxFor(m => m.AlbumName, new { @style = "min-width:200px;" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.AlbumDescription)</td>
+                            <td>@Html.TextAreaFor(m => m.AlbumDescription, new { @style = "min-width:200px;" })</td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btn btn-default" value="Save changes" />
+                }
+            </div>
+        </div>
+    }
+
+    <h1>
+        <a href="/Users/Profile/@Model.UserName" title="View user's profile" onclick="go('Users', 'Profile', '@Model.UserName'); event.preventDefault();" class="label label-default">
+            @Model.UserName
+        </a>'s <a href="/Albums/Albums/@Model.UserName" title="See the other albums" onclick="go('Albums', 'Albums', '@Model.UserName'); event.preventDefault();" class="label label-info">
+            @Model.AlbumName
+        </a> <br>
+        <small style="white-space: pre-line">@(Model.AlbumDescription ?? "")</small>
+    </h1>
+    <hr>
+
+    <div class="row">
+        @foreach (var photo in @Model.Photos)
+        {
+            <div class="col-sm-6 col-md-4">
+                <a href="/Photos/Photo/@photo.PhotoId" onclick="go('Photos', 'Photo', '@photo.PhotoId'); event.preventDefault();" class="thumbnail" title="@photo.PhotoName">
+                    <img src="/Content/Thumbnails/@photo.PhotoId&#46;jpg" alt="@photo.PhotoName">
+                </a>
+            </div>
+        }
+    </div>
+}

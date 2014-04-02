@@ -1,0 +1,96 @@
+﻿@using evoART.Special
+@model evoART.Models.ViewModels.LoginModel
+@{
+    Layout = null;
+}
+
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '@AuthConfig.FacebookMyClient.AppId',
+            status: true, // check login status
+            cookie: true, // enable cookies to allow the server to access the session
+            xfbml: true  // parse XFBML
+        });
+    };
+
+    function loginFacebook() {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                getCurrentUserInfo(response.authResponse.accessToken);
+            } else {
+                showMessage("alert-danger", "Failed to login using Facebook!");
+            }
+        }, { scope: 'email' });
+    }
+
+    // Load the SDK asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+
+    function getCurrentUserInfo(token) {
+        FB.api('/me', function (userInfo) {
+            $.ajax({
+                type: 'POST',
+                url: '/Account/AuthExternal',
+                data: { providerName: 'Facebook', userName: userInfo.name, id: userInfo.id, userEmail: userInfo.email, token: token },
+                success: function (response) {
+                    if (response == "K") document.location.reload(true);
+                    else showMessage("alert-danger", "Failed to login using Facebook!");
+                }
+            });
+        });
+    }
+
+</script>
+
+<script>
+    function testLoginResponse(data)
+    {
+        //Initialisations
+        document.getElementById("UserName").style.border = "none";
+        document.getElementById("Password").style.border = "none";
+        document.getElementById("loginStatus").innerHTML = "";
+        
+        if (data == "K") document.location.reload(true);
+        if (data == "U") document.getElementById("UserName").style.border = "solid 2px red";
+        if (data == "P") document.getElementById("Password").style.border = "2px solid red";
+        if (data == "E") document.getElementById("loginStatus").innerHTML = "You exceeded the number of login attempts!";
+    }
+
+    /*Change the class to resize the div*/
+    $(document).ready(function () {
+        $("#userbox").addClass("userbox1");
+        $("#userbox").removeClass("userbox2");
+    });
+</script>
+
+@using (Ajax.BeginForm("Login", "Account", new AjaxOptions {OnSuccess="testLoginResponse(data)"}))
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.UserName)</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+            @Html.ValidationMessageFor(m=>m.UserName)
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Password)</td>
+            <td>@Html.PasswordFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <a class="btn btn-primary" href="#" onclick='loginFacebook(); routeEvent.cancel();'>Login Facebook</a>
+                <input class="btn" type="submit" value="Log in" />
+            </td>
+        </tr>
+    </table>
+    <div id="loginStatus"></div>
+}
