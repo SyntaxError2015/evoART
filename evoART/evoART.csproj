@@ -120,7 +120,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Hexagons\" />
-    <Folder Include="Content\Images\" />
+	<Folder Include="Content\Images\" />
     <Folder Include="Content\Photos\" />
     <Folder Include="Content\ProfilePictures\" />
     <Folder Include="Content\Temp\" />
@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\Error404Controller.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\FacebookOAuthException.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -199,6 +200,10 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\300x200.svg" />
+    <Content Include="Content\Images\bg-home.gif" />
+    <Content Include="Content\Images\error404.jpg" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Emails\EmailSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -248,6 +253,7 @@
     <Content Include="Views\Shared\Logged.cshtml" />
     <Content Include="Views\Photos\AddPhoto.cshtml" />
     <Content Include="Views\Photos\NewPhoto.cshtml" />
+    <Content Include="Views\Error404\Error404.cshtml" />
     <Content Include="Views\Albums\Album.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />
     <Content Include="Views\Photos\Photo.cshtml" />

@@ -135,10 +135,6 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
 
-                PhotoModels.Photo[] selection = null;
-
-                var count = photos.Count();
-
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
 
@@ -170,14 +166,37 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
-        /// Verify if a certain album already contains a photo with the entered name
+        /// Increment the number of views that a photo has
         /// </summary>
-        /// <param name="albumId">The Id of the album</param>
-        public bool VerifyExists(Guid albumId)
+        /// <param name="photoId"></param>
+        public bool IncrementViews(Guid photoId)
         {
             try
             {
-                return _dbSet.Count(p => p.Album.AlbumId == albumId) > 0;
+                var photo = _dbSet.Find(photoId);
+
+                photo.Views++;
+
+                _dbSet.AddOrUpdate(photo);
+
+                return Save();
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Verify if a photo exists in the database
+        /// </summary>
+        /// <param name="photoId">The Id of the photo</param>
+        public bool VerifyExists(Guid photoId)
+        {
+            try
+            {
+                return _dbSet.Count(p => p.PhotoId == photoId) > 0;
             }
 
             catch
@@ -196,9 +215,49 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 IEnumerable<PhotoModels.Photo> photos =
-                    _dbSet.Where(a => a.Album.AlbumId == albumId);
+                    _dbSet.Where(a => a.Album.AlbumId == albumId).OrderBy(d => d.UploadDate);
 
                 return photos.ToArray();
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the previous photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public PhotoModels.Photo GetPreviousPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderBy(d => d.UploadDate)
+                    .Last(d => d.UploadDate < currentPhoto.UploadDate);
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the next photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public PhotoModels.Photo GetNextPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderBy(d => d.UploadDate)
+                    .First(d => d.UploadDate > currentPhoto.UploadDate);
             }
 
             catch
@@ -211,7 +270,7 @@ namespace evoART.DAL.Repositories.Photos
         /// Insert a photo into the database
         /// </summary>
         /// <param name="photo">A Photo entity that needs to have set the following things:
-        /// * Name,
+        /// * Name (optional),
         /// * Description (optional),
         /// * Album,
         /// * ContentTag.
@@ -312,7 +371,7 @@ namespace evoART.DAL.Repositories.Photos
 
         private static PhotoModels.Photo[] SelectPhotosByPositionAndNumber(IEnumerable<PhotoModels.Photo> photos, int startPosition, int number)
         {
-            PhotoModels.Photo[] selection = null;
+            PhotoModels.Photo[] selection;
 
             var enumerable = photos as PhotoModels.Photo[] ?? photos.ToArray();
             var count = enumerable.Count();
