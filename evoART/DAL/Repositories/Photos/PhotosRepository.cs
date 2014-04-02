@@ -231,18 +231,18 @@ namespace evoART.DAL.Repositories.Photos
         /// </summary>
         /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
         /// <returns>A Photo entity</returns>
-        public PhotoModels.Photo GetPreviousPhoto(PhotoModels.Photo currentPhoto)
+        public Guid GetPreviousPhoto(PhotoModels.Photo currentPhoto)
         {
             try
             {
                 return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderBy(d => d.UploadDate)
-                    .Last(d => d.UploadDate < currentPhoto.UploadDate);
+                    .Last(d => d.UploadDate < currentPhoto.UploadDate).PhotoId;
             }
 
             catch
             {
-                return null;
+                return Guid.Empty;
             }
         }
 
@@ -251,18 +251,18 @@ namespace evoART.DAL.Repositories.Photos
         /// </summary>
         /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
         /// <returns>A Photo entity</returns>
-        public PhotoModels.Photo GetNextPhoto(PhotoModels.Photo currentPhoto)
+        public Guid GetNextPhoto(PhotoModels.Photo currentPhoto)
         {
             try
             {
                 return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderBy(d => d.UploadDate)
-                    .First(d => d.UploadDate > currentPhoto.UploadDate);
+                    .First(d => d.UploadDate > currentPhoto.UploadDate).PhotoId;
             }
 
             catch
             {
-                return null;
+                return Guid.Empty;
             }
         }
 
