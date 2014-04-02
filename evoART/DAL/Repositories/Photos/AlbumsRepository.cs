@@ -36,12 +36,15 @@ namespace evoART.DAL.Repositories.Photos
         /// Get all the albums that a user has
         /// </summary>
         /// <param name="userId">The Id of the user</param>
+        /// <param name="guestUserId">The Id of the user that wants to view these albums</param>
         /// <returns>An array of Album entities</returns>
-        public PhotoModels.Album[] GetAlbumsForUser(Guid userId)
+        public PhotoModels.Album[] GetAlbumsForUser(Guid userId, Guid guestUserId)
         {
             try
             {
-                IEnumerable<PhotoModels.Album> albums = _dbSet.Where(a => a.UserAccount.UserId == userId).OrderBy(a => a.AlbumName);
+                IEnumerable<PhotoModels.Album> albums = (userId == guestUserId)
+                    ? _dbSet.Where(a => a.UserAccount.UserId == userId).OrderBy(a => a.AlbumName)
+                    : _dbSet.Where(a => a.UserAccount.UserId == userId && !a.IsPrivate);
 
                 return albums.ToArray();
             }
@@ -99,12 +102,13 @@ namespace evoART.DAL.Repositories.Photos
         /// <param name="userId">The Id of the user</param>
         /// <param name="albumName">The name of the album</param>
         /// <param name="albumDescription">The description for the album</param>
-        public bool Insert(Guid userId, string albumName, string albumDescription = "")
+        public bool Insert(Guid userId, string albumName, bool isPrivate = false, string albumDescription = "")
         {
             var album = new PhotoModels.Album
             {
                 AlbumName = albumName,
-                AlbumDescription = albumDescription
+                AlbumDescription = albumDescription,
+                IsPrivate = isPrivate
             };
 
             return Insert(album, userId);

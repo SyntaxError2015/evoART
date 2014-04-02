@@ -70,6 +70,9 @@ namespace evoART.DAL.DbContexts
 
             modelBuilder.Entity<PhotoModels.Album>()
                 .Property(p => p.AlbumName).IsRequired();
+
+            modelBuilder.Entity<PhotoModels.Album>()
+                .Property(p => p.IsPrivate).IsRequired();
             
             modelBuilder.Entity<PhotoModels.Album>()
                 .Property(p => p.AlbumDescription).IsOptional();

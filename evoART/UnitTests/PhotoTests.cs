@@ -12,7 +12,7 @@ namespace evoART.UnitTests
         public void PhotosCRUDTest()
         {
             var user = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser("coddo");
-            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId)[0];
+            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId, user.UserId)[0];
             var tag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag("SFW");
 
             var photoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert("testph", "descr", album, tag);
@@ -33,7 +33,7 @@ namespace evoART.UnitTests
         public void PhotosFetchTest()
         {
             var user = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser("coddo");
-            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId)[0];
+            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId, user.UserId)[0];
             
             DatabaseWorkUnit.Instance.PhotosRepository.GetPhotosFromAlbum(album.AlbumId);
 
@@ -44,7 +44,7 @@ namespace evoART.UnitTests
         public void HashTagsCRUDTest()
         {
             var user = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser("coddo");
-            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId)[0];
+            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(user.UserId, user.UserId)[0];
 
             var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(album.AlbumId, "testph2");
 
