@@ -25,9 +25,9 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId);
 
-        PhotoModels.Photo GetPreviousPhoto(PhotoModels.Photo currentPhoto);
+        Guid GetPreviousPhoto(PhotoModels.Photo currentPhoto);
 
-        PhotoModels.Photo GetNextPhoto(PhotoModels.Photo currentPhoto);
+        Guid GetNextPhoto(PhotoModels.Photo currentPhoto);
 
         // Returns the photo Id
         Guid Insert(PhotoModels.Photo photo);
