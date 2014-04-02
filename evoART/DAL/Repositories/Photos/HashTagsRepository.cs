@@ -177,10 +177,21 @@ namespace evoART.DAL.Repositories.Photos
                     HashTagName = hashTagName
                 };
 
-                if(_dbSet.Count(h => h.HashTagName == hashTagName) == 0)
+                bool found = false;
+
+                foreach (var tag in _dbSet.ToArray())
+                {
+                    if (tag.HashTagName == hashTagName)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found)
                     _dbSet.Add(hashTag);
-                
-                if(photo.HashTags.Count(h => h.HashTagName == hashTagName) == 0)
+
+                if (!photo.HashTags.Any(h => h.HashTagName == hashTagName))
                     photo.HashTags.Add(hashTag);
 
                 return Save();
