@@ -29,14 +29,14 @@ namespace evoART.Controllers
         {
             //string photoId = new Guid().ToString();
 
-            if (file != null && file.ContentLength > 0 && MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName=="Photographer")
+            if (file != null && file.ContentLength > 0 && MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == "Photographer")
             {
                 // extract only the fielname
                 var fileName = Path.GetFileName(file.FileName);
 
 
                 // the destination
-                var path = Path.Combine(Server.MapPath("~/Content/Temp"), photoId+".jpg");
+                var path = Path.Combine(Server.MapPath("~/Content/Temp"), photoId + ".jpg");
                 file.SaveAs(path);
 
                 return photoId;
@@ -56,7 +56,7 @@ namespace evoART.Controllers
             };
 
 
-            var model = new PhotosModel {PhotoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert(photo).ToString()};
+            var model = new PhotosModel { PhotoId = DatabaseWorkUnit.Instance.PhotosRepository.Insert(photo).ToString() };
             var t = userAlbums.Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString() }).ToList();
             ViewData["Albums"] = t;
 
@@ -99,6 +99,46 @@ namespace evoART.Controllers
             {
                 return "F";
             }
+        }
+
+        public ActionResult Photo(string id, int asPartial = 0)
+        {
+            if (asPartial == 0 && MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
+
+            /*try
+            {
+                if (id == null || !DatabaseWorkUnit.Instance.PhotosRepository.VerifyExists(new Guid(id)))
+                    if (asPartial == 1) return PartialView("photo");
+                    else return View("Photo");
+            }
+            catch
+            {
+                if (asPartial == 1) return PartialView("photo");
+                else return View("Photo");
+            }*/
+
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id));
+
+            //Increment views number ------  USE THE NEW FUNCTION
+            photo.Views++;
+            DatabaseWorkUnit.Instance.PhotosRepository.Update(photo);
+
+            //photo.HashTags.ToArray()[0].
+            var model = new PhotoModel
+            {
+                Photo = photo,
+                MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
+
+                Comments=null, //sa iau din unit
+
+                HasLiked = false, //AICIC SA IAU DIN UNIT,
+                MyLike = null //SA iau din unit
+            };
+
+
+            if (asPartial == 1) return PartialView("Photo", model);
+            else return View("Photo", model);
         }
 
     }
