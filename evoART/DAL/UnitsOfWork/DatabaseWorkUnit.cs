@@ -1,7 +1,9 @@
 ﻿using System;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Repositories.Photos;
+using evoART.DAL.Repositories.Social;
 using evoART.DAL.Repositories.UserAccounts;
+using evoART.Models.DbModels;
 
 namespace evoART.DAL.UnitsOfWork
 {
@@ -48,8 +50,14 @@ namespace evoART.DAL.UnitsOfWork
         private PhotosRepository _photosRepository;
         private AlbumsRepository _albumsRepository;
         private HashTagsRepository _hashTagsRepository;
-        private HashTagsRepository _keywordsRepository;
         private ContentTagsRepository _contentTagsRepository;
+
+        #endregion
+
+        #region Fields for the Social module
+
+        private LikesRepository _likesRepository;
+        private CommentsRepository _commentsRepository;
 
         #endregion
 
@@ -115,6 +123,9 @@ namespace evoART.DAL.UnitsOfWork
 
         #region Properties for the Photos module
 
+        /// <summary>
+        /// Get the repository representing the Photos model
+        /// </summary>
         public PhotosRepository PhotosRepository
         {
             get
@@ -123,6 +134,9 @@ namespace evoART.DAL.UnitsOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the Albums model
+        /// </summary>
         public AlbumsRepository AlbumsRepository
         {
             get
@@ -131,6 +145,9 @@ namespace evoART.DAL.UnitsOfWork
             }
         }
 
+        /// <summary>
+        /// Get the repository representing the HashTags model
+        /// </summary>
         public HashTagsRepository HashTagsRepository
         {
             get
@@ -139,19 +156,40 @@ namespace evoART.DAL.UnitsOfWork
             }
         }
 
-        public HashTagsRepository KeywordsRepository
-        {
-            get
-            {
-                return _keywordsRepository ?? (_keywordsRepository = new HashTagsRepository(_dbContext));
-            }
-        }
-
+        /// <summary>
+        /// Get the repository representing the ContentTags model
+        /// </summary>
         public ContentTagsRepository ContentTagsRepository
         {
             get
             {
                 return _contentTagsRepository ?? (_contentTagsRepository = new ContentTagsRepository(_dbContext));
+            }
+        }
+
+        #endregion
+
+        #region Properties for the Social module
+
+        /// <summary>
+        /// Get the repository representing the Likes model
+        /// </summary>
+        public LikesRepository LikesRepository
+        {
+            get
+            {
+                return _likesRepository ?? (_likesRepository = new LikesRepository(_dbContext));
+            }
+        }
+
+        /// <summary>
+        /// Get the repository representing the Comments repository
+        /// </summary>
+        public CommentsRepository CommentsRepository
+        {
+            get
+            {
+                return _commentsRepository ?? (_commentsRepository = new CommentsRepository(_dbContext));
             }
         }
 
