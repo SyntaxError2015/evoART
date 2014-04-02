@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\Error404Controller.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\FacebookOAuthException.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\SearchModel.cs" />
     <Compile Include="Models\ViewModels\AlbumModel.cs" />
     <Compile Include="Models\ViewModels\IndexModel.cs" />
     <Compile Include="Models\ViewModels\HashTagsModel.cs" />
@@ -259,6 +261,7 @@
     <Content Include="Views\Users\Profile.cshtml" />
     <Content Include="Views\Photos\Photo.cshtml" />
     <Content Include="Views\HashTags\HashTagsLabels.cshtml" />
+    <Content Include="Views\Search\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
