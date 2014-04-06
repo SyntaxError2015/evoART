@@ -102,7 +102,7 @@ else
                 {
                     foreach (var hashtag in Model.Photo.HashTags)
                     {
-                        <a href="/Search/Hashtag/@hashtag.HashTagName" class="label label-primary">@hashtag.HashTagName</a>
+                        <a href="/Search/Hashtag/@hashtag.HashTagName" onclick="go('Search', 'Hashtag', '@hashtag.HashTagName');event.preventDefault();" class="label label-primary">@hashtag.HashTagName</a>
                     }
                 }
             </div>

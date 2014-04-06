@@ -153,6 +153,7 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\ProfileModel.cs" />
     <Compile Include="Models\ViewModels\SearchModel.cs" />
     <Compile Include="Models\ViewModels\AlbumModel.cs" />
     <Compile Include="Models\ViewModels\IndexModel.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Models\ViewModels\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emails\EmailSender.cs" />
+    <Compile Include="Special\DatePicker.cs" />
     <Compile Include="Special\MySession.cs" />
     <Compile Include="Special\Sorting.cs" />
     <Compile Include="Special\CookieHelper.cs" />
@@ -206,6 +208,7 @@
     <Content Include="Content\Images\300x200.svg" />
     <Content Include="Content\Images\bg-home.gif" />
     <Content Include="Content\Images\error404.jpg" />
+    <Content Include="Content\Images\evoart.png" />
     <Content Include="Content\Images\loading.gif" />
     <Content Include="Emails\EmailSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -219,6 +222,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\evoart - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\evoart - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\bootstrap.js" />
