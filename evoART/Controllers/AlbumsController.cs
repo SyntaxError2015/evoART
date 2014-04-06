@@ -45,7 +45,7 @@ namespace evoART.Controllers
                 return View("Albums");
 
             var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;
-            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId, MySession.Current.UserDetails.UserId);
+            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId, MySession.Current.UserDetails!=null?MySession.Current.UserDetails.UserId:Guid.Empty);
             var model = new AlbumsModel()
             {
                 Albums = userAlbums,

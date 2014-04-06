@@ -21,7 +21,7 @@ namespace evoART.Controllers
 
             var model = new IndexModel()
             {
-                TopPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPopularPhotos(0, 16)
+                TopPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPopularPhotos(0, 18)
             };
 
             if (asPartial == 1) return PartialView(model);

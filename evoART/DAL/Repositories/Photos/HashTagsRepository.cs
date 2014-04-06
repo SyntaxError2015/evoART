@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
 using evoART.Models.DbModels;
 using evoART.Special;
-using Microsoft.Ajax.Utilities;
 
 namespace evoART.DAL.Repositories.Photos
 {
@@ -171,28 +169,28 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var hashTag = new PhotoModels.HashTag
-                {
-                    HashTagId = Guid.NewGuid(),
-                    HashTagName = hashTagName
-                };
+                var tag = _dbSet.First(t => t.HashTagName == hashTagName);
 
-                bool found = false;
-
-                foreach (var tag in _dbSet.ToArray())
+                if (tag != null)
                 {
-                    if (tag.HashTagName == hashTagName)
-                    {
-                        found = true;
-                        break;
-                    }
+                    tag.Photos.Add(photo);
+
+                    _dbSet.AddOrUpdate(tag);
                 }
 
-                if(!found)
-                    _dbSet.Add(hashTag);
+                else
+                {
+                    var newTag = new PhotoModels.HashTag
+                    {
+                        HashTagId = Guid.NewGuid(),
+                        HashTagName = hashTagName,
+                    };
 
-                if (!photo.HashTags.Any(h => h.HashTagName == hashTagName))
-                    photo.HashTags.Add(hashTag);
+                    newTag.Photos.Add(photo);
+
+                    _dbSet.Add(newTag);
+
+                }
 
                 return Save();
             }
