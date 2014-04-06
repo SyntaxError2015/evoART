@@ -56,7 +56,7 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                return _dbSet.ToArray();
+                return _dbSet.OrderByDescending(t => t.ContentTagName).ToArray();
             }
 
             catch

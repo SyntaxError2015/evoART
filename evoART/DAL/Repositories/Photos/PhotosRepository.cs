@@ -63,7 +63,7 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views);
+                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views).Where(p => (DateTime.Now - p.UploadDate).Days < 5);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
@@ -169,7 +169,7 @@ namespace evoART.DAL.Repositories.Photos
         /// Increment the number of views that a photo has
         /// </summary>
         /// <param name="photoId"></param>
-        public bool IncrementViews(Guid photoId)
+        public void IncrementViews(Guid photoId)
         {
             try
             {
@@ -179,12 +179,13 @@ namespace evoART.DAL.Repositories.Photos
 
                 _dbSet.AddOrUpdate(photo);
 
-                return Save();
+                Save();
             }
 
+// ReSharper disable once EmptyGeneralCatchClause
             catch
             {
-                return false;
+                //nothing to do here
             }
         }
 
