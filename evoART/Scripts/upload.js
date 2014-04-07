@@ -56,7 +56,6 @@ function uploadImage(files, fData) {
     }
 
 
-
     //Check if the file is an image
     var imageType = /image.*/;
     if (!files[0].type.match(imageType)) {
@@ -68,8 +67,6 @@ function uploadImage(files, fData) {
 
     //Create the new album
     $.get('/Photos/CreateNewPhoto', function (result) {
-
-
         doAJAX(frmData, result);
     });
 

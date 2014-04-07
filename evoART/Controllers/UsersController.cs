@@ -69,7 +69,7 @@ namespace evoART.Controllers
                 MySession.Current.UserDetails.UserId != model.UserDetails.UserId)
                 return "F";
 
-            var myProfile = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(model.UserDetails.UserName);
+            var myProfile = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(MySession.Current.UserDetails.UserName);
 
             if ((model.UserDetails.UserName==null || model.UserDetails.UserName.Length < 4 || model.UserDetails.UserName.Length > 28 || !Char.IsLetter(model.UserDetails.UserName[0]) || DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(model.UserDetails.UserName))&&myProfile.UserName!=model.UserDetails.UserName)
                 return "U";

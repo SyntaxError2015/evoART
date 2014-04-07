@@ -359,7 +359,7 @@ namespace evoART.DAL.Repositories.Photos
 
             catch
             {
-                return false;
+                return false;   
             }
         }
 

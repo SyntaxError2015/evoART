@@ -87,7 +87,7 @@
     cursor: default;
     position: fixed;
     z-index: 10;
-    font-size: 16px;
+    font-size: 18px;
     -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out;
     -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out;
     -o-transition: width 300ms ease-in-out, height 300ms ease-in-out;

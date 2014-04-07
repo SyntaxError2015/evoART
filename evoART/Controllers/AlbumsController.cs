@@ -106,7 +106,7 @@ namespace evoART.Controllers
                 return "N";
 
             return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(
-                new PhotoModels.Album() { AlbumName = model.NewAlbumName, AlbumDescription = model.NewAlbumDescription },
+                new PhotoModels.Album() { AlbumName = model.NewAlbumName, AlbumDescription = model.NewAlbumDescription, IsPrivate = model.Private},
                 MySession.Current.UserDetails.UserId)
                 ? "K"
                 : "F";
@@ -125,6 +125,7 @@ namespace evoART.Controllers
             var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.AlbumId));
             album.AlbumName = model.AlbumName;
             album.AlbumDescription = model.AlbumDescription;
+            album.IsPrivate = model.Private;
 
             return  MySession.Current.UserDetails.UserId==album.UserAccount.UserId && DatabaseWorkUnit.Instance.AlbumsRepository.Update(album)
                 ? "K"
