@@ -3,48 +3,43 @@
 
 
 
+<div id="@Model.PhotoId" class="col-sm-5 col-lg-3">
+    <div class="thumbnail">
+        <script>
+            $(function () {
+                photoNumber++;
+                photos[photoNumber] = "@Model.PhotoId";
+            });
+        </script>
 
-
-
-
-        <div id="@Model.PhotoId" class="col-sm-5 col-lg-3">
-            <div class="thumbnail">
-                <script>
-                    $(function () {
-                        photoNumber++;
-                        photos[photoNumber] = "@Model.PhotoId";
-                    });
-                    
-                </script>
-
-                <img id="pic-@Model.PhotoId" src="/Content/Images/300x200&#46;svg" alt="..." />
-                <div class="progress" style="height: 5px;">
-                    <div id="progress-@Model.PhotoId" class="progress-bar" role="progressbar" style="width: 0%;">
-                    </div>
-                </div>
-
-                <div class="caption">
-                    @using (Ajax.BeginForm("SaveNewPhoto", "Photos", new AjaxOptions
-                    {
-                        OnSuccess = "savePhoto(data, '"+@Model.PhotoId+"')"
-                    }))
-                    {
-                        @Html.HiddenFor(m=>m.PhotoId)
-                        @Html.TextBoxFor(m => m.NewPhotoName, new {@placeholder = "Photo name", @style = "width:100%;"})
-                        @Html.TextAreaFor(m => m.NewPhotoDescription, new {@placeholder = "Enter a description", @style = "width:100%;"})
-                        
-                        @Html.LabelFor(m=>m.Album)
-                        @Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])
-                        
-                        @Html.LabelFor(m=>m.ContentTag)
-                        @Html.DropDownListFor(m => m.ContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
-                            
-                        <div class="btn-group">
-                            <input type="submit" class="btn btn-primary" role="button" value="Save photo"/>
-                            <a href="#" class="btn btn-danger">Delete photo</a>
-                        </div>
-                    }
-                </div>
+        <img id="pic-@Model.PhotoId" src="/Content/Images/300x200&#46;svg" alt="..." />
+        <div class="progress" style="height: 5px;">
+            <div id="progress-@Model.PhotoId" class="progress-bar" role="progressbar" style="width: 0%;">
             </div>
         </div>
+
+        <div class="caption">
+            @using (Ajax.BeginForm("SaveNewPhoto", "Photos", new AjaxOptions
+                    {
+                        OnSuccess = "savePhoto(data, '" + @Model.PhotoId + "')"
+                    }))
+            {
+                @Html.HiddenFor(m => m.PhotoId)
+                @Html.TextBoxFor(m => m.NewPhotoName, new { @placeholder = "Photo name", @style = "width:100%;" })
+                @Html.TextAreaFor(m => m.NewPhotoDescription, new { @placeholder = "Enter a description", @style = "width:100%;" })
+
+                @Html.LabelFor(m => m.Album)
+                @Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])
+
+                @Html.LabelFor(m => m.ContentTag)
+                @Html.DropDownListFor(m => m.ContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
+
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-primary" role="button" value="Save photo" />
+                    @Ajax.ActionLink("Delete photo","DeletePhoto/"+Model.PhotoId,"Photos",new AjaxOptions{OnSuccess = "deleteNewPhoto(data,'"+Model.PhotoId+"')"},new {@class = "btn btn-danger"})
+                </div>
+            }
+        </div>
+    </div>
+</div>
 

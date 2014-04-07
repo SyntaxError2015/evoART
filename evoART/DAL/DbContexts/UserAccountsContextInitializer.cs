@@ -43,7 +43,7 @@ namespace evoART.DAL.DbContexts
             // Map foreign ket to the OAuthLogin table
             modelBuilder.Entity<AccountModels.UserAccount>()
                 .HasOptional(t => t.OAuthLogins)
-                .WithOptionalPrincipal(t => t.UserAccounts)
+                .WithOptionalPrincipal(t => t.UserAccount)
                 .Map(m => m.MapKey("UserId"))
                 .WillCascadeOnDelete(true);
 

@@ -5,9 +5,9 @@ namespace evoART.DAL.Interfaces.Social
 {
     interface ICommentsRepository
     {
-        SocialModels.Comment[] GetCommentsForPhoto(Guid photoId);
+        SocialModels.Comment GetComment(Guid commentId);
 
-        SocialModels.Comment[] GetCommentsForPhoto(PhotoModels.Photo photo);
+        SocialModels.Comment[] GetCommentsForPhoto(Guid photoId);
 
         bool Insert(Guid photoId, Guid userId, string commentText);
 
@@ -23,19 +23,7 @@ namespace evoART.DAL.Interfaces.Social
 
         bool Insert(SocialModels.Comment comment);
 
-        bool Delete(Guid photoId, Guid userId);
-
-        bool Delete(Guid photoId, AccountModels.UserAccount user);
-
-        bool Delete(Guid photoId, string userName);
-
-        bool Delete(PhotoModels.Photo photo, Guid userId);
-
-        bool Delete(PhotoModels.Photo photo, AccountModels.UserAccount user);
-
-        bool Delete(PhotoModels.Photo photo, string userName);
-
-        bool Delete(SocialModels.Comment comment);
+        bool Delete(Guid commentId);
 
         bool Update(SocialModels.Comment comment);
     }

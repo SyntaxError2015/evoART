@@ -120,14 +120,21 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Hexagons\" />
-    <Folder Include="Content\Images\" />
     <Folder Include="Content\Photos\" />
+    <Folder Include="Content\ProfilePictures\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Content\Thumbnails\" />
     <Folder Include="Views\Partials\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\Error404Controller.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\FacebookOAuthException.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HashTagsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\DbContexts\PhotosContextInitializer.cs" />
     <Compile Include="DAL\DbContexts\SocialContextInitializer.cs" />
@@ -146,6 +153,12 @@
     <Compile Include="DAL\Repositories\Social\CommentsRepository.cs" />
     <Compile Include="DAL\Repositories\Social\LikesRepository.cs" />
     <Compile Include="DAL\Repositories\UserAccounts\OAuthLoginRepository.cs" />
+    <Compile Include="Models\ViewModels\ProfileModel.cs" />
+    <Compile Include="Models\ViewModels\SearchModel.cs" />
+    <Compile Include="Models\ViewModels\AlbumModel.cs" />
+    <Compile Include="Models\ViewModels\IndexModel.cs" />
+    <Compile Include="Models\ViewModels\HashTagsModel.cs" />
+    <Compile Include="Models\ViewModels\PhotoModel.cs" />
     <Compile Include="Models\ViewModels\PhotosModel.cs" />
     <Compile Include="Models\ViewModels\AlbumsModel.cs" />
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
@@ -154,7 +167,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="DAL\UnitsOfWork\DatabaseWorkUnit.cs" />
     <Compile Include="DAL\DbContexts\DatabaseContextInitializer.cs" />
     <Compile Include="DAL\Interfaces\UserAccounts\IAccountValidationRepository.cs" />
@@ -178,6 +191,7 @@
     <Compile Include="Models\ViewModels\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emails\EmailSender.cs" />
+    <Compile Include="Special\DatePicker.cs" />
     <Compile Include="Special\MySession.cs" />
     <Compile Include="Special\Sorting.cs" />
     <Compile Include="Special\CookieHelper.cs" />
@@ -191,6 +205,11 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\300x200.svg" />
+    <Content Include="Content\Images\bg-home.gif" />
+    <Content Include="Content\Images\error404.jpg" />
+    <Content Include="Content\Images\evoart.png" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Emails\EmailSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -203,6 +222,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\evoart - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\evoart - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -240,6 +261,12 @@
     <Content Include="Views\Shared\Logged.cshtml" />
     <Content Include="Views\Photos\AddPhoto.cshtml" />
     <Content Include="Views\Photos\NewPhoto.cshtml" />
+    <Content Include="Views\Error404\Error404.cshtml" />
+    <Content Include="Views\Albums\Album.cshtml" />
+    <Content Include="Views\Users\Profile.cshtml" />
+    <Content Include="Views\Photos\Photo.cshtml" />
+    <Content Include="Views\HashTags\HashTagsLabels.cshtml" />
+    <Content Include="Views\Search\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

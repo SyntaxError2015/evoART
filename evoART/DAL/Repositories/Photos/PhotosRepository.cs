@@ -63,7 +63,17 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views);
+                IEnumerable<PhotoModels.Photo> photos;
+                var numberOfDays = 5;
+
+                do
+                {
+                    photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views)
+                        .Where(p => (DateTime.Now - p.UploadDate).Days < numberOfDays);
+                    
+                    numberOfDays++;
+
+                } while (photos.Count() < number);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
@@ -135,10 +145,6 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
 
-                PhotoModels.Photo[] selection = null;
-
-                var count = photos.Count();
-
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
 
@@ -170,17 +176,38 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
-        /// Verify if a certain album already contains a photo with the entered name
+        /// Increment the number of views that a photo has
         /// </summary>
-        /// <param name="albumId">The Id of the album</param>
-        /// <param name="photoName">The name of the photo</param>
-        public bool VerifyExists(Guid albumId, string photoName)
+        /// <param name="photoId"></param>
+        public void IncrementViews(Guid photoId)
         {
             try
             {
-                return _dbSet.Count(p =>
-                    p.Album.AlbumId == albumId &&
-                    p.PhotoName == photoName) > 0;
+                var photo = _dbSet.Find(photoId);
+
+                photo.Views++;
+
+                _dbSet.AddOrUpdate(photo);
+
+                Save();
+            }
+
+// ReSharper disable once EmptyGeneralCatchClause
+            catch
+            {
+                //nothing to do here
+            }
+        }
+
+        /// <summary>
+        /// Verify if a photo exists in the database
+        /// </summary>
+        /// <param name="photoId">The Id of the photo</param>
+        public bool VerifyExists(Guid photoId)
+        {
+            try
+            {
+                return _dbSet.Count(p => p.PhotoId == photoId) > 0;
             }
 
             catch
@@ -199,7 +226,7 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 IEnumerable<PhotoModels.Photo> photos =
-                    _dbSet.Where(a => a.Album.AlbumId == albumId);
+                    _dbSet.Where(a => a.Album.AlbumId == albumId).OrderBy(d => d.UploadDate);
 
                 return photos.ToArray();
             }
@@ -211,10 +238,54 @@ namespace evoART.DAL.Repositories.Photos
         }
 
         /// <summary>
+        /// Get the previous photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public Guid GetPreviousPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderByDescending(d => d.UploadDate)
+                    .First(d => d.UploadDate < currentPhoto.UploadDate);
+
+                return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
+            }
+
+            catch
+            {
+                return Guid.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Get the next photo from a sequence that belongs to a certain album
+        /// </summary>
+        /// <param name="currentPhoto">The Photo entity to use as a reference point</param>
+        /// <returns>A Photo entity</returns>
+        public Guid GetNextPhoto(PhotoModels.Photo currentPhoto)
+        {
+            try
+            {
+                var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                    .OrderBy(d => d.UploadDate)
+                    .First(d => d.UploadDate > currentPhoto.UploadDate);
+
+                return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
+            }
+
+            catch
+            {
+                return Guid.Empty;
+            }
+        }
+
+        /// <summary>
         /// Insert a photo into the database
         /// </summary>
         /// <param name="photo">A Photo entity that needs to have set the following things:
-        /// * Name,
+        /// * Name (optional),
         /// * Description (optional),
         /// * Album,
         /// * ContentTag.
@@ -315,7 +386,7 @@ namespace evoART.DAL.Repositories.Photos
 
         private static PhotoModels.Photo[] SelectPhotosByPositionAndNumber(IEnumerable<PhotoModels.Photo> photos, int startPosition, int number)
         {
-            PhotoModels.Photo[] selection = null;
+            PhotoModels.Photo[] selection;
 
             var enumerable = photos as PhotoModels.Photo[] ?? photos.ToArray();
             var count = enumerable.Count();

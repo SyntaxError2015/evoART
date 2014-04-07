@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using evoART.DAL.UnitsOfWork;
@@ -9,6 +11,7 @@ using evoART.Models.ViewModels;
 using System.Collections.Generic;
 using System.Web.Security;
 using evoART.Special;
+
 
 namespace evoART.Controllers
 {
@@ -148,6 +151,78 @@ namespace evoART.Controllers
             }
                 
             return user;
+        }
+
+        /// <summary>
+        /// Login using external autentification
+        /// </summary>
+        /// <param name="providerName">Provider's name</param>
+        /// <param name="userName">User name</param>
+        /// <param name="id">The userId from the provider</param>
+        /// <param name="userEmail">The email</param>
+        /// <param name="token">The provider's token</param>
+        /// <returns></returns>
+        [HttpPost]
+        public string AuthExternal(string providerName, string userName, string id, string userEmail, string token)
+        {
+            try
+            {
+                string fbpage =
+                    new WebClient().DownloadString("https://graph.facebook.com/me?fields=id&access_token=" + token);
+                string userId = fbpage.Substring(fbpage.IndexOf("id") + 5, 15);
+
+                if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, userId))
+                {
+                    //get username from the oauth
+                    userName = DatabaseWorkUnit.Instance.OAuthLoginRepository.GetUserNameForOAuth(providerName,userId);
+
+                    //Make a new session for the user
+                    AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
+
+                    //Create the cookies for the session
+                    _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+                    _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
+                    return "K";
+                }
+                else
+                {
+                    var newUser = new AccountModels.UserAccount
+                    {
+                        UserName = userName,
+                        Email = userEmail,
+                        Password = DateTime.Now.ToString(),
+                        Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer")
+                    };
+
+                    if (!DatabaseWorkUnit.Instance.UserAccountRepository.Insert(newUser))
+                        return "F";
+
+                    //Create the external auth id
+                    DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(userName, providerName, userId);
+
+                    //Make a new session for the user
+                    AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
+
+                    //Create the cookies for the session
+                    _myCookie.SetCookie("sessionId", newSession.SessionId.ToString(), DateTime.Now.AddMonths(6));
+                    _myCookie.SetCookie("sessionKey", newSession.SessionKey, DateTime.Now.AddMonths(6));
+
+                    return "K";
+                }
+            }
+            catch 
+            {
+                return "F";
+            }
+        }
+
+        public string LinkFacebook(string providerId)
+        {
+            if (MySession.Current.UserDetails == null)
+                return "F";
+
+            return DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(MySession.Current.UserDetails.UserName, "Facebook", providerId) ? "K" : "F";
         }
 
         /*The partialviews for login/register*/

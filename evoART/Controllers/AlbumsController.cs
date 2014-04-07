@@ -22,7 +22,8 @@ namespace evoART.Controllers
 
             if (MySession.Current.UserDetails != null && MySession.Current.UserDetails.Role.RoleName == DatabaseWorkUnit.Instance.RoleRepository.GetRole("Photographer").RoleName)
             {
-                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId);
+                PhotoModels.Album[] userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository
+                    .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId);
                 var model = new AlbumsModel()
                 {
                     Albums = userAlbums
@@ -35,9 +36,6 @@ namespace evoART.Controllers
             else return View();
         }
 
-
-
-
         public ActionResult Albums(string id, int asPartial = 0)
         {
             if (asPartial == 0 && MySession.Current.UserDetails == null)
@@ -47,7 +45,7 @@ namespace evoART.Controllers
                 return View("Albums");
 
             var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;
-            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
+            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId, MySession.Current.UserDetails!=null?MySession.Current.UserDetails.UserId:Guid.Empty);
             var model = new AlbumsModel()
             {
                 Albums = userAlbums,
@@ -58,23 +56,43 @@ namespace evoART.Controllers
             else return View("Albums", model);
         }
 
-        public ActionResult Album(string id)
+        public ActionResult Album(string id, int asPartial = 0)
         {
-            ViewBag.UserDetails = new AccountController().GetUserDetails();
+            if (asPartial == 0 && MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
 
-            if (!DatabaseWorkUnit.Instance.UserAccountRepository.VerifyExists(id))
-                return View("Album");
-
-            var userId = DatabaseWorkUnit.Instance.UserAccountRepository.GetUser(id).UserId;
-            var userAlbums = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(userId);
-            var model = new AlbumsModel()
+            try
             {
-                Albums = userAlbums,
-                AlbumsUser = id
+                if (id == null || !DatabaseWorkUnit.Instance.AlbumsRepository.VerifyExists(new Guid(id)))
+                    if (asPartial == 1) return PartialView("Album");
+                    else return View("Album");
+            }
+            catch
+            {
+                return View("Album");
+            }
+
+            int myAlbum = 0;
+            var userAlbum = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(id));
+            var userPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPhotosFromAlbum(new Guid(id));
+
+            //Check if it is my album
+            if (MySession.Current.UserDetails != null &&
+                MySession.Current.UserDetails.UserName == userAlbum.UserAccount.UserName)
+                myAlbum = 1;
+
+            var model = new AlbumModel()
+            {
+                Photos = userPhotos,
+                AlbumName = userAlbum.AlbumName,
+                UserName = userAlbum.UserAccount.UserName,
+                AlbumDescription = userAlbum.AlbumDescription,
+                AlbumId = userAlbum.AlbumId.ToString(),
+                MyAlbum = myAlbum
             };
 
-            return View("Album", model);
-
+            if (asPartial == 1) return PartialView("Album", model);
+            else return View("Album", model);
         }
 
         /// <summary>
@@ -90,6 +108,25 @@ namespace evoART.Controllers
             return MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.AlbumsRepository.Insert(
                 new PhotoModels.Album() { AlbumName = model.NewAlbumName, AlbumDescription = model.NewAlbumDescription },
                 MySession.Current.UserDetails.UserId)
+                ? "K"
+                : "F";
+        }
+
+        /// <summary>
+        /// Edit an album
+        /// </summary>
+        /// <param name="model">The model for the edited album</param>
+        /// <returns></returns>
+        public string EditAlbum(AlbumModel model)
+        {
+            if (model.AlbumId == null || MySession.Current.UserDetails == null)
+                return "F";
+
+            var album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.AlbumId));
+            album.AlbumName = model.AlbumName;
+            album.AlbumDescription = model.AlbumDescription;
+
+            return  MySession.Current.UserDetails.UserId==album.UserAccount.UserId && DatabaseWorkUnit.Instance.AlbumsRepository.Update(album)
                 ? "K"
                 : "F";
         }

@@ -1,0 +1,195 @@
+﻿@model evoART.Models.ViewModels.ProfileModel
+@using System.Web.UI.WebControls
+@using evoART.Special
+
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '@AuthConfig.FacebookMyClient.AppId',
+            status: true, // check login status
+            cookie: true, // enable cookies to allow the server to access the session
+            xfbml: true  // parse XFBML
+        });
+    };
+
+    function loginFacebook() {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                getCurrentUserInfo(response.authResponse.accessToken);
+            } else {
+                showMessage("alert-danger", "Failed to validate Facebook account!");
+            }
+        }, { scope: 'email' });
+    }
+
+    // Load the SDK asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+
+    function getCurrentUserInfo(token) {
+        FB.api('/me', function (userInfo) {
+            $.ajax({
+                type: 'POST',
+                url: '/Account/LinkFacebook',
+                data: { providerId: userInfo.id },
+                success: function (response) {
+                    if (response == "K") {
+                        $("#fblink").html("Linked");
+                        showMessage("alert-success", "Facebook account linked!");
+                    }
+                    else showMessage("alert-danger", "Failed link Facebook account!");
+                }
+            });
+        });
+    }
+
+    function editProfile(data) {
+        if (data == "K") {
+            showMessage("alert-success", "Saved!");
+        } else if (data == "E") {
+            showMessage("alert-danger", "The email is not valid!");
+        }
+        else if (data == "U") {
+            showMessage("alert-danger", "The username is not valid or already taken!");
+        }
+    }
+</script>
+
+<style>
+    .usertable td {
+        text-align: left;
+        font-size: 18px;
+    }
+</style>
+
+@if ((Model == null || Model.UserDetails == null))
+{
+
+    <h1>
+        This user does not exist!<br>
+        <a href="/" onclick=" go('Home', 'Index', ''); event.preventDefault(); ">Go to the Home page!</a>
+    </h1>
+}
+else
+{
+    <h1>
+        <span class="label label-default">@Model.UserDetails.UserName</span>'s profile
+        @if (Model.MyProfile)
+        {
+            <button class="btn btn-lg btn-primary" onclick="$('#viewprofile').toggle(); $('#editprofile').toggle();">Edit profile</button>
+        }
+    </h1>
+    <hr>
+    <div class="panel panel-default col-md-6 usertable">
+        <div id="viewprofile">
+            <table class="table">
+
+                <tr>
+                    <td>Username:</td>
+                    <td>@Model.UserDetails.UserName</td>
+                </tr>
+                <tr>
+                    <td>First name:</td>
+                    <td>@Model.UserDetails.FistName</td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td>@Model.UserDetails.LastName</td>
+                </tr>
+                <tr>
+                    <td>Birth date:</td>
+                    <td>@Model.UserDetails.BirthDate.ToString()</td>
+                </tr>
+                <tr>
+                    <td>Account type:</td>
+                    <td>@Model.UserDetails.Role.RoleName</td>
+                </tr>
+                <tr>
+                    <td>Number of albums:</td>
+                    <td>
+                        @Model.UserDetails.Albums.Count -
+                        <a href="/Albums/Albums/@Model.UserDetails.UserName" onclick="go('Albums', 'Albums', '@Model.UserDetails.UserName'); event.preventDefault();">View albums</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @if (Model.MyProfile)
+        {
+            <div id="editprofile" style="display: none;">
+                <table class="table">
+                    <tr>
+                        <td>Facebook account:</td>
+                        <td>
+                            @if (Model.FacebookLinked)
+                            {
+                                <span>Linked</span>
+                            }
+                            else
+                            {
+                                <span id="fblink"><button class="btn btn-primary" onclick=" loginFacebook() ">Link facebook!</button></span>
+                            }
+                        </td>
+                    </tr>
+                    @using (Ajax.BeginForm("EditProfile", "Users", new AjaxOptions {OnSuccess = "editProfile(data)"}))
+                    {
+                        @Html.HiddenFor(m => m.UserDetails.UserId)
+                    
+                        <tr>
+                            <td>Username:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.UserName, new { @id = "username", @onclick = "" })</td>
+                        </tr>
+                        <tr>
+                            <td>First name:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.FistName)</td>
+                        </tr>
+                        <tr>
+                            <td>Last name:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.LastName)</td>
+                        </tr>
+                        <tr>
+                            <td>Birth date:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.BirthDate)</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.Email)</td>
+                        </tr>
+                        <tr>
+                            <td>Phone number:</td>
+                            <td>@Html.TextBoxFor(m => m.UserDetails.PhoneNumber)</td>
+                        </tr>
+                        <tr>
+                            <td>Account type:</td>
+                            <td>@Html.DropDownListFor(m => m.UserDetails.Role.RoleName, (IEnumerable<SelectListItem>)ViewData["Roles"])</td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td>@Html.PasswordFor(m => m.NewPassword)</td>
+                        </tr>
+                        <tr>
+                            <td>Password again:</td>
+                            <td>@Html.PasswordFor(m => m.NewPasswordRepeat)</td>
+                        </tr>
+                   <tr>
+                            <td><input type="submit" class="btn btn-lg btn-success" value="Save changes!" /></td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
+                <br>
+                
+                
+            </div>
+        }
+
+
+    </div>
+
+}

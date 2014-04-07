@@ -19,9 +19,15 @@ namespace evoART.DAL.Interfaces.Photos
 
         PhotoModels.Photo[] GetPhotosForHashTag(string hashTagName, int startPosition, int number);
 
-        bool VerifyExists(Guid albumId, string photoName);
+        void IncrementViews(Guid photoId);
+
+        bool VerifyExists(Guid photoId);
 
         PhotoModels.Photo[] GetPhotosFromAlbum(Guid albumId);
+
+        Guid GetPreviousPhoto(PhotoModels.Photo currentPhoto);
+
+        Guid GetNextPhoto(PhotoModels.Photo currentPhoto);
 
         // Returns the photo Id
         Guid Insert(PhotoModels.Photo photo);

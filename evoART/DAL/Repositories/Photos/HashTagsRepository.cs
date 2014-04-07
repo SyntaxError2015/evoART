@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
@@ -44,18 +44,28 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                IEnumerable<PhotoModels.HashTag> hashTags = _dbSet.Where(h => h.HashTagName.Contains(name));
+                PhotoModels.HashTag[] hashTags = _dbSet.Where(h => h.HashTagName.Contains(name)).ToArray();
                 var popularity = new int[hashTags.Count()];
 
-                for (var i = 0; i < popularity.Length; i++)
-                    popularity[i] = _dbSet.Count(h => h.HashTagId == hashTags.ElementAt(i).HashTagId);
+                if (hashTags.Length < number)
+                    number = hashTags.Length;
 
-                popularity = Sorting.SortArrayDescending(popularity, number);
+                var k = 0;
+                //for (var i = 0; i < popularity.Length; i++)
+                //    popularity[i] = _dbSet.Count(h => h.HashTagId == hashTags[i].HashTagId);
+
+                foreach (var ht in hashTags)
+                {
+                    popularity[k] = _dbSet.Count(h => h.HashTagId == ht.HashTagId) - 1;
+                    k++;
+                }
+
+                var sorted = Sorting.SortArrayDescending(popularity, number);
 
                 var popular = new PhotoModels.HashTag[number];
 
                 for (var i = 0; i < number; i++)
-                    popular[i] = hashTags.ElementAt(popularity[i]);
+                    popular[i] = hashTags[sorted[i]];
 
                 return popular;
             }
@@ -95,10 +105,9 @@ namespace evoART.DAL.Repositories.Photos
         /// <returns>A bool value indicating the success of the action</returns>
         public bool DeleteHashTagForPhoto(Guid hashTagId, PhotoModels.Photo photo)
         {
-            photo.HashTags.Remove(_dbSet.Find(hashTagId));
-            var hashTag = _dbSet.Find(hashTagId);
+            var tags = _dbSet.Where(h => h.HashTagId == hashTagId).ToArray();
 
-            return DeleteHashTagForPhoto(hashTag, photo);
+            return tags.All(tag => DeleteHashTagForPhoto(tag, photo));
         }
 
         /// <summary>
@@ -112,6 +121,27 @@ namespace evoART.DAL.Repositories.Photos
             var photo = _dbContext.Photos.Find(photoId);
 
             return DeleteHashTagForPhoto(hashTagId, photo);
+        }
+
+        /// <summary>
+        /// Delete a an association between a hashtag and a photo
+        /// </summary>
+        /// <param name="hashTagName">The name of the hashtag to delete</param>
+        /// <param name="photo">The Photo entity for which to delete the hashtag</param>
+        /// <returns></returns>
+        public bool DeleteHashTagForPhoto(string hashTagName, PhotoModels.Photo photo)
+        {
+            try
+            {
+                var hashtagId = _dbSet.First(h => h.HashTagName == hashTagName).HashTagId;
+
+                return DeleteHashTagForPhoto(hashtagId, photo.PhotoId);
+            }
+
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -140,14 +170,27 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var hashTag = new PhotoModels.HashTag
-                {
-                    HashTagId = Guid.NewGuid(),
-                    HashTagName = hashTagName
-                };
+                var tag = _dbSet.FirstOrDefault(t => t.HashTagName == hashTagName);
 
-                _dbSet.AddOrUpdate(hashTag);
-                photo.HashTags.Add(hashTag);
+                if (tag != null)
+                {
+                    tag.Photos.Add(photo);
+
+                    _dbSet.AddOrUpdate(tag);
+                }
+
+                else
+                {
+                    var newTag = new PhotoModels.HashTag
+                    {
+                        HashTagId = Guid.NewGuid(),
+                        HashTagName = hashTagName,
+                        Photos = new Collection<PhotoModels.Photo> {photo}
+                    };
+
+                    _dbSet.Add(newTag);
+
+                }
 
                 return Save();
             }
