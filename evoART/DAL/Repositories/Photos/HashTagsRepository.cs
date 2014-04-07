@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using evoART.DAL.DbContexts;
@@ -184,9 +185,8 @@ namespace evoART.DAL.Repositories.Photos
                     {
                         HashTagId = Guid.NewGuid(),
                         HashTagName = hashTagName,
+                        Photos = new Collection<PhotoModels.Photo> {photo}
                     };
-
-                    newTag.Photos.Add(photo);
 
                     _dbSet.Add(newTag);
 
