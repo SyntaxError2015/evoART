@@ -63,7 +63,17 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views).Where(p => (DateTime.Now - p.UploadDate).Days < 5);
+                IEnumerable<PhotoModels.Photo> photos;
+                var numberOfDays = 5;
+
+                do
+                {
+                    photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views)
+                        .Where(p => (DateTime.Now - p.UploadDate).Days < numberOfDays);
+                    
+                    numberOfDays++;
+
+                } while (photos.Count() < number);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
