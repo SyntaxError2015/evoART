@@ -129,12 +129,12 @@
     }
 
     .userlink:hover .userbox1 {
-        height: 150px;
+        height: 160px;
         padding: 5px;
     }
 
     .userlink:hover .userbox2 {
-        height: 255px;
+        height: 275px;
         padding: 5px;
     }
 

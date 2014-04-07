@@ -24,8 +24,10 @@ namespace evoART.Controllers
             {
                 var photoHashTags = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(photoId)).HashTags;
 
-                var hashTags =
-                    DatabaseWorkUnit.Instance.HashTagsRepository.GetPopularHashTags(6, name).Except(photoHashTags).ToArray();
+                var hashTags = DatabaseWorkUnit.Instance.HashTagsRepository.GetPopularHashTags(6, name);
+                  
+                if (photoHashTags!=null)
+                    hashTags=hashTags.Except(photoHashTags).ToArray();
                         
                 var model = new HashTagsModel()
                 {

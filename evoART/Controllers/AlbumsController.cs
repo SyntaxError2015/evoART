@@ -88,7 +88,8 @@ namespace evoART.Controllers
                 UserName = userAlbum.UserAccount.UserName,
                 AlbumDescription = userAlbum.AlbumDescription,
                 AlbumId = userAlbum.AlbumId.ToString(),
-                MyAlbum = myAlbum
+                MyAlbum = myAlbum,
+                Private = userAlbum.IsPrivate
             };
 
             if (asPartial == 1) return PartialView("Album", model);

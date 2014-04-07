@@ -248,7 +248,7 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderByDescending(d => d.UploadDate)
-                    .First(d => d.UploadDate < currentPhoto.UploadDate);
+                    .FirstOrDefault(d => d.UploadDate < currentPhoto.UploadDate);
 
                 return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
@@ -270,7 +270,7 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderBy(d => d.UploadDate)
-                    .First(d => d.UploadDate > currentPhoto.UploadDate);
+                    .FirstOrDefault(d => d.UploadDate > currentPhoto.UploadDate);
 
                 return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
