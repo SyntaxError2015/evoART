@@ -171,10 +171,10 @@ namespace evoART.Controllers
                     new WebClient().DownloadString("https://graph.facebook.com/me?fields=id&access_token=" + token);
                 string userId = fbpage.Substring(fbpage.IndexOf("id") + 5, 15);
 
-                if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, id))
+                if (DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists(providerName, userId))
                 {
                     //get username from the oauth
-                    userName = DatabaseWorkUnit.Instance.OAuthLoginRepository.GetUserNameForOAuth(providerName,id);
+                    userName = DatabaseWorkUnit.Instance.OAuthLoginRepository.GetUserNameForOAuth(providerName,userId);
 
                     //Make a new session for the user
                     AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
@@ -199,7 +199,7 @@ namespace evoART.Controllers
                         return "F";
 
                     //Create the external auth id
-                    DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(userName, providerName, id);
+                    DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(userName, providerName, userId);
 
                     //Make a new session for the user
                     AccountModels.Session newSession = DatabaseWorkUnit.Instance.SessionRepository.Login(userName);
@@ -215,6 +215,14 @@ namespace evoART.Controllers
             {
                 return "F";
             }
+        }
+
+        public string LinkFacebook(string providerId)
+        {
+            if (MySession.Current.UserDetails == null)
+                return "F";
+
+            return DatabaseWorkUnit.Instance.OAuthLoginRepository.Insert(MySession.Current.UserDetails.UserName, "Facebook", providerId) ? "K" : "F";
         }
 
         /*The partialviews for login/register*/

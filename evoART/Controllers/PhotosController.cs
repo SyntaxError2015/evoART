@@ -36,6 +36,9 @@ namespace evoART.Controllers
 
         public ActionResult CreateNewPhoto()
         {
+            if (MySession.Current.UserDetails == null)
+                return PartialView("NewPhoto");
+
             var userAlbums =
                 DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId);
             var photo = new PhotoModels.Photo
@@ -145,7 +148,7 @@ namespace evoART.Controllers
 
             //Prepare some things if it is my photo
             ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository
-                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails.UserId)
+                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails!=null?MySession.Current.UserDetails.UserId:Guid.Empty)
                 .Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId == photo.Album.AlbumId }).ToList();
             ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
 
