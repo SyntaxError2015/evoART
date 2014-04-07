@@ -170,7 +170,7 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var tag = _dbSet.First(t => t.HashTagName == hashTagName);
+                var tag = _dbSet.FirstOrDefault(t => t.HashTagName == hashTagName);
 
                 if (tag != null)
                 {
