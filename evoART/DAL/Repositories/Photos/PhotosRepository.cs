@@ -236,9 +236,11 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderByDescending(d => d.UploadDate)
-                    .First(d => d.UploadDate < currentPhoto.UploadDate).PhotoId;
+                    .First(d => d.UploadDate < currentPhoto.UploadDate);
+
+                return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
 
             catch
@@ -256,9 +258,11 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                return _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
+                var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderBy(d => d.UploadDate)
-                    .First(d => d.UploadDate > currentPhoto.UploadDate).PhotoId;
+                    .First(d => d.UploadDate > currentPhoto.UploadDate);
+
+                return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
 
             catch
