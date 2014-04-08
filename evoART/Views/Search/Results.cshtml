@@ -1,5 +1,4 @@
-﻿
-@model evoART.Models.ViewModels.SearchModel
+﻿@model evoART.Models.ViewModels.SearchModel
 @using System.Activities.Statements
 @using System.Data.Entity.Core.Common.EntitySql
 @using System.Web.UI.WebControls
@@ -18,7 +17,6 @@
 else
 {
 
-
     <div class="row">
         @foreach (var photo in @Model.Photos)
         {
@@ -29,4 +27,22 @@ else
             </div>
         }
     </div>
+
+    <!--script>
+        var p = @Model.p;
+        
+        $(window).scroll(function () {
+
+            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                //p += 30;
+                go('Search', 'HashTag', "@Model.searchText?p="+p);
+            } else if ($(window).scrollTop() == 0 && p>0) {
+                p -= 30;
+                if (p < 0) p = 0;
+                go('Search', 'HashTag', "@Model.searchText?p="+p);
+            }
+        });
+
+    </script-->
+
 }

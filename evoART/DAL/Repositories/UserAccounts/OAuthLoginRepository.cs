@@ -39,7 +39,28 @@ namespace evoART.DAL.Repositories.UserAccounts
         /// Verify if there is already a registration existent for a combination { provider, key }
         /// </summary>
         /// <param name="providerName">The name of the provider</param>
-        /// <param name="idFromProvider">The Id (key) that the user has for that provider</param>
+        /// <param name="userId">The Id of the user</param>
+        /// <returns>A bool value indicating if the entered data exist</returns>
+        public bool VerifyExists(string providerName, Guid userId)
+        {
+            try
+            {
+                return _dbSet.Count(p =>
+                    p.Provider == providerName &&
+                    p.UserAccount.UserId == userId) > 0;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Verify if there is already a registration existent for a combination { provider, key }
+        /// </summary>
+        /// <param name="providerName">The name of the provider</param>
+        /// <param name="idFromProvider">The Id that the user has for the entered provider</param>
         /// <returns>A bool value indicating if the entered data exist</returns>
         public bool VerifyExists(string providerName, string idFromProvider)
         {

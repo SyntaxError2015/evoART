@@ -1,8 +1,11 @@
-﻿namespace evoART.DAL.Interfaces.UserAccounts
+﻿using System;
+namespace evoART.DAL.Interfaces.UserAccounts
 {
     internal interface IOAuthLoginRepository
     {
         bool VerifyDataCorresponds(string userName, string providerName, string idFromProvider);
+
+        bool VerifyExists(string providerName, Guid userId);
 
         bool VerifyExists(string providerName, string idFromProvider);
 

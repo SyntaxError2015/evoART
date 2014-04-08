@@ -76,8 +76,8 @@ namespace evoART.Controllers
             {
                 System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
             }
-            catch {}
-            
+            catch { }
+
             photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.Album));
             photo.ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.ContentTag));
             photo.PhotoName = model.NewPhotoName;
@@ -107,24 +107,35 @@ namespace evoART.Controllers
 
         public string DeletePhoto(string id)
         {
+            if (MySession.Current.UserDetails == null || MySession.Current.UserDetails.UserId !=
+            DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id)).Album.UserAccount.UserId)
+                return "F";
+
             try
             {
-                if (MySession.Current.UserDetails==null || MySession.Current.UserDetails.UserId !=
-                DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id)).Album.UserAccount.UserId)
-                    return "F";
-
-                try
-                {
-                    System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Temp"), id + ".jpg"));
-                }
-                catch{}
-
-                return DatabaseWorkUnit.Instance.PhotosRepository.Delete(new Guid(id)) ? "K" : "F";
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Temp"), id + ".jpg"));
             }
-            catch (Exception)
+            catch { }
+
+            try
             {
-                return "F";
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Thumbnails"), id + ".jpg"));
             }
+            catch { }
+
+            try
+            {
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Hexagons"), id + ".png"));
+            }
+            catch { }
+
+            try
+            {
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Photos"), id + ".jpg"));
+            }
+            catch { }
+
+            return DatabaseWorkUnit.Instance.PhotosRepository.Delete(new Guid(id)) ? "K" : "F";
         }
 
         public ActionResult Photo(string id, int asPartial = 0)
@@ -141,7 +152,7 @@ namespace evoART.Controllers
             catch
             {
                 if (asPartial == 1) return PartialView("photo");
-                
+
                 return View("Photo");
             }
 
@@ -152,10 +163,10 @@ namespace evoART.Controllers
             var model = new PhotoModel
             {
                 Photo = photo,
-                MyPhoto = MySession.Current.UserDetails!=null && (photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false),
+                MyPhoto = MySession.Current.UserDetails != null && (photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false),
 
                 Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId),
-                HasLiked = MySession.Current.UserDetails!=null && DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
+                HasLiked = MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
                 NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
                 PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
@@ -168,9 +179,9 @@ namespace evoART.Controllers
                 .Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId == photo.Album.AlbumId }).ToList();
                 ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
             }
-            
+
             if (asPartial == 1) return PartialView("Photo", model);
-            
+
             return View("Photo", model);
         }
 
