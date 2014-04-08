@@ -8,7 +8,7 @@
 
 
 
-@if (Model == null || Model.Photos == null)
+@if (Model == null || Model.Photos == null || !Model.Photos.Any())
 {
     <h1>
         The search returned no results! <br>

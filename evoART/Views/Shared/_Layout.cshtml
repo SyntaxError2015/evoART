@@ -79,6 +79,12 @@
             $("#message").toggle(200);
             setTimeout(function () { $("#message").toggle(200); $("#message").removeClass(className); }, 1400);
         }
+        
+        function searchtxt(e, txt) {
+            if (e.which == 13) {
+                go('Search', 'HashTag', txt);
+            }
+        }
 
     </script>
 
@@ -87,10 +93,15 @@
 
     <div class="topbar">
         <div class="topitemleft">
-            <a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">evoART</a>
+            <a href="/" onclick="go('Home', 'Index', ''); event.preventDefault();">
+                <img src="/Content/Images/evoart.png" style="margin-top:-30px;margin-left: -20px;width: 250px;" />
+            </a>
         </div>
-        <div class="topitemleft">
-            @DateTime.Now.ToString()
+        <div style="left:50%;margin-left:-100px;width:200px;position: fixed;">
+            <div class="input-group input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                <input type="text" class="form-control" id="searchbox" onkeyup="searchtxt(event, this.value);" placeholder="Search by hashtag...">
+            </div>
         </div>
 
         @if (MySession.Current.UserDetails == null)
@@ -112,9 +123,9 @@
                 <span class="glyphicon glyphicon-user"></span>
                 @MySession.Current.UserDetails.UserName
                 <div id="userbox" class="userbox">
-                    Wecome back, @MySession.Current.UserDetails.UserName!
-
-                    <div id="userform">@Html.Partial("~/Views/Shared/Logged.cshtml")</div>
+                    Welcome back, @MySession.Current.UserDetails.UserName!<br>
+                    <a href="/Users/Profile/@MySession.Current.UserDetails.UserName" onclick="go('Users', 'Profile', '@MySession.Current.UserDetails.UserName'); event.preventDefault();">My profile</a>
+                    <div id="userform" style="width: 200px;">@Html.Partial("~/Views/Shared/Logged.cshtml")</div>
                 </div>
             </div>
             if (MySession.Current.UserDetails.Role.RoleName == "Photographer")

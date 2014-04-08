@@ -63,7 +63,20 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views).Where(p => (DateTime.Now - p.UploadDate).Days < 5);
+                IEnumerable<PhotoModels.Photo> photos;
+                var numberOfDays = 5;
+                var existent = _dbSet.Count();
+
+                do
+                {
+                    var limitDate = DateTime.Now.Subtract(new TimeSpan(numberOfDays, 0, 0, 0));
+
+                    photos = _dbSet.OrderByDescending(p => p.Likes.Count*5 + p.Comments.Count*5 + p.Views)
+                        .Where(p => p.UploadDate > limitDate);
+       
+                    numberOfDays++;
+
+                } while (photos.Count() < number && existent >= number);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
@@ -238,7 +251,7 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderByDescending(d => d.UploadDate)
-                    .First(d => d.UploadDate < currentPhoto.UploadDate);
+                    .FirstOrDefault(d => d.UploadDate < currentPhoto.UploadDate);
 
                 return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
@@ -260,7 +273,7 @@ namespace evoART.DAL.Repositories.Photos
             {
                 var photo = _dbSet.Where(p => p.Album.AlbumId == currentPhoto.Album.AlbumId)
                     .OrderBy(d => d.UploadDate)
-                    .First(d => d.UploadDate > currentPhoto.UploadDate);
+                    .FirstOrDefault(d => d.UploadDate > currentPhoto.UploadDate);
 
                 return photo.PhotoId != currentPhoto.PhotoId ? photo.PhotoId : Guid.Empty;
             }
@@ -349,7 +362,7 @@ namespace evoART.DAL.Repositories.Photos
 
             catch
             {
-                return false;
+                return false;   
             }
         }
 
