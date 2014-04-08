@@ -65,16 +65,19 @@ namespace evoART.DAL.Repositories.Photos
             {
                 IEnumerable<PhotoModels.Photo> photos;
                 var numberOfDays = 5;
+                var existent = _dbSet.Count();
 
                 do
                 {
-                    var dateLimit = DateTime.Now.Subtract(new TimeSpan(numberOfDays, 0, 0, 0));
-                    photos = _dbSet.OrderByDescending(p => p.Likes.Count * 5 + p.Comments.Count * 5 + p.Views)
-                        .Where(p =>  p.UploadDate>=dateLimit);
-                    
+
+                    var limitDate = DateTime.Now.Subtract(new TimeSpan(numberOfDays, 0, 0, 0));
+
+                    photos = _dbSet.OrderByDescending(p => p.Likes.Count*5 + p.Comments.Count*5 + p.Views)
+                        .Where(p => p.UploadDate > limitDate);
+       
                     numberOfDays++;
 
-                } while (photos.Count() < number);
+                } while (photos.Count() < number && existent >= number);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
