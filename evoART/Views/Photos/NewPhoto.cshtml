@@ -27,12 +27,18 @@
                 @Html.HiddenFor(m => m.PhotoId)
                 @Html.TextBoxFor(m => m.NewPhotoName, new { @placeholder = "Photo name", @style = "width:100%;" })
                 @Html.TextAreaFor(m => m.NewPhotoDescription, new { @placeholder = "Enter a description", @style = "width:100%;" })
-
-                @Html.LabelFor(m => m.Album)
-                @Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])
-
-                @Html.LabelFor(m => m.ContentTag)
-                @Html.DropDownListFor(m => m.ContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
+                
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Album)</td>
+                        <td>@Html.DropDownListFor(m => m.Album, (IEnumerable<SelectListItem>)ViewData["Albums"])</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.ContentTag)</td>
+                        <td>@Html.DropDownListFor(m => m.ContentTag, (IEnumerable<SelectListItem>)ViewData["ContentTags"])
+                    </td>
+                    </tr>
+                </table>
 
                 <div class="btn-group">
                     <input type="submit" class="btn btn-primary" role="button" value="Save photo" />

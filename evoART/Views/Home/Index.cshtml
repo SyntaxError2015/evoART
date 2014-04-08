@@ -117,26 +117,13 @@
     }
 </style>
 
-<script>
-    function searchtxt(e, txt) {
-       
-        if (e.which == 13) {
-
-            go('Search', 'HashTag', txt);
-
-        }
-    }
-</script>
-
-
-
 
 <div id="centercontent">
     <img src="/Content/Images/evoart.png" />
     <br />
         <div class="input-group input-group-lg search">
             <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-            <input type="text" class="form-control" id="searchbox" onkeyup="searchtxt(event, this.value);" placeholder=" search by hashtag">
+            <input type="text" class="form-control" id="searchbox" onkeyup="searchtxt(event, this.value);" placeholder="Search by hashtag...">
         </div>
 </div>
 

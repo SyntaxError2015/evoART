@@ -58,6 +58,8 @@
         }
         else if (data == "U") {
             showMessage("alert-danger", "The username is not valid or already taken!");
+        } else {
+            showMessage("alert-danger", "The edit failed!");
         }
     }
 </script>
@@ -137,10 +139,10 @@ else
                             }
                         </td>
                     </tr>
-                    @using (Ajax.BeginForm("EditProfile", "Users", new AjaxOptions {OnSuccess = "editProfile(data)"}))
+                    @using (Ajax.BeginForm("EditProfile", "Users", new AjaxOptions { OnSuccess = "editProfile(data)" }))
                     {
                         @Html.HiddenFor(m => m.UserDetails.UserId)
-                    
+
                         <tr>
                             <td>Username:</td>
                             <td>@Html.TextBoxFor(m => m.UserDetails.UserName, new { @id = "username", @onclick = "" })</td>
@@ -177,15 +179,15 @@ else
                             <td>Password again:</td>
                             <td>@Html.PasswordFor(m => m.NewPasswordRepeat)</td>
                         </tr>
-                   <tr>
+                        <tr>
                             <td><input type="submit" class="btn btn-lg btn-success" value="Save changes!" /></td>
                             <td></td>
                         </tr>
                     }
                 </table>
                 <br>
-                
-                
+
+
             </div>
         }
 

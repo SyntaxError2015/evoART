@@ -71,6 +71,13 @@ namespace evoART.Controllers
             ImageResizer.CreateThumbnail(img).Save(Path.Combine(Server.MapPath("~/Content/Thumbnails"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateHexagonImage(img).Save(Path.Combine(Server.MapPath("~/Content/Hexagons"), model.PhotoId + ".png"), ImageFormat.Png);
 
+            img.Dispose();
+            try
+            {
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
+            }
+            catch {}
+            
             photo.Album = DatabaseWorkUnit.Instance.AlbumsRepository.GetAlbum(new Guid(model.Album));
             photo.ContentTag = DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.ContentTag));
             photo.PhotoName = model.NewPhotoName;
@@ -102,9 +109,16 @@ namespace evoART.Controllers
         {
             try
             {
-                if (MySession.Current.UserDetails.UserId !=
+                if (MySession.Current.UserDetails==null || MySession.Current.UserDetails.UserId !=
                 DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id)).Album.UserAccount.UserId)
                     return "F";
+
+                try
+                {
+                    System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Temp"), id + ".jpg"));
+                }
+                catch{}
+
                 return DatabaseWorkUnit.Instance.PhotosRepository.Delete(new Guid(id)) ? "K" : "F";
             }
             catch (Exception)
@@ -138,20 +152,23 @@ namespace evoART.Controllers
             var model = new PhotoModel
             {
                 Photo = photo,
-                MyPhoto = photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false,
+                MyPhoto = MySession.Current.UserDetails!=null && (photo.Album.UserAccount.UserId == MySession.Current.UserDetails.UserId ? true : false),
 
                 Comments = DatabaseWorkUnit.Instance.CommentsRepository.GetCommentsForPhoto(photo.PhotoId),
-                HasLiked = DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
+                HasLiked = MySession.Current.UserDetails!=null && DatabaseWorkUnit.Instance.LikesRepository.UserHasLikedPhoto(MySession.Current.UserDetails.UserId, photo.PhotoId),
                 NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
                 PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
 
             //Prepare some things if it is my photo
-            ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository
-                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails!=null?MySession.Current.UserDetails.UserId:Guid.Empty)
+            if (model.MyPhoto)
+            {
+                ViewData["Albums"] = DatabaseWorkUnit.Instance.AlbumsRepository
+                .GetAlbumsForUser(MySession.Current.UserDetails.UserId, MySession.Current.UserDetails != null ? MySession.Current.UserDetails.UserId : Guid.Empty)
                 .Select(r => new SelectListItem { Text = r.AlbumName, Value = r.AlbumId.ToString(), Selected = r.AlbumId == photo.Album.AlbumId }).ToList();
-            ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
-
+                ViewData["ContentTags"] = DatabaseWorkUnit.Instance.ContentTagsRepository.GetAllContentTags().Select(r => new SelectListItem { Text = r.ContentTagName, Value = r.ContentTagId.ToString(), Selected = r.ContentTagId == photo.ContentTag.ContentTagId }).ToList();
+            }
+            
             if (asPartial == 1) return PartialView("Photo", model);
             
             return View("Photo", model);

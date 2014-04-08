@@ -22,5 +22,8 @@ namespace evoART.Models.ViewModels
         public string UserName { get; set; }
         public int MyAlbum { get; set; }
 
+        [Display(Name = "Private album")]
+        public bool Private { get; set; }
+
     }
 }
