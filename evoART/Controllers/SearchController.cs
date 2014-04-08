@@ -13,7 +13,7 @@ namespace evoART.Controllers
     public class SearchController : Controller
     {
 
-        public ActionResult HashTag(string id, int asPartial = 0)
+        public ActionResult HashTag(string id, int asPartial = 0, int p = 0)
         {
             var model = new SearchModel();
             var searchTags = id.Split(' ');
@@ -24,7 +24,7 @@ namespace evoART.Controllers
             {
                 try
                 {
-                    photos.AddRange(DatabaseWorkUnit.Instance.PhotosRepository.GetPhotosForHashTag(searchTag, 0, 30));
+                    photos.AddRange(DatabaseWorkUnit.Instance.PhotosRepository.GetPhotosForHashTag(searchTag, p, p+30));
                 }
                 catch
                 {
@@ -49,7 +49,8 @@ namespace evoART.Controllers
                 }
             }
 
-           
+            model.p = model.Photos.Count();
+            model.searchText = id;
 
             if (asPartial == 1) return PartialView("Results", model);
             else

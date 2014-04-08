@@ -47,6 +47,7 @@ namespace evoART.Controllers
                     model.UserDetails.UserName == MySession.Current.UserDetails.UserName)
                     model.MyProfile = true;
                 else model.MyProfile = false;
+
                 model.FacebookLinked = MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists("Facebook", MySession.Current.UserDetails.UserId.ToString());
 
                 if (MySession.Current.UserDetails != null)
@@ -80,7 +81,7 @@ namespace evoART.Controllers
             myProfile.UserName = model.UserDetails.UserName;
             myProfile.FistName = model.UserDetails.FistName;
             myProfile.LastName = model.UserDetails.LastName;
-            myProfile.BirthDate = model.UserDetails.BirthDate;
+            //myProfile.BirthDate = model.UserDetails.BirthDate;
             myProfile.Email = model.UserDetails.Email;
             myProfile.PhoneNumber = model.UserDetails.PhoneNumber;
             myProfile.Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.UserDetails.Role.RoleName);

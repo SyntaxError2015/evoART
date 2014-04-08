@@ -11,7 +11,7 @@ namespace evoART.Models.ViewModels
     {
         public PhotoModels.Photo[] Photos { get; set; }
 
-
-
+        public int p { get; set; }
+        public string searchText { get; set; }
     }
 }
