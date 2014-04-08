@@ -65,6 +65,7 @@ namespace evoART.DAL.Repositories.Photos
             {
                 IEnumerable<PhotoModels.Photo> photos;
                 var numberOfDays = 5;
+                var existent = _dbSet.Count();
 
                 do
                 {
@@ -75,7 +76,7 @@ namespace evoART.DAL.Repositories.Photos
        
                     numberOfDays++;
 
-                } while (photos.Count() < number && photos.Count() != 0);
+                } while (photos.Count() < number && existent >= number);
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
