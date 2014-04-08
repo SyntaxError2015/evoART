@@ -24,7 +24,7 @@ namespace evoART.DAL.DbContexts
                 .HasRequired(p => p.Photo)
                 .WithMany(p => p.Likes)
                 .Map(m => m.MapKey("PhotoId"))
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             // Map foreign key to the UserAccounts table
             modelBuilder.Entity<SocialModels.Like>()
@@ -50,7 +50,7 @@ namespace evoART.DAL.DbContexts
                 .HasRequired(p => p.Photo)
                 .WithMany(p => p.Comments)
                 .Map(m => m.MapKey("PhotoId"))
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             // Map foreign key to the UserAccounts table
             modelBuilder.Entity<SocialModels.Comment>()

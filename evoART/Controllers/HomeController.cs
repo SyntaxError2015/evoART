@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using evoART.DAL.DbContexts;
+﻿using System.Web.Mvc;
 using evoART.DAL.UnitsOfWork;
-using evoART.Models.DbModels;
 using evoART.Special;
 using evoART.Models.ViewModels;
 
@@ -14,11 +10,6 @@ namespace evoART.Controllers
 
         public ActionResult Index(int asPartial = 0)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.UserAccounts.Count();
-            }
-
             var model = new IndexModel()
             {
                 TopPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPopularPhotos(0, 19)

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Web.Services.Description;
 using evoART.DAL.DbContexts;
 using evoART.DAL.Interfaces.Photos;
 using evoART.DAL.UnitsOfWork;
@@ -357,18 +360,8 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 var photo = _dbSet.Find(photoId);
-                photo.Comments.Add(new SocialModels.Comment
-                {
-                    CommentId = Guid.NewGuid(),
-                    CommentDate = DateTime.Now,
-                    CommentText = "deletion",
-                    UserAccount = photo.Album.UserAccount,
-                    Photo = photo
-                });
 
-                var ok = Save();
-
-                _dbSet.Remove(_dbSet.Find(photoId));
+                _dbSet.Remove(photo);
 
                 return Save();
             }
