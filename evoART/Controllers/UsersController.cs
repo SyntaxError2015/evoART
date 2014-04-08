@@ -30,7 +30,7 @@ namespace evoART.Controllers
             }
         }
 
-        public ActionResult Profile(string id, int asPartial = 0)
+        public new ActionResult Profile(string id, int asPartial = 0)
         {
             if (asPartial == 0 && MySession.Current.UserDetails == null)
                 MySession.Current.UserDetails = new AccountController().GetUserDetails();
