@@ -48,7 +48,7 @@ namespace evoART.Controllers
                     model.MyProfile = true;
                 else model.MyProfile = false;
 
-                model.FacebookLinked = MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists("Facebook", MySession.Current.UserDetails.UserId.ToString());
+                model.FacebookLinked = MySession.Current.UserDetails != null && DatabaseWorkUnit.Instance.OAuthLoginRepository.VerifyExists("Facebook", MySession.Current.UserDetails.UserId);
 
                 if (MySession.Current.UserDetails != null)
                 {
