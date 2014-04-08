@@ -356,6 +356,15 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
+                var photo = _dbSet.Find(photoId);
+                photo.Likes.Clear();
+                photo.Comments.Clear();
+                photo.HashTags.Clear();
+
+                _dbSet.AddOrUpdate(photo);
+
+                Save();
+
                 _dbSet.Remove(_dbSet.Find(photoId));
 
                 return Save();
