@@ -357,13 +357,16 @@ namespace evoART.DAL.Repositories.Photos
             try
             {
                 var photo = _dbSet.Find(photoId);
-                photo.Likes.Clear();
-                photo.Comments.Clear();
-                photo.HashTags.Clear();
+                photo.Comments.Add(new SocialModels.Comment
+                {
+                    CommentId = Guid.NewGuid(),
+                    CommentDate = DateTime.Now,
+                    CommentText = "deletion",
+                    UserAccount = photo.Album.UserAccount,
+                    Photo = photo
+                });
 
-                _dbSet.AddOrUpdate(photo);
-
-                Save();
+                var ok = Save();
 
                 _dbSet.Remove(_dbSet.Find(photoId));
 
