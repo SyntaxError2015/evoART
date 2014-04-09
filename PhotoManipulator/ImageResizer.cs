@@ -21,7 +21,7 @@ namespace PhotoManipulator
 
         #region Private methods
 
-        private static Image ResizeImage(Image image, Size size)
+        public static Image ResizeImage(Image image, Size size)
         {
             if (image.Width < size.Width || image.Height < size.Height)
                 return image;
