@@ -109,3 +109,4 @@ UpgradeLog*.XML
 *.jpg
 *.png
 *.db
+Web.config

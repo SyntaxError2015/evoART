@@ -19,21 +19,21 @@ else
 {
     if ((MySession.Current.UserDetails == null) || Model.AlbumsUser != MySession.Current.UserDetails.UserName)
     {
-        ViewBag.Title = Model.Albums[0].UserAccount.UserName + "'s albums";
         ViewBag.IsMyAlbum = 0;
-    }
-    else
-    {
-        ViewBag.Title = "My Albums";
-        ViewBag.IsMyAlbum = 1;
-    }
-
-
-    <h1>
+        <h1>
         <a href="/Users/Profile/@Model.AlbumsUser" title="View user's profile" onclick="go('Users', 'Profile', '@Model.Albums[0].UserAccount.UserName'); event.preventDefault();" class="label label-default">
             @Model.AlbumsUser
         </a>'s albums
     </h1>
+    }
+    else
+    {
+        ViewBag.IsMyAlbum = 1;
+        <h1>    
+        My albums
+    </h1>
+    }
+
 
     if (ViewBag.IsMyAlbum == 1)
     {
@@ -74,7 +74,10 @@ else
     <hr>
 
     <div class="row">
-        @for (var i = 0; i < Model.Albums.Length; i++)
+        @if (Model.Albums != null)
+        {
+
+        for (var i = 0; i < Model.Albums.Length; i++)
         {
             <div id="@Model.Albums[i].AlbumId" class="col-sm-5 col-lg-3">
                 <div class="thumbnail">
@@ -110,6 +113,8 @@ else
                     </div>
                 </div>
             </div>
+        }
+
         }
     </div>
 }
