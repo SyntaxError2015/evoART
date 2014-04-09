@@ -51,7 +51,7 @@ namespace evoART.Controllers
                 Albums = userAlbums,
                 AlbumsUser = id
             };
-
+            
             if (asPartial == 1) return PartialView("Albums", model);
             else return View("Albums", model);
         }
