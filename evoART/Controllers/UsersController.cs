@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Web.Mvc;
 using evoART.DAL.DbContexts;
@@ -6,6 +8,9 @@ using evoART.DAL.UnitsOfWork;
 using evoART.Models.DbModels;
 using evoART.Special;
 using evoART.Models.ViewModels;
+using System.Web;
+using System.IO;
+using PhotoManipulator;
 
 namespace evoART.Controllers
 {
@@ -85,11 +90,29 @@ namespace evoART.Controllers
             myProfile.Email = model.UserDetails.Email;
             myProfile.PhoneNumber = model.UserDetails.PhoneNumber;
             myProfile.Role = DatabaseWorkUnit.Instance.RoleRepository.GetRole(model.UserDetails.Role.RoleName);
-            if (model.NewPassword.Length >= 6 && model.NewPassword == model.NewPasswordRepeat)
+            if (model.NewPassword!=null && model.NewPasswordRepeat != null && model.NewPassword.Length >= 6 && model.NewPassword == model.NewPasswordRepeat)
                 myProfile.Password = Special.TokenGenerator.EncryptMD5(model.NewPassword);
             myProfile.UserName = model.UserDetails.UserName;
 
             return DatabaseWorkUnit.Instance.UserAccountRepository.Update(myProfile) ? "K" : "F";
+        }
+
+        [HttpPost]
+        public ActionResult UploadProfilePic(HttpPostedFileBase file, string test = "")
+        {
+            if (file != null && file.ContentLength > 0 && MySession.Current.UserDetails != null )
+            {
+                var path = Path.Combine(Server.MapPath("~/Content/ProfilePictures"), MySession.Current.UserDetails.UserId + ".jpg");
+                //file.SaveAs(path);
+
+                Image image = Image.FromStream(file.InputStream);
+
+                ImageResizer.ResizeImage(image, new Size(200, 200)).Save(path, ImageFormat.Jpeg);
+
+                return Redirect("/Users/Profile/" + MySession.Current.UserDetails.UserName);
+            }
+
+            return Redirect("/Home/Index/");
         }
       
     }

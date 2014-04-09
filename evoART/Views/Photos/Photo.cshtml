@@ -1,4 +1,5 @@
 ﻿@model evoART.Models.ViewModels.PhotoModel
+@using System.Activities.Expressions
 @using System.Web.UI.WebControls
 @using evoART.Special
 
@@ -47,7 +48,7 @@ else
                 data: { photoId: photoId, hashName: hashName },
                 success: function(response) {
                     if (response == "K") {
-                        var toAdd = '<span style="padding:3px;" id="hash-'+hashName+'" class="label label-primary">'+hashName+'<a href="#" style="color:white;" onclick="deleteHashTag(\'@Model.Photo.PhotoId\', \''+hashName+'\', \'hash-'+hashName+'\');event.preventDefault();" class="glyphicon glyphicon-remove"></a></span>';
+                        var toAdd = '<span style="padding:3px;" id="hash-'+hashName+'" class="label label-primary">'+hashName+'<a href="#" style="color:white;" onclick="deleteHashTag(\'@Model.Photo.PhotoId\', \''+hashName+'\', \''+hashName+'\');event.preventDefault();" class="glyphicon glyphicon-remove"></a></span>';
                         $("#hashspan-"+photoId).append(toAdd);
                     } else {
                         showMessage("alert-danger", "The hashtag cannot be added!");
@@ -84,7 +85,7 @@ else
             <div class="tab-pane fade in active" id="details">
                 <table class="userdetails">
                     <tr>
-                        <td class="userpic"><img class="userpic" src="/Content/ProfilePictures/@Model.Photo.Album.UserAccount.UserId.ToString()" /></td>
+                        <td class="userpic"><img class="userpic" src="/Content/ProfilePictures/@(Model.Photo.Album.UserAccount.UserId.ToString()).jpg" /></td>
                         <td class="userdetails">
                             <a href="/Users/Profile/@Model.Photo.Album.UserAccount.UserName" title="See the user's profile" onclick="go('Users', 'Profile', '@Model.Photo.Album.UserAccount.UserName'); event.preventDefault();" class="label label-default">@Model.Photo.Album.UserAccount.UserName</a><br>
                             <a href="/Albums/Album/@Model.Photo.Album.AlbumId" title="See the other photos" onclick="go('Albums', 'Album', '@Model.Photo.Album.AlbumId'); event.preventDefault();" class="label label-info">@Model.Photo.Album.AlbumName</a>
@@ -146,8 +147,12 @@ else
             </div>
             <div id="hashresponse"></div>
             
-            <br/><br/>
-            
+            <br/>
+            <span>Copyright your name on the photo! </span><br/>
+            <span style="color:red;">This cannot be undone!</span><br />
+            @Ajax.ActionLink("Add copyright!", "AddWatermark/" + Model.Photo.PhotoId, "Photos", new AjaxOptions { OnSuccess = "watermark(data, '"+@Model.Photo.PhotoId+"');" }, new { @class = "btn btn-warning" })
+            <br /><br/>
+
             <div class="btn-group">
                 <input type="submit" class="btn btn-primary" role="button" value="Update photo" />
                 @Ajax.ActionLink("Delete photo", "DeletePhoto/" + Model.Photo.PhotoId, "Photos", new AjaxOptions { OnSuccess = "go('Albums','Album','" + Model.Photo.Album.AlbumId + "')" }, new { @class = "btn btn-danger" })
@@ -223,91 +228,102 @@ else
         </div>
     </div>
 
-}
 
-<script>
 
-    function deleteComment(commentId) {
-        $.ajax({
-            type: 'POST',
-            url: '/Comments/DeleteComment',
-            data: { id: commentId },
-            success: function(response) {
-                if (response == "K") {
-                    $("#" + commentId).hide();
-                } else {
-                    showMessage('alert-danger', 'The comment was not deleted!');
+    <script>
+
+        function deleteComment(commentId) {
+            $.ajax({
+                type: 'POST',
+                url: '/Comments/DeleteComment',
+                data: { id: commentId },
+                success: function(response) {
+                    if (response == "K") {
+                        $("#" + commentId).hide();
+                    } else {
+                        showMessage('alert-danger', 'The comment was not deleted!');
+                    }
                 }
-            }
-        });
-        return false;
-    }
-
-    function likePhoto(data) {
-        if (data == "F") {
-            showMessage("alert-danger", "Failed to like/unlike photo!");
-        } else if (data == "A") {
-            $("#likebox").addClass("liked");
-            $("#numberlikes").html(++nrLikes);
-        } else if (data == "R") {
-            $("#likebox").removeClass("liked");
-            $("#numberlikes").html(--nrLikes);
+            });
+            return false;
         }
-    }
 
-    function like(photoId) {
-        $.ajax({
-            type: 'POST',
-            url: '/Likes/ToggleLike',
-            data: { photoId: photoId },
-            success: function(response) {
-                likePhoto(response);
+        function likePhoto(data) {
+            if (data == "F") {
+                showMessage("alert-danger", "Failed to like/unlike photo!");
+            } else if (data == "A") {
+                $("#likebox").addClass("liked");
+                $("#numberlikes").html(++nrLikes);
+            } else if (data == "R") {
+                $("#likebox").removeClass("liked");
+                $("#numberlikes").html(--nrLikes);
             }
-        });
-    }
-
-    function editPhoto(data, photoId) {
-        if (data == "K") {
-            showMessage('alert-success', 'The photo was successfully updated!');
-            go('Photos', 'Photo', photoId);
-        } else {
-            showMessage('alert-danger', 'The photo was not updated!');
         }
-    }
 
-    function getHashTags(photoId, textHash) {
-        $.ajax({
-            type: 'POST',
-            url: '/HashTags/SuggestedHashTags',
-            data: { photoId: photoId, name:textHash },
-            success: function(response) {
-                $("#hashresponse").html(response);
-            }
-        });
-    }
-
-    function addHashTag(e, photoId) {
-        if (e.which == 13 || e.which == 32) {
-            if ($("#searchhash").val() != "") {
-                addNewHashTag(photoId, $("#searchhash").val());
-            }
-            $("#searchhash").val("");
+        function like(photoId) {
+            $.ajax({
+                type: 'POST',
+                url: '/Likes/ToggleLike',
+                data: { photoId: photoId },
+                success: function(response) {
+                    likePhoto(response);
+                }
+            });
         }
-    }
+
+        function editPhoto(data, photoId) {
+            if (data == "K") {
+                showMessage('alert-success', 'The photo was successfully updated!');
+                go('Photos', 'Photo', photoId);
+            } else {
+                showMessage('alert-danger', 'The photo was not updated!');
+            }
+        }
+
+        function getHashTags(photoId, textHash) {
+            $.ajax({
+                type: 'POST',
+                url: '/HashTags/SuggestedHashTags',
+                data: { photoId: photoId, name:textHash },
+                success: function(response) {
+                    $("#hashresponse").html(response);
+                }
+            });
+        }
+
+        function addHashTag(e, photoId) {
+            if (e.which == 13 || e.which == 32) {
+                if ($("#searchhash").val() != "") {
+                    addNewHashTag(photoId, $("#searchhash").val());
+                }
+                $("#searchhash").val("");
+            }
+        }
     
 
-    function deleteHashTag(photoId, textHash, hashId) {
-        $.ajax({
-            type: 'POST',
-            url: '/HashTags/DeleteHashTag',
-            data: { photoId: photoId, hashName:textHash },
-            success: function(response) {
-                if (response == "K") {
-                    $("#hash-" + hashId).hide();
-                } else {
-                    showMessage("alert-danger", "The hashtag was not removed!");
+        function deleteHashTag(photoId, textHash, hashId) {
+            $.ajax({
+                type: 'POST',
+                url: '/HashTags/DeleteHashTag',
+                data: { photoId: photoId, hashName:textHash },
+                success: function(response) {
+                    if (response == "K") {
+                        $("#hash-" + hashId).hide();
+                    } else {
+                        showMessage("alert-danger", "The hashtag was not removed!");
+                    }
                 }
+            });
+        }
+    
+        function watermark(data, photoId) {
+            if (data == "K") {
+                showMessage("alert-success", "You copyright name was added!");
+                //go('Photos','Photo', photoId);
+                document.location.reload(true);
+            } else {
+                showMessage("alert-danger", "You copyright name failed to add!");
             }
-        });
-    }
-</script>
+        }
+    </script>
+}

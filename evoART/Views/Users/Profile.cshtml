@@ -50,9 +50,10 @@
         });
     }
 
-    function editProfile(data) {
+    function editProfile(data, profileName) {
         if (data == "K") {
             showMessage("alert-success", "Saved!");
+            go('Users', 'Profile', profileName);
         } else if (data == "E") {
             showMessage("alert-danger", "The email is not valid!");
         }
@@ -60,6 +61,15 @@
             showMessage("alert-danger", "The username is not valid or already taken!");
         } else {
             showMessage("alert-danger", "The edit failed!");
+        }
+    }
+    
+    function uploadPic(data) {
+        if (data == "K") {
+            showMessage("alert-success", "Photo added!");
+            document.location.reload(true);
+        } else {
+            showMessage("alert-danger", "Failed!");
         }
     }
 </script>
@@ -88,11 +98,17 @@ else
             <button class="btn btn-lg btn-primary" onclick="$('#viewprofile').toggle(); $('#editprofile').toggle();">Edit profile</button>
         }
     </h1>
+        
+    
     <hr>
+    
     <div class="panel panel-default col-md-6 usertable">
         <div id="viewprofile">
             <table class="table">
-
+                <tr>
+                    <td>Picture:</td>
+                    <td><img width="150" src="/Content/ProfilePictures/@(Model.UserDetails.UserId.ToString()).jpg" /></td>
+                </tr>
                 <tr>
                     <td>Username:</td>
                     <td>@Model.UserDetails.UserName</td>
@@ -104,10 +120,6 @@ else
                 <tr>
                     <td>Last name:</td>
                     <td>@Model.UserDetails.LastName</td>
-                </tr>
-                <tr>
-                    <td>Birth date:</td>
-                    <td>@Model.UserDetails.BirthDate.ToString()</td>
                 </tr>
                 <tr>
                     <td>Account type:</td>
@@ -126,6 +138,18 @@ else
         {
             <div id="editprofile" style="display: none;">
                 <table class="table">
+                    
+                    <tr>
+                        @using (Html.BeginForm("UploadProfilePic", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <td>Profile pic</td>
+                            <td>
+                                <input id="file" type="file" name="file" />
+                                <input id="test" type="submit" name="test" class="btn btn-default" value="Upload"/>
+                            </td>
+                        }
+                    </tr>
+                   
                     <tr>
                         <td>Facebook account:</td>
                         <td>
@@ -139,10 +163,10 @@ else
                             }
                         </td>
                     </tr>
-                    @using (Ajax.BeginForm("EditProfile", "Users", new AjaxOptions { OnSuccess = "editProfile(data)" }))
+                    @using (Ajax.BeginForm("EditProfile", "Users", new AjaxOptions { OnSuccess = "editProfile(data, '"+@Model.UserDetails.UserName+"')" }))
                     {
                         @Html.HiddenFor(m => m.UserDetails.UserId)
-
+                    
                         <tr>
                             <td>Username:</td>
                             <td>@Html.TextBoxFor(m => m.UserDetails.UserName, new { @id = "username", @onclick = "" })</td>
@@ -154,10 +178,6 @@ else
                         <tr>
                             <td>Last name:</td>
                             <td>@Html.TextBoxFor(m => m.UserDetails.LastName)</td>
-                        </tr>
-                        <tr>
-                            <td>Birth date:</td>
-                            <td>@Html.TextBoxFor(m => m.UserDetails.BirthDate)</td>
                         </tr>
                         <tr>
                             <td>Email:</td>

@@ -66,8 +66,9 @@ namespace evoART.Controllers
                 return "F";
 
             Image img = Image.FromFile(Path.Combine(Server.MapPath("~/Content/Temp"), model.PhotoId + ".jpg"));
+            Image logo = Image.FromFile(Path.Combine(Server.MapPath("~/Content/Images"), "watermark" + ".png"));
 
-            ImageResizer.ResizeImage(img).Save(Path.Combine(Server.MapPath("~/Content/Photos"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
+            WatermarkGenerator.AddImageWatermark(ImageResizer.ResizeImage(img), logo).Save(Path.Combine(Server.MapPath("~/Content/Photos"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateThumbnail(img).Save(Path.Combine(Server.MapPath("~/Content/Thumbnails"), model.PhotoId + ".jpg"), ImageFormat.Jpeg);
             ImageResizer.CreateHexagonImage(img).Save(Path.Combine(Server.MapPath("~/Content/Hexagons"), model.PhotoId + ".png"), ImageFormat.Png);
 
@@ -103,6 +104,47 @@ namespace evoART.Controllers
                 DatabaseWorkUnit.Instance.ContentTagsRepository.GetContentTag(new Guid(model.NewContentTag));
 
             return DatabaseWorkUnit.Instance.PhotosRepository.Update(photo) ? "K" : "F";
+        }
+
+        public string AddWatermark(string id)
+        {
+            var photo = DatabaseWorkUnit.Instance.PhotosRepository.GetPhoto(new Guid(id));
+
+            if (MySession.Current.UserDetails == null ||
+               MySession.Current.UserDetails.UserId != photo.Album.UserAccount.UserId)
+                return "F";
+
+            Image image;
+
+            try
+            {
+                var myStream = new FileStream(Path.Combine(Server.MapPath("~/Content/Photos"), id + ".jpg"),FileMode.Open);
+                image = Image.FromStream(myStream);
+                myStream.Close();
+                myStream.Dispose();
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/Photos"), id + ".jpg"));
+            }
+            catch
+            {
+                return "F";
+            }
+            
+            string text = "Copyright " + DateTime.Now.Year + " © ";
+            if (MySession.Current.UserDetails.FistName != null && MySession.Current.UserDetails.LastName!=null && MySession.Current.UserDetails.FistName.Length > 1 && MySession.Current.UserDetails.LastName.Length > 1)
+                text += MySession.Current.UserDetails.FistName + " " + MySession.Current.UserDetails.LastName;
+            else
+                text += MySession.Current.UserDetails.UserName;
+
+            try
+            {
+                ImageResizer.ResizeImage(WatermarkGenerator.AddStringWatermark(image, text)).Save(Path.Combine(Server.MapPath("~/Content/Photos"), id + ".jpg"), ImageFormat.Jpeg);
+            }
+            catch
+            {
+                return "F";
+            }
+
+            return "K";
         }
 
         public string DeletePhoto(string id)
@@ -170,6 +212,7 @@ namespace evoART.Controllers
                 NextPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetNextPhoto(photo),
                 PreviousPhotoId = DatabaseWorkUnit.Instance.PhotosRepository.GetPreviousPhoto(photo)
             };
+
 
             //Prepare some things if it is my photo
             if (model.MyPhoto)
