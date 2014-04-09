@@ -150,7 +150,11 @@ namespace evoART.DAL.Repositories.Photos
         {
             try
             {
-                var photos = hashTag.Photos.OrderByDescending(p => p.UploadDate);
+                var tags = DatabaseWorkUnit.Instance.HashTagsRepository.GetPopularHashTags(10, hashTag.HashTagName);
+
+                IEnumerable<PhotoModels.Photo> photos = new Collection<PhotoModels.Photo>();// = hashTag.Photos.OrderByDescending(p => p.UploadDate);
+
+                photos = tags.Aggregate(photos, (current, tag) => current.Union(tag.Photos.OrderByDescending(p => p.UploadDate)));
 
                 return SelectPhotosByPositionAndNumber(photos, startPosition, number);
             }
