@@ -10,18 +10,18 @@ namespace evoART.Controllers
 
         public ActionResult Index(int asPartial = 0)
         {
+
             var model = new IndexModel()
             {
                 TopPhotos = DatabaseWorkUnit.Instance.PhotosRepository.GetPopularPhotos(0, 19)
             };
 
             if (asPartial == 1) return PartialView(model);
-            else
-            {
-                if (MySession.Current.UserDetails == null)
-                    MySession.Current.UserDetails = new AccountController().GetUserDetails();
-                return View(model);
-            }
+            
+            if (MySession.Current.UserDetails == null)
+                MySession.Current.UserDetails = new AccountController().GetUserDetails();
+            
+            return View(model);
         }
 
         public ActionResult About()
